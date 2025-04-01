@@ -1,7 +1,7 @@
 {
 	"name": "merchantbot",
 	"version": "0.0.1",
-	"description": "discord bot for mercarijp",
+	"description": "discord bot for searching on mercarijp",
 	"main": "index.js",
 	"scripts": {
 		"start": "node .",
@@ -10,7 +10,8 @@
 	},
 	"keywords": [
 		"discord",
-		"bot"
+		"bot",
+		"mercari"
 	],
 	"author": "celen",
 	"license": "ISC",
@@ -22,7 +23,6 @@
 		"discord.js": "^14.18.0",
 		"dotenv": "^16.4.7",
 		"jose": "^6.0.10",
-		"node-fetch": "^3.3.2",
 		"uuid": "^11.1.0"
 	}
 }

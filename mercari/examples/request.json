@@ -1,0 +1,55 @@
+{
+	"userId": "",
+	"pageSize": 120,
+	"pageToken": "",
+	"searchSessionId": "6b76dc13c74893c7c331cd1a478e1521",
+	"indexRouting": "INDEX_ROUTING_UNSPECIFIED",
+	"thumbnailTypes": [],
+	"searchCondition": {
+		"keyword": "wacom",
+		"excludeKeyword": "nib pencil",
+		"sort": "SORT_CREATED_TIME",
+		"order": "ORDER_DESC",
+		"status": ["STATUS_ON_SALE"],
+		"sizeId": [],
+		"categoryId": [],
+		"brandId": [],
+		"sellerId": [],
+		"priceMin": 500,
+		"priceMax": 4000,
+		"itemConditionId": [1, 2, 3, 4, 5, 6],
+		"shippingPayerId": [],
+		"shippingFromArea": [],
+		"shippingMethod": [],
+		"colorId": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+		"hasCoupon": false,
+		"attributes": [
+			{
+				"id": "d664efe3-ae5a-4824-b729-e789bf93aba9",
+				"values": [
+					"3b6eac8c-7be5-4c9c-b537-7c05cd3c4905",
+					"B38F1DC9286E0B80812D9B19DB14298C1FF1116CA8332D9EE9061026635C9088"
+				]
+			}
+		],
+		"itemTypes": [],
+		"skuIds": [],
+		"shopIds": [],
+		"excludeShippingMethodIds": []
+	},
+	"serviceFrom": "suruga",
+	"withItemBrand": true,
+	"withItemSize": false,
+	"withItemPromotions": true,
+	"withItemSizes": true,
+	"withShopname": false,
+	"useDynamicAttribute": true,
+	"withSuggestedItems": true,
+	"withOfferPricePromotion": true,
+	"withProductSuggest": true,
+	"withParentProducts": false,
+	"withProductArticles": true,
+	"withSearchConditionId": true,
+	"withAuction": true,
+	"laplaceDeviceUuid": "ef63ca4a0168696a0032d69e0053ae23"
+}

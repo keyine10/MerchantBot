@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require('uuid'); // Import UUID generator
-const crypto = require('crypto');
-
+const fs = require('fs');
+const { generateDpop } = require('./mercari/utils'); // Import the generateDpop function
 const MercariURLs = Object.freeze({
 	ROOT: 'https://api.mercari.jp/',
 	ROOT_PRODUCT: 'https://jp.mercari.com/item/',
@@ -37,40 +37,6 @@ const MercariItemStatus = Object.freeze({
 	ADMIN_CANCEL: 'ITEM_STATUS_ADMIN_CANCEL',
 });
 
-async function generateDpop(httpMethod, httpUri) {
-	const { generateKeyPair, exportJWK, SignJWT } = await import(
-		'jose'
-	);
-	// Generate a SECP256R1 (P-256) key pair
-	const { privateKey, publicKey } = await generateKeyPair('ES256', {
-		crv: 'P-256', // Specify the curve as P-256 (SECP256R1)
-	});
-
-	// Convert the public key to JWK format
-	const jwk = await exportJWK(publicKey);
-
-	const headers = {
-		typ: 'dpop+jwt',
-		alg: 'ES256',
-		jwk: jwk,
-	};
-
-	// DPoP payload
-	const payload = {
-		htm: httpMethod, // HTTP method (e.g., 'GET', 'POST')
-		htu: httpUri, // HTTP URI (e.g., 'https://api.example.com/resource')
-		jti: crypto.randomUUID(), // Unique identifier for the token
-		iat: Math.floor(Date.now() / 1000), // Issued at time
-	};
-	console.log('Payload:', payload);
-	// Sign the JWT using the private key
-	const dpopToken = await new SignJWT(payload)
-		.setProtectedHeader(headers)
-		.sign(privateKey);
-
-	return { dpopToken, publicKey };
-}
-
 const searchCondition = {
 	keyword: 'wacom',
 	excludeKeyword: '',
@@ -98,7 +64,7 @@ const searchCondition = {
 
 const requestData = {
 	userId: '',
-	pageSize: 120,
+	pageSize: 15,
 	pageToken: '',
 	searchSessionId: uuidv4(),
 	indexRouting: 'INDEX_ROUTING_UNSPECIFIED',
@@ -112,7 +78,7 @@ const requestData = {
 (async () => {
 	try {
 		// Generate the DPoP token
-		const { dpopToken } = await generateDpop(
+		const dpopToken = await generateDpop(
 			'POST',
 			MercariURLs.SEARCH
 		);
@@ -135,15 +101,14 @@ const requestData = {
 			body: JSON.stringify(requestData), // Send requestData as JSON
 		});
 
-		// Parse the response
-		// if (!response.ok) {
-		// 	throw new Error(
-		// 		`HTTP error! Status: ${response.status} ${response.json}`
-		// 	);
-		// }
-
 		const data = await response.json();
-		console.log('Search Results:', data);
+		console.log('Search Results:', data.meta);
+		fs.writeFileSync(
+			'search_results.json',
+			JSON.stringify(data, null, 2),
+			'utf-8'
+		);
+		console.log(data.items.length);
 	} catch (error) {
 		console.error('Error making request:', error);
 	}
@@ -155,5 +120,4 @@ module.exports = {
 	MercariSort,
 	MercariOrder,
 	MercariItemStatus,
-	generateDpop,
 };
