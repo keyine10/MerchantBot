@@ -1,5 +1,5 @@
-const { v4: uuidv4 } = require('uuid'); // Import UUID generator
-const fs = require('fs'); // Import the fs module
+const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
 const {
 	generateDpop,
 	MercariURLs,
@@ -9,7 +9,7 @@ const {
 	MercariItemStatus,
 	MercariItemConditionId,
 	MercariSearchCategoryID,
-} = require('./utils.js'); // Import the generateDpop function
+} = require('./utils.js');
 class MercariApi {
 	constructor() {
 		if (MercariApi._instance) {
@@ -21,9 +21,9 @@ class MercariApi {
 		return this;
 	}
 
-	async init() {
+	async refreshTokens() {
 		const { generateKeyPair } = await import('jose');
-		this.uuid = uuidv4(); // Generate a new UUID for the instance
+		this.uuid = uuidv4();
 		this.key = await generateKeyPair('ES256', {
 			crv: 'P-256',
 		});
@@ -134,6 +134,6 @@ class MercariApi {
 
 const mercariInstance = new MercariApi();
 (async () => {
-	await mercariInstance.init();
+	await mercariInstance.refreshTokens();
 })();
 module.exports = mercariInstance;
