@@ -212,18 +212,15 @@ module.exports = {
 
 		collector.on('end', async (collected) => {
 			if (collected.size === 0) {
-				// No interactions were collected, remove the buttons
-				await interaction.editReply({
-					...replyObject,
-					components: [], // Remove the buttons
-				});
 			} else {
 				console.log(
 					`Collected ${collected.size} interactions`
 				);
 			}
+			await interaction.editReply({
+				...replyObject,
+				components: [], // Remove the buttons
+			});
 		});
-
-		// Handle button interactions
 	},
 };
