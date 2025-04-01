@@ -1,3 +1,6 @@
+const { v4: uuidv4 } = require('uuid'); // Import UUID generator
+const crypto = require('crypto');
+
 const MercariURLs = Object.freeze({
 	ROOT: 'https://api.mercari.jp/',
 	ROOT_PRODUCT: 'https://jp.mercari.com/item/',
@@ -34,9 +37,6 @@ const MercariItemStatus = Object.freeze({
 	ADMIN_CANCEL: 'ITEM_STATUS_ADMIN_CANCEL',
 });
 
-// const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-
 async function generateDpop(httpMethod, httpUri) {
 	const { generateKeyPair, exportJWK, SignJWT } = await import(
 		'jose'
@@ -62,7 +62,7 @@ async function generateDpop(httpMethod, httpUri) {
 		jti: crypto.randomUUID(), // Unique identifier for the token
 		iat: Math.floor(Date.now() / 1000), // Issued at time
 	};
-
+	console.log('Payload:', payload);
 	// Sign the JWT using the private key
 	const dpopToken = await new SignJWT(payload)
 		.setProtectedHeader(headers)
@@ -71,14 +71,82 @@ async function generateDpop(httpMethod, httpUri) {
 	return { dpopToken, publicKey };
 }
 
-// Example usage
+const searchCondition = {
+	keyword: 'wacom',
+	excludeKeyword: '',
+	sort: 'SORT_SCORE',
+	order: 'ORDER_DESC',
+	status: [],
+	sizeId: [],
+	categoryId: [],
+	brandId: [],
+	sellerId: [],
+	priceMin: 0,
+	priceMax: 0,
+	itemConditionId: [],
+	shippingPayerId: [],
+	shippingFromArea: [],
+	shippingMethod: [],
+	colorId: [],
+	hasCoupon: false,
+	attributes: [],
+	itemTypes: [],
+	skuIds: [],
+	shopIds: [],
+	excludeShippingMethodIds: [],
+};
+
+const requestData = {
+	userId: '',
+	pageSize: 120,
+	pageToken: '',
+	searchSessionId: uuidv4(),
+	indexRouting: 'INDEX_ROUTING_UNSPECIFIED',
+	thumbnailTypes: [],
+	searchCondition: searchCondition,
+	defaultDatasets: [],
+	serviceFrom: 'suruga',
+	withAuction: true,
+};
+
 (async () => {
-	const { dpopToken, publicKey } = await generateDpop(
-		'GET',
-		'https://api.mercari.jp/items/get'
-	);
-	console.log('DPoP Token:', dpopToken);
-	console.log('Public Key:', publicKey);
+	try {
+		// Generate the DPoP token
+		const { dpopToken } = await generateDpop(
+			'POST',
+			MercariURLs.SEARCH
+		);
+
+		// Define headers
+		const headers = {
+			DPOP: dpopToken,
+			'X-Platform': 'web',
+			Accept: '*/*',
+			'Accept-Encoding': 'deflate, gzip',
+			'Content-Type': 'application/json; charset=utf-8',
+			'User-Agent':
+				'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0',
+		};
+
+		// Make the GET request
+		const response = await fetch(MercariURLs.SEARCH, {
+			method: 'POST', // Mercari's search API typically uses POST, not GET
+			headers: headers,
+			body: JSON.stringify(requestData), // Send requestData as JSON
+		});
+
+		// Parse the response
+		// if (!response.ok) {
+		// 	throw new Error(
+		// 		`HTTP error! Status: ${response.status} ${response.json}`
+		// 	);
+		// }
+
+		const data = await response.json();
+		console.log('Search Results:', data);
+	} catch (error) {
+		console.error('Error making request:', error);
+	}
 })();
 
 module.exports = {
