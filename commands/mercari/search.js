@@ -96,7 +96,6 @@ function searchResultToReplyObject(results) {
 		select
 	);
 	const replyObject = {
-		content: 'Found ' + results.meta.numFound + ' items',
 		embeds: embedItems,
 		components: [selectItemRow, searchButtonRow],
 	};
@@ -146,7 +145,9 @@ module.exports = {
 	async execute(interaction) {
 		const keyword = interaction.options.getString('keyword');
 		let pageToken = '';
-		await interaction.deferReply({});
+		await interaction.reply({
+			content: 'Searching for items...',
+		});
 
 		let { replyObject, meta } = await searchAndGetReplyObject(
 			interaction,
@@ -157,6 +158,8 @@ module.exports = {
 		console.log(replyObject);
 		const response = await interaction.editReply({
 			...replyObject,
+			content: `Search results for "${keyword}"`,
+			withResponse: true,
 		});
 
 		// Create a collector to listen for button interactions
@@ -169,8 +172,8 @@ module.exports = {
 			});
 
 		collector.on('collect', async (buttonInteraction) => {
-			await buttonInteraction.deferUpdate();
 			// Handle button interaction logic here
+			await buttonInteraction.deferUpdate();
 			console.log(
 				`Button ${buttonInteraction.customId} clicked`
 			);
@@ -186,6 +189,7 @@ module.exports = {
 					meta = prevResults.meta;
 					await interaction.editReply({
 						...replyObject,
+						withResponse: true,
 					});
 
 					break;
@@ -200,6 +204,7 @@ module.exports = {
 					meta = nextResults.meta;
 					const response = await interaction.editReply({
 						...replyObject,
+						withResponse: true,
 					});
 					pageToken = meta.nextPageToken;
 					break;
