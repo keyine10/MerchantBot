@@ -1,0 +1,173 @@
+{
+	"meta": {
+		"nextPageToken": "v1:1",
+		"previousPageToken": "",
+		"numFound": "97",
+		"properties": []
+	},
+	"items": [
+		{
+			"id": "m11581290384",
+			"sellerId": "626176116",
+			"buyerId": "",
+			"status": "ITEM_STATUS_ON_SALE",
+			"name": "Wooting 80HE Zinc Alloy Lekker L45スイッチ付き",
+			"price": "66000",
+			"created": "1743067288",
+			"updated": "1743501264",
+			"thumbnails": [
+				"https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m11581290384_1.jpg?1743067288"
+			],
+			"itemType": "ITEM_TYPE_MERCARI",
+			"itemConditionId": "2",
+			"shippingPayerId": "2",
+			"itemSizes": [],
+			"itemBrand": null,
+			"itemPromotions": [],
+			"shopName": "",
+			"itemSize": null,
+			"shippingMethodId": "14",
+			"categoryId": "3711",
+			"isNoPrice": false,
+			"title": "",
+			"isLiked": false,
+			"photos": [
+				{
+					"uri": "https://static.mercdn.net/item/detail/webp/photos/m11581290384_1.jpg?1743067288"
+				}
+			],
+			"auction": null
+		},
+		{
+			"id": "m21093279993",
+			"sellerId": "139825086",
+			"buyerId": "",
+			"status": "ITEM_STATUS_ON_SALE",
+			"name": "Wooting 60HE ゲーミングキーボード 本体 US配列",
+			"price": "26800",
+			"created": "1743499743",
+			"updated": "1743499743",
+			"thumbnails": [
+				"https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m21093279993_1.jpg?1743499743"
+			],
+			"itemType": "ITEM_TYPE_MERCARI",
+			"itemConditionId": "2",
+			"shippingPayerId": "2",
+			"itemSizes": [],
+			"itemBrand": null,
+			"itemPromotions": [],
+			"shopName": "",
+			"itemSize": null,
+			"shippingMethodId": "17",
+			"categoryId": "3711",
+			"isNoPrice": false,
+			"title": "",
+			"isLiked": false,
+			"photos": [
+				{
+					"uri": "https://static.mercdn.net/item/detail/webp/photos/m21093279993_1.jpg?1743499743"
+				}
+			],
+			"auction": null
+		},
+		{
+			"id": "m75342357948",
+			"sellerId": "644417365",
+			"buyerId": "",
+			"status": "ITEM_STATUS_ON_SALE",
+			"name": "iqunix ez60",
+			"price": "21000",
+			"created": "1743499172",
+			"updated": "1743499172",
+			"thumbnails": [
+				"https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m75342357948_1.jpg?1743499172"
+			],
+			"itemType": "ITEM_TYPE_MERCARI",
+			"itemConditionId": "3",
+			"shippingPayerId": "2",
+			"itemSizes": [],
+			"itemBrand": null,
+			"itemPromotions": [],
+			"shopName": "",
+			"itemSize": null,
+			"shippingMethodId": "14",
+			"categoryId": "3711",
+			"isNoPrice": false,
+			"title": "",
+			"isLiked": false,
+			"photos": [
+				{
+					"uri": "https://static.mercdn.net/item/detail/webp/photos/m75342357948_1.jpg?1743499172"
+				}
+			],
+			"auction": null
+		},
+		{
+			"id": "m59157053982",
+			"sellerId": "506311743",
+			"buyerId": "",
+			"status": "ITEM_STATUS_ON_SALE",
+			"name": "wooting 60he TOFU 60REDUX キメラスイッチ フルカスタム",
+			"price": "30000",
+			"created": "1743247100",
+			"updated": "1743498875",
+			"thumbnails": [
+				"https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m59157053982_1.jpg?1743247100"
+			],
+			"itemType": "ITEM_TYPE_MERCARI",
+			"itemConditionId": "4",
+			"shippingPayerId": "2",
+			"itemSizes": [],
+			"itemBrand": null,
+			"itemPromotions": [],
+			"shopName": "",
+			"itemSize": null,
+			"shippingMethodId": "14",
+			"categoryId": "3711",
+			"isNoPrice": false,
+			"title": "",
+			"isLiked": false,
+			"photos": [
+				{
+					"uri": "https://static.mercdn.net/item/detail/webp/photos/m59157053982_1.jpg?1743247100"
+				}
+			],
+			"auction": null
+		},
+		{
+			"id": "m41510392850",
+			"sellerId": "569379932",
+			"buyerId": "",
+			"status": "ITEM_STATUS_ON_SALE",
+			"name": "wooting 80he zinc alloy ケースのみ　ブラック",
+			"price": "23000",
+			"created": "1743489029",
+			"updated": "1743489210",
+			"thumbnails": [
+				"https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m41510392850_1.jpg?1743489029"
+			],
+			"itemType": "ITEM_TYPE_MERCARI",
+			"itemConditionId": "2",
+			"shippingPayerId": "2",
+			"itemSizes": [],
+			"itemBrand": null,
+			"itemPromotions": [],
+			"shopName": "",
+			"itemSize": null,
+			"shippingMethodId": "14",
+			"categoryId": "3712",
+			"isNoPrice": false,
+			"title": "",
+			"isLiked": false,
+			"photos": [
+				{
+					"uri": "https://static.mercdn.net/item/detail/webp/photos/m41510392850_1.jpg?1743489029"
+				}
+			],
+			"auction": null
+		}
+	],
+	"components": [],
+	"searchCondition": null,
+	"searchConditionId": ""
+}
