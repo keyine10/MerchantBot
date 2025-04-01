@@ -1,4 +1,5 @@
 const { v4: uuidv4 } = require('uuid'); // Import UUID generator
+const fs = require('fs'); // Import the fs module
 const {
 	generateDpop,
 	MercariURLs,
@@ -52,7 +53,7 @@ class MercariApi {
 		skuIds = [],
 		shopIds = [],
 		excludeShippingMethodIds = [],
-		pageSize = 30,
+		pageSize = 120,
 		pageToken = '',
 	}) {
 		const searchCondition = {
@@ -119,6 +120,11 @@ class MercariApi {
 					`Error: ${response.status} ${response.statusText}`
 				);
 			}
+			fs.writeFileSync(
+				'search_results.json',
+				JSON.stringify(data, null, 2),
+				'utf-8'
+			);
 			return data;
 		} catch (error) {
 			console.error('Error making request:', error);

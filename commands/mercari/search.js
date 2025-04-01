@@ -25,11 +25,13 @@ module.exports = {
 	async execute(interaction) {
 		const keyword = interaction.options.getString('keyword');
 		const channel = interaction.channel;
-		// await interaction.deferReply({});
+		const pageSize = 10;
+		await interaction.deferReply({});
 
 		try {
 			const results = await mercari.search({
 				keyword: keyword,
+				pageSize: pageSize,
 			});
 			// await interaction.editReply({});
 			results.items.map((item) => {
@@ -44,15 +46,18 @@ module.exports = {
 						},
 						{
 							name: 'created',
-							value: item.created,
+							value: `<t:${item.created}:F>`,
 						},
 						{
 							name: 'updated',
-							value: item.updated,
+							value: `<t:${item.updated}:F>`,
 						},
 					],
 				};
 				channel.send({ embeds: [embedItem] });
+			});
+			await interaction.editReply({
+				content: `Found total of ${results.meta.numFound} items, displaying ${pageSize} items`,
 			});
 		} catch (error) {
 			console.error(error);
