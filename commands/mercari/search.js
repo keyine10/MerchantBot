@@ -25,7 +25,7 @@ module.exports = {
 	async execute(interaction) {
 		const keyword = interaction.options.getString('keyword');
 		const channel = interaction.channel;
-		const pageSize = 10;
+		const pageSize = 5;
 		await interaction.deferReply({});
 
 		try {
@@ -34,8 +34,8 @@ module.exports = {
 				pageSize: pageSize,
 			});
 			// await interaction.editReply({});
-			results.items.map((item) => {
-				const embedItem = {
+			const embedItems = results.items.map((item) => {
+				return {
 					title: item.name,
 					thumbnail: { url: item.thumbnails[0] },
 					url: MercariURLs.ROOT_PRODUCT + item.id,
@@ -46,18 +46,19 @@ module.exports = {
 						},
 						{
 							name: 'created',
-							value: `<t:${item.created}:F>`,
+							value: `<t:${item.created}:R>`,
 						},
 						{
 							name: 'updated',
-							value: `<t:${item.updated}:F>`,
+							value: `<t:${item.updated}:R>`,
 						},
 					],
 				};
-				channel.send({ embeds: [embedItem] });
 			});
+			channel.send({ embeds: embedItems });
+
 			await interaction.editReply({
-				content: `Found total of ${results.meta.numFound} items, displaying ${pageSize} items`,
+				content: `Found total of ${results.meta.numFound} items`,
 			});
 		} catch (error) {
 			console.error(error);
