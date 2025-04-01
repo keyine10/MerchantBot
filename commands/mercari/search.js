@@ -7,6 +7,7 @@ const {
 	StringSelectMenuBuilder,
 	StringSelectMenuOptionBuilder,
 	ComponentType,
+	MessageFlags,
 } = require('discord.js');
 const mercari = require('../../mercari/mercari.js');
 const {
@@ -55,12 +56,15 @@ function searchResultToReplyObject(results) {
 		};
 	});
 	if (!results.items.length) {
-		embedItems.push({
-			title: 'No more items found',
-			color: 0xff0000,
-		});
+		return {
+			embeds: [
+				{
+					title: 'Did not find any item',
+					color: 0xff0000,
+				},
+			],
+		};
 	}
-
 	const prevPageButton = new ButtonBuilder()
 		.setCustomId('prev-page')
 		.setLabel('Previous Page')
@@ -150,7 +154,7 @@ module.exports = {
 			pageSize,
 			pageToken
 		);
-
+		console.log(replyObject);
 		const response = await interaction.editReply({
 			...replyObject,
 		});
@@ -161,7 +165,7 @@ module.exports = {
 		const collector =
 			interaction.channel.createMessageComponentCollector({
 				filter: collectorFilter,
-				time: 1200000, // 20 minutes
+				time: 60000, // 5 min
 			});
 
 		collector.on('collect', async (buttonInteraction) => {
@@ -204,6 +208,12 @@ module.exports = {
 						buttonInteraction.values[0];
 					// Handle item selection logic here
 					console.log(`Item ${selectedItemId} selected`);
+
+					await interaction.followUp({
+						content: 'This does not work yet!',
+						flags: MessageFlags.Ephemeral,
+					});
+
 					break;
 				default:
 					break;
