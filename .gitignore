@@ -1,3 +1,5 @@
 /node_modules/
 .env
 search_results.json
+config.json
+
