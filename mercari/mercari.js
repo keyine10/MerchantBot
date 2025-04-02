@@ -91,7 +91,18 @@ class MercariApi {
 			defaultDatasets: [],
 			serviceFrom: 'suruga',
 			withAuction: true,
+			withItemBrand: true,
+			withItemPromotions: true,
+			useDynamicAttribute: true,
+			withSuggestedItems: true,
+			withOfferPricePromotion: true,
+			withProductSuggest: true,
+			withParentProducts: false,
+			withProductArticles: true,
+			withSearchConditionId:
+				itemConditionId.length > 0 ? true : false,
 		};
+		console.log('running request:', requestData);
 		const dpopToken = await generateDpop(
 			'POST',
 			MercariURLs.SEARCH,

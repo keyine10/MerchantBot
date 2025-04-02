@@ -1,6 +1,6 @@
 const MercariURLs = Object.freeze({
 	ROOT: 'https://api.mercari.jp/',
-	ROOT_PRODUCT: 'https://jp.mercari.com/item/',
+	ROOT_PRODUCT: 'https://jp.mercari.com/en/item/',
 	SEARCH: 'https://api.mercari.jp/v2/entities:search',
 	ITEM_INFO: 'https://api.mercari.jp/items/get',
 });

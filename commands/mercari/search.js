@@ -32,7 +32,7 @@ function searchResultToReplyObject(results, interaction) {
 	const embedItems = results.items.map((item) => {
 		return {
 			title: item.name.substring(0, 100),
-			thumbnail: { url: item.thumbnails[0] },
+			thumbnail: { url: item.photos[0].uri },
 			url: MercariURLs.ROOT_PRODUCT + item.id,
 			color: 0x0099ff,
 			fields: [
@@ -105,13 +105,13 @@ function searchResultToReplyObject(results, interaction) {
 
 async function searchAndGetReplyObject(
 	interaction,
-	keyword,
+	requestData,
 	pageSize = 5,
 	pageToken = ''
 ) {
 	try {
 		const results = await mercari.search({
-			keyword: keyword,
+			...requestData,
 			pageSize: pageSize,
 			pageToken: pageToken,
 		});
@@ -141,14 +141,83 @@ module.exports = {
 		.addStringOption((option) =>
 			option
 				.setName('keyword')
+				.setDescription('Keyword to search for')
 				.setMaxLength(100)
 				.setMinLength(1)
-				.setDescription('Keyword to search for')
 				.setRequired(true)
+		)
+		.addStringOption((option) =>
+			option
+				.setName('exclude_keyword')
+				.setDescription('Exclude keyword')
+				.setMaxLength(100)
+				.setMinLength(0)
+		)
+		.addNumberOption((option) =>
+			option
+				.setName('price_min')
+				.setDescription('Minimum item price')
+				.setMinValue(300)
+		)
+		.addNumberOption((option) =>
+			option
+				.setName('price_max')
+				.setDescription('Maximum item price')
+				.setMaxValue(9999999)
+		)
+		.addStringOption((option) =>
+			option
+				.setName('sort')
+				.setDescription(
+					'sort items by default/date/likes/score/price'
+				)
+				.addChoices(
+					Object.keys(MercariSearchSort).map((key) => ({
+						name: key,
+						value: MercariSearchSort[key],
+					}))
+				)
+		)
+
+		.addStringOption((option) =>
+			option
+				.setName('order')
+				.setDescription('order items in ascending/descending')
+				.addChoices(
+					Object.keys(MercariSearchOrder).map((key) => ({
+						name: key,
+						value: MercariSearchOrder[key],
+					}))
+				)
+		)
+		.addBooleanOption((option) =>
+			option
+				.setName('item_condition_used')
+				.setDescription('search for used items only')
 		),
+
 	async execute(interaction) {
 		const keyword = interaction.options.getString('keyword');
-		const interactionId = interaction.id;
+		const excludeKeyword =
+			interaction.options.getString('exclude_keyword');
+		const priceMin = interaction.options.getNumber('price_min');
+		const priceMax = interaction.options.getNumber('price_max');
+		const sort = interaction.options.getString('sort');
+		const order = interaction.options.getString('order');
+		const itemConditionUsed = interaction.options.getBoolean(
+			'item_condition_used'
+		);
+
+		const requestData = {
+			keyword,
+			excludeKeyword,
+			priceMin,
+			priceMax,
+			sort,
+			order,
+			itemConditionId: itemConditionUsed ? [3, 4, 5, 6] : [],
+		};
+		console.log(requestData);
 		let pageToken = '';
 		await interaction.reply({
 			content: 'Searching for items...',
@@ -156,11 +225,11 @@ module.exports = {
 
 		let { replyObject, meta } = await searchAndGetReplyObject(
 			interaction,
-			keyword,
+			requestData,
 			pageSize,
 			pageToken
 		);
-		console.log(replyObject);
+		// console.log(replyObject);
 		const response = await interaction.editReply({
 			...replyObject,
 			content: `Search results for "${keyword}"`,
@@ -193,12 +262,11 @@ module.exports = {
 				`:${interaction.id}`,
 				''
 			);
-			console.log(buttonCustomId);
 			switch (buttonCustomId) {
 				case 'prev-page':
 					const prevResults = await searchAndGetReplyObject(
 						interaction,
-						keyword,
+						requestData,
 						pageSize,
 						meta.previousPageToken
 					);
@@ -213,7 +281,7 @@ module.exports = {
 				case 'next-page':
 					const nextResults = await searchAndGetReplyObject(
 						interaction,
-						keyword,
+						requestData,
 						pageSize,
 						meta.nextPageToken
 					);
