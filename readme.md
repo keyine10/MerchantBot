@@ -2,7 +2,7 @@
 
 ## Merchant Bot is a Discord Bot for interacting with the Mercari Search API.
 
-![Merchant Bot usage Image](./assets/bot-usage.png)
+<img src="./assets/bot-usage.png" alt="Merchant Bot usage Image" width="400">
 
 ---
 
