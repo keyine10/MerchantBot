@@ -25,9 +25,10 @@ const pageSize = 5; // Default page size for search results
 /**
  * Renders the embeds for the search results.
  * @param {*} results - results from mercari.search()
+ * @param {*} interaction - current interaction
  * @returns {Object} - reply object for editing the reply
  */
-function searchResultToReplyObject(results) {
+function searchResultToReplyObject(results, interaction) {
 	const embedItems = results.items.map((item) => {
 		return {
 			title: item.name.substring(0, 100),
@@ -66,19 +67,19 @@ function searchResultToReplyObject(results) {
 		};
 	}
 	const prevPageButton = new ButtonBuilder()
-		.setCustomId('prev-page')
+		.setCustomId(`prev-page:${interaction.id}`)
 		.setLabel('Previous Page')
 		.setStyle(ButtonStyle.Secondary)
 		.setDisabled(!results.meta.previousPageToken ? true : false);
 
 	const nextPageButton = new ButtonBuilder()
-		.setCustomId('next-page')
+		.setCustomId(`next-page:${interaction.id}`)
 		.setLabel('Next Page')
 		.setStyle(ButtonStyle.Secondary)
 		.setDisabled(!results.meta.nextPageToken ? true : false);
 
 	const select = new StringSelectMenuBuilder()
-		.setCustomId('select-item')
+		.setCustomId(`select-item:${interaction.id}`)
 		.setPlaceholder('Get item details')
 		.addOptions(
 			results.items.map((item) => {
@@ -114,7 +115,10 @@ async function searchAndGetReplyObject(
 			pageSize: pageSize,
 			pageToken: pageToken,
 		});
-		const replyObject = searchResultToReplyObject(results);
+		const replyObject = searchResultToReplyObject(
+			results,
+			interaction
+		);
 		const meta = results.meta;
 		return {
 			replyObject: replyObject,
@@ -144,6 +148,7 @@ module.exports = {
 		),
 	async execute(interaction) {
 		const keyword = interaction.options.getString('keyword');
+		const interactionId = interaction.id;
 		let pageToken = '';
 		await interaction.reply({
 			content: 'Searching for items...',
@@ -164,11 +169,18 @@ module.exports = {
 
 		// Create a collector to listen for button interactions
 		const collectorFilter = (i) =>
+			(i.customId.startsWith(`prev-page:${interaction.id}`) ||
+				i.customId.startsWith(
+					`next-page:${interaction.id}`
+				) ||
+				i.customId.startsWith(
+					`select-item:${interaction.id}`
+				)) &&
 			i.user.id === interaction.user.id;
 		const collector =
 			interaction.channel.createMessageComponentCollector({
 				filter: collectorFilter,
-				time: 60000, // 5 min
+				time: 600000,
 			});
 
 		collector.on('collect', async (buttonInteraction) => {
@@ -177,7 +189,12 @@ module.exports = {
 			console.log(
 				`Button ${buttonInteraction.customId} clicked`
 			);
-			switch (buttonInteraction.customId) {
+			const buttonCustomId = buttonInteraction.customId.replace(
+				`:${interaction.id}`,
+				''
+			);
+			console.log(buttonCustomId);
+			switch (buttonCustomId) {
 				case 'prev-page':
 					const prevResults = await searchAndGetReplyObject(
 						interaction,
