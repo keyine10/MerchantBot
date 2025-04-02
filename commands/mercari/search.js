@@ -29,6 +29,16 @@ const pageSize = 5; // Default page size for search results
  * @returns {Object} - reply object for editing the reply
  */
 function searchResultToReplyObject(results, interaction) {
+	if (!results.items?.length) {
+		return {
+			embeds: [
+				{
+					title: 'Did not find any item',
+					color: 0xff0000,
+				},
+			],
+		};
+	}
 	const embedItems = results.items.map((item) => {
 		return {
 			title: item.name.substring(0, 100),
@@ -56,16 +66,7 @@ function searchResultToReplyObject(results, interaction) {
 			],
 		};
 	});
-	if (!results.items.length) {
-		return {
-			embeds: [
-				{
-					title: 'Did not find any item',
-					color: 0xff0000,
-				},
-			],
-		};
-	}
+
 	const prevPageButton = new ButtonBuilder()
 		.setCustomId(`prev-page:${interaction.id}`)
 		.setLabel('Previous Page')
@@ -207,15 +208,21 @@ module.exports = {
 		const itemConditionUsed = interaction.options.getBoolean(
 			'item_condition_used'
 		);
-
+		const createdAfterDate = new Date();
+		createdAfterDate.setMonth(createdAfterDate.getMonth() - 1);
+		// const createdAfterDateURLEncoded = encodeURIComponent(
+		// 	createdAfterDate.toISOString()
+		// );
 		const requestData = {
 			keyword,
 			excludeKeyword,
-			priceMin,
-			priceMax,
+			priceMin: priceMin ? priceMin : 0,
+			priceMax: priceMax ? priceMax : 0,
 			sort,
 			order,
-			itemConditionId: itemConditionUsed ? [3, 4, 5, 6] : [],
+			itemConditionId: itemConditionUsed ? [2, 3, 4, 5, 6] : [],
+			createdAfterDate: Math.floor(Date.now() / 10000),
+			createdBeforeDate: '0',
 		};
 		console.log(requestData);
 		let pageToken = '';
