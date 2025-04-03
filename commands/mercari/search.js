@@ -221,7 +221,9 @@ module.exports = {
 			sort,
 			order,
 			itemConditionId: itemConditionUsed ? [2, 3, 4, 5, 6] : [],
-			createdAfterDate: Math.floor(Date.now() / 10000),
+			createdAfterDate: Math.floor(
+				Date.now() / 1000 - 86400 * 10
+			),
 			createdBeforeDate: '0',
 		};
 		console.log(requestData);
@@ -256,7 +258,7 @@ module.exports = {
 		const collector =
 			interaction.channel.createMessageComponentCollector({
 				filter: collectorFilter,
-				time: 600000,
+				time: 600000, //10 minutes
 			});
 
 		collector.on('collect', async (buttonInteraction) => {

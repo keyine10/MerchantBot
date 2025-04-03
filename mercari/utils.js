@@ -100,8 +100,51 @@ async function generateDpop(
 	return dpopToken;
 }
 
+async function getHeadersWithDpop(httpMethod, httpUrl, uuid, key) {
+	const dpopToken = await generateDpop(
+		httpMethod,
+		httpUrl,
+		uuid,
+		key
+	);
+
+	const headers = {
+		DPOP: dpopToken,
+		'X-Platform': 'web',
+		Accept: '*/*',
+		'Accept-Encoding': 'deflate, gzip',
+		'Content-Type': 'application/json; charset=utf-8',
+		'User-Agent':
+			'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0',
+	};
+	return headers;
+}
+
+async function fetchMercari(
+	httpMethod,
+	httpUrl,
+	headers,
+	requestData
+) {
+	const response = await fetch(httpUrl, {
+		method: httpMethod, // Mercari's search API typically uses POST, not GET
+		headers: headers,
+		body: JSON.stringify(requestData), // Send requestData as JSON
+	});
+	const data = await response.json();
+	if (!response.ok) {
+		throw new Error(
+			`Error while fetching: ${response.status} ${
+				response.statusText
+			} ${JSON.stringify(data)}`
+		);
+	}
+	return data;
+}
 module.exports = {
 	generateDpop,
+	getHeadersWithDpop,
+	fetchMercari,
 	MercariURLs,
 	MercariSearchStatus,
 	MercariSearchSort,

@@ -1,7 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const {
-	generateDpop,
 	MercariURLs,
 	MercariSearchStatus,
 	MercariSearchSort,
@@ -9,6 +8,8 @@ const {
 	MercariItemStatus,
 	MercariItemConditionId,
 	MercariSearchCategoryID,
+	getHeadersWithDpop,
+	fetchMercari,
 } = require('./utils.js');
 class MercariApi {
 	constructor() {
@@ -29,6 +30,8 @@ class MercariApi {
 		});
 		return this;
 	}
+
+	async getItemDetails({}) {}
 
 	async search({
 		keyword = 'wacom',
@@ -108,35 +111,20 @@ class MercariApi {
 				itemConditionId.length > 0 ? true : false,
 		};
 		console.log('running request:', requestData);
-		const dpopToken = await generateDpop(
+		const headersWithDpop = await getHeadersWithDpop(
 			'POST',
 			MercariURLs.SEARCH,
 			this.uuid,
 			this.key
 		);
 
-		const headers = {
-			DPOP: dpopToken,
-			'X-Platform': 'web',
-			Accept: '*/*',
-			'Accept-Encoding': 'deflate, gzip',
-			'Content-Type': 'application/json; charset=utf-8',
-			'User-Agent':
-				'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0',
-		};
-		const response = await fetch(MercariURLs.SEARCH, {
-			method: 'POST', // Mercari's search API typically uses POST, not GET
-			headers: headers,
-			body: JSON.stringify(requestData), // Send requestData as JSON
-		});
-		const data = await response.json();
-		if (!response.ok) {
-			throw new Error(
-				`Error while fetching: ${response.status} ${
-					response.statusText
-				} ${JSON.stringify(data)}`
-			);
-		}
+		const data = await fetchMercari(
+			'POST',
+			MercariURLs.SEARCH,
+			headersWithDpop,
+			requestData
+		);
+
 		fs.writeFileSync(
 			'search_results.json',
 			JSON.stringify(data, null, 2),
