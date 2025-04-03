@@ -3,6 +3,9 @@ const MercariURLs = Object.freeze({
 	ROOT_PRODUCT: 'https://jp.mercari.com/en/item/',
 	SEARCH: 'https://api.mercari.jp/v2/entities:search',
 	ITEM_INFO: 'https://api.mercari.jp/items/get',
+	USER_PROFILE: 'https://jp.mercari.com/en/user/profile/',
+	TRANSLATION: 'https://api.mercari.jp/v2/itemtranslations/',
+	//https://api.mercari.jp/v2/itemtranslations/m99716517994/translation?name=m99716517994&sessionId=ef63ca4a0168696a0032d69e0053ae23
 });
 
 const MercariSearchStatus = Object.freeze({
@@ -126,17 +129,32 @@ async function fetchMercari(
 	headers,
 	requestData
 ) {
-	const response = await fetch(httpUrl, {
-		method: httpMethod, // Mercari's search API typically uses POST, not GET
-		headers: headers,
-		body: JSON.stringify(requestData), // Send requestData as JSON
-	});
+	let response = null;
+	if (httpMethod === 'POST')
+		response = await fetch(httpUrl, {
+			method: httpMethod, // Mercari's search API typically uses POST, not GET
+			headers: headers,
+			body: JSON.stringify(requestData), // Send requestData as JSON
+		});
+	else if (httpMethod === 'GET') {
+		const httpUrlWithParams = `${httpUrl}?${new URLSearchParams(
+			requestData
+		).toString()}`;
+
+		response = await fetch(httpUrlWithParams, {
+			method: httpMethod, // Mercari's search API typically uses POST, not GET
+			headers: headers,
+		});
+	}
+
 	const data = await response.json();
 	if (!response.ok) {
+		//TODO: Fix throw error
 		throw new Error(
 			`Error while fetching: ${response.status} ${
 				response.statusText
-			} ${JSON.stringify(data)}`
+			} ${JSON.stringify(data)}`,
+			{}
 		);
 	}
 	return data;

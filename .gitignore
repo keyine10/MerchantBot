@@ -2,4 +2,5 @@
 .env
 search_results.json
 config.json
+item_info.json
 

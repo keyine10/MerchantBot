@@ -31,7 +31,69 @@ class MercariApi {
 		return this;
 	}
 
-	async getItemDetails({}) {}
+	async getItemDetails(id, country_code = 'VN') {
+		if (!id) throw new Error('Item id cannot be empty!');
+		const requestData = {
+			id,
+			include_item_attributes: true,
+			include_product_page_component: true,
+			include_non_ui_item_attributes: true,
+			include_donation: true,
+			include_offer_like_coupon_display: true,
+			include_offer_coupon_display: true,
+			include_item_attributes_sections: true,
+			include_auction: true,
+			country_code: country_code,
+		};
+		const httpUrl = MercariURLs.ITEM_INFO;
+
+		const headersWithDpop = await getHeadersWithDpop(
+			'GET',
+			httpUrl,
+			this.uuid,
+			this.key
+		);
+		const data = await fetchMercari(
+			'GET',
+			httpUrl,
+			headersWithDpop,
+			requestData
+		);
+		fs.writeFileSync(
+			'item_info.json',
+			JSON.stringify(data, null, 2),
+			'utf-8'
+		);
+		return data;
+	}
+
+	async getItemTranslation(id) {
+		if (!id) throw new Error('Item id cannot be empty!');
+		const requestData = {
+			name: id,
+			sessionId: this.uuid,
+		};
+		const httpUrl = MercariURLs.TRANSLATION + id + '/translation';
+
+		const headersWithDpop = await getHeadersWithDpop(
+			'GET',
+			httpUrl,
+			this.uuid,
+			this.key
+		);
+		const data = await fetchMercari(
+			'GET',
+			httpUrl,
+			headersWithDpop,
+			requestData
+		);
+		fs.writeFileSync(
+			'item_translation.json',
+			JSON.stringify(data, null, 2),
+			'utf-8'
+		);
+		return data;
+	}
 
 	async search({
 		keyword = 'wacom',

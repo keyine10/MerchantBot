@@ -210,9 +210,7 @@ module.exports = {
 		);
 		const createdAfterDate = new Date();
 		createdAfterDate.setMonth(createdAfterDate.getMonth() - 1);
-		// const createdAfterDateURLEncoded = encodeURIComponent(
-		// 	createdAfterDate.toISOString()
-		// );
+
 		const requestData = {
 			keyword,
 			excludeKeyword,
