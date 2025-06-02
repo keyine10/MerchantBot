@@ -14,7 +14,9 @@ const client = new Client({
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.GuildPresences,
+		GatewayIntentBits.DirectMessages, // Enable DM support
 	],
+	partials: ['CHANNEL'], // Required to receive DMs
 });
 
 client.once(Events.ClientReady, (readyClient) => {

@@ -19,6 +19,7 @@ const {
 	MercariItemConditionId,
 	MercariSearchCategoryID,
 } = require('../../mercari/utils.js');
+const itemCommand = require('./item');
 
 const pageSize = 5; // Default page size for search results
 
@@ -139,6 +140,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('search')
 		.setDescription('Search for items on Mercari')
+		.setContexts(['Guild', 'BotDM', 'PrivateChannel'])
 		.addStringOption((option) =>
 			option
 				.setName('keyword')
@@ -253,81 +255,78 @@ module.exports = {
 					`select-item:${interaction.id}`
 				)) &&
 			i.user.id === interaction.user.id;
-		const collector =
-			interaction.channel.createMessageComponentCollector({
-				filter: collectorFilter,
-				time: 600000, //10 minutes
-			});
+		if (interaction) {
+			const collector =
+				interaction.message.createMessageComponentCollector({
+					filter: collectorFilter,
+					time: 600000, //10 minutes
+				});
 
-		collector.on('collect', async (buttonInteraction) => {
-			// Handle button interaction logic here
-			await buttonInteraction.deferUpdate();
-			console.log(
-				`Button ${buttonInteraction.customId} clicked`
-			);
-			const buttonCustomId = buttonInteraction.customId.replace(
-				`:${interaction.id}`,
-				''
-			);
-			switch (buttonCustomId) {
-				case 'prev-page':
-					const prevResults = await searchAndGetReplyObject(
-						interaction,
-						requestData,
-						pageSize,
-						meta.previousPageToken
-					);
-					replyObject = prevResults.replyObject;
-					meta = prevResults.meta;
-					await interaction.editReply({
-						...replyObject,
-						withResponse: true,
-					});
-
-					break;
-				case 'next-page':
-					const nextResults = await searchAndGetReplyObject(
-						interaction,
-						requestData,
-						pageSize,
-						meta.nextPageToken
-					);
-					replyObject = nextResults.replyObject;
-					meta = nextResults.meta;
-					const response = await interaction.editReply({
-						...replyObject,
-						withResponse: true,
-					});
-					pageToken = meta.nextPageToken;
-					break;
-				case 'select-item':
-					const selectedItemId =
-						buttonInteraction.values[0];
-					// Handle item selection logic here
-					console.log(`Item ${selectedItemId} selected`);
-
-					await interaction.followUp({
-						content: 'This does not work yet!',
-						flags: MessageFlags.Ephemeral,
-					});
-
-					break;
-				default:
-					break;
-			}
-		});
-
-		collector.on('end', async (collected) => {
-			if (collected.size === 0) {
-			} else {
+			collector.on('collect', async (buttonInteraction) => {
+				// Handle button interaction logic here
+				await buttonInteraction.deferUpdate();
 				console.log(
-					`Collected ${collected.size} interactions`
+					`Button ${buttonInteraction.customId} clicked`
 				);
-			}
-			await interaction.editReply({
-				...replyObject,
-				components: [], // Remove the buttons
+				const buttonCustomId = buttonInteraction.customId.replace(
+					`:${interaction.id}`,
+					''
+				);
+				switch (buttonCustomId) {
+					case 'prev-page':
+						const prevResults = await searchAndGetReplyObject(
+							interaction,
+							requestData,
+							pageSize,
+							meta.previousPageToken
+						);
+						replyObject = prevResults.replyObject;
+						meta = prevResults.meta;
+						await interaction.editReply({
+							...replyObject,
+							withResponse: true,
+						});
+
+						break;
+					case 'next-page':
+						const nextResults = await searchAndGetReplyObject(
+							interaction,
+							requestData,
+							pageSize,
+							meta.nextPageToken
+						);
+						replyObject = nextResults.replyObject;
+						meta = nextResults.meta;
+						const response = await interaction.editReply({
+							...replyObject,
+							withResponse: true,
+						});
+						pageToken = meta.nextPageToken;
+						break;
+					case 'select-item':
+						const selectedItemId = buttonInteraction.values[0];
+						console.log(`Item ${selectedItemId} selected`);
+
+						const result = await itemCommand.getItemEmbeds(selectedItemId, interaction);
+						await buttonInteraction.editReply(result);
+						break;
+					default:
+						break;
+				}
 			});
-		});
+
+			collector.on('end', async (collected) => {
+				if (collected.size === 0) {
+				} else {
+					console.log(
+						`Collected ${collected.size} interactions`
+					);
+				}
+				await interaction.editReply({
+					...replyObject,
+					components: [], // Remove the buttons
+				});
+			});
+		}
 	},
 };

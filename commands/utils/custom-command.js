@@ -3,6 +3,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const data = new SlashCommandBuilder()
 	.setName('custom-command')
 	.setDescription('test custom command')
+	.setContexts(['Guild', 'BotDM', 'PrivateChannel'])
 	.addStringOption((option) =>
 		option
 			.setName('input')

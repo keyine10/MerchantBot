@@ -5,7 +5,8 @@ module.exports = {
 		.setName('inspire')
 		.setDescription(
 			'Fetches an inspirational quote image from InspiroBot'
-		),
+		)
+		.setContexts(['Guild', 'BotDM', 'PrivateChannel']),
 	async execute(interaction) {
 		await interaction.deferReply({});
 
