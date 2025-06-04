@@ -186,7 +186,7 @@ class MercariApi {
 			withSearchConditionId: itemConditionId.length > 0 ? true : false,
 		};
 		console.log('running request:', requestData);
-		const uuid = this.uuid || undefined;
+		const uuid = this.uuid;
 		const headersWithDpop = await getHeadersWithDpop(
 			'POST',
 			MercariURLs.SEARCH,

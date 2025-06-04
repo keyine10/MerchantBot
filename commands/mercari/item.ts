@@ -17,8 +17,8 @@ type MercariTranslation = {
 // Export a function to get item details and translation and return the embed objects
 export async function getItemEmbeds(itemId: string, interaction: ChatInputCommandInteraction): Promise<{ embeds: APIEmbed[]; content?: string }> {
 	try {
-		const data = await mercari.getItemDetails(itemId);
-		if (!data || !data.data) {
+		const itemDetails = await mercari.getItemDetails(itemId);
+		if (!itemDetails || !itemDetails.data) {
 			return {
 				embeds: [{
 					title: 'Item not found',
@@ -29,7 +29,7 @@ export async function getItemEmbeds(itemId: string, interaction: ChatInputComman
 			};
 		}
 		const translationData: MercariTranslation = await mercari.getItemTranslation(itemId);
-		const item = data.data;
+		const item = itemDetails.data;
         // Helper to format numbers with commas
         const formatNumber = (num: number) => num.toLocaleString('en-US');
 

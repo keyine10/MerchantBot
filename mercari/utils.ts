@@ -105,12 +105,5 @@ export async function fetchMercari(
             {}
         );
     }
-
-    await fs.writeFile(
-        'logs/fetch_mercari.json',
-        JSON.stringify(data, null, 2),
-        'utf-8'
-    );
-
     return data;
 }
