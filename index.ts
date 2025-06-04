@@ -21,7 +21,8 @@ const client = new Client({
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.GuildPresences,
-		GatewayIntentBits.DirectMessages, // Enable DM support
+		GatewayIntentBits.DirectMessages,
+		GatewayIntentBits.DirectMessageTyping
 	],
 	partials: [Partials.Channel], // Required to receive DMs
 }) as MerchantBotClient;

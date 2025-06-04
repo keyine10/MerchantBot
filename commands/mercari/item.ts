@@ -68,6 +68,7 @@ export async function getItemEmbeds(itemId: string, interaction: ChatInputComman
 const itemCommand = {
 	data: new SlashCommandBuilder()
 		.setName('item')
+		.setDescription('Get details for a specific Mercari item by ID')
 		.setContexts([InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel])
 		.addStringOption((option) =>
 			option
