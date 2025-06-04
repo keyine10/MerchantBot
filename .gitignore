@@ -1,6 +1,33 @@
-/node_modules/
+
+
+# macOS settings file
+.DS_Store
+
+# Node.js dependencies
+node_modules
+
+# Build output
+/build
+dist
+
+# Environment files
 .env
-search_results.json
+.env.*
+
+# Compiled JavaScript files
+*.js
+*.js.map
+
+# TypeScript declaration files
+*.d.ts
+
+# IDE specific files
+.vscode/
+*.idea
+
+# Log files
+*.log
+
 config.json
-item_info.json
+
 

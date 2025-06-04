@@ -2,10 +2,12 @@
 	"name": "merchantbot",
 	"version": "0.0.1",
 	"description": "discord bot for searching on mercarijp",
-	"main": "index.js",
+	"main": "dist/index.js",
 	"scripts": {
-		"start": "node .",
-		"redeploy-commands": "node deploy-commands.js",
+		"build": "tsc",
+		"start": "npm run build && node dist/index.js",
+		"redeploy-commands": "npm run build && node dist/deploy-commands.js",
+		"dev": "ts-node index.ts",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [
@@ -17,12 +19,17 @@
 	"license": "ISC",
 	"devDependencies": {
 		"@eslint/js": "^9.22.0",
-		"eslint": "^9.22.0"
+		"@types/node": "^22.15.29",
+		"@types/uuid": "^10.0.0",
+		"@types/ws": "^8.18.1",
+		"eslint": "^9.22.0",
+		"typescript": "^5.8.3"
 	},
 	"dependencies": {
 		"discord.js": "^14.18.0",
 		"dotenv": "^16.4.7",
 		"jose": "^6.0.10",
+		"tsconfig": "^7.0.0",
 		"uuid": "^11.1.0"
 	}
 }

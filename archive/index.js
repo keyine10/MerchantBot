@@ -1,3 +1,5 @@
+// This file has been archived after TypeScript migration. See the corresponding .ts file for the latest implementation.
+
 const fs = require('node:fs');
 const path = require('node:path');
 const {
@@ -14,7 +16,9 @@ const client = new Client({
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.GuildPresences,
+		GatewayIntentBits.DirectMessages, // Enable DM support
 	],
+	partials: ['CHANNEL'], // Required to receive DMs
 });
 
 client.once(Events.ClientReady, (readyClient) => {

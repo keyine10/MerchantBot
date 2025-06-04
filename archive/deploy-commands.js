@@ -1,3 +1,5 @@
+// This file has been archived after TypeScript migration. See the corresponding .ts file for the latest implementation.
+
 const { REST, Routes } = require('discord.js');
 const { clientId, token } = require('./config.json');
 const fs = require('node:fs');
