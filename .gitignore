@@ -29,5 +29,6 @@ dist
 *.log
 
 config.json
+logs
 
 

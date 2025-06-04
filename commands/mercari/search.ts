@@ -9,22 +9,18 @@ import {
 	ComponentType,
 	MessageFlags,
 	ChatInputCommandInteraction,
-    InteractionContextType,
+	InteractionContextType,
+	ApplicationIntegrationType,
 } from 'discord.js';
 import mercari from '../../mercari/mercari';
-import { MercariURLs, MercariSearchSort } from '../../mercari/types';
+import { MercariURLs, MercariSearchOrder, MercariSearchSort, MercariSearchResult, MercariSearchCondition } from '../../mercari/types';
 import itemCommand from './item';
 
 // Add missing enums for sort and order
 
-export enum MercariSearchOrder {
-	Ascending = 'asc',
-	Descending = 'desc',
-}
-
 const pageSize = 5;
 
-function searchResultToReplyObject(results: any, interaction: ChatInputCommandInteraction) {
+function SearchResultViewModel(results: MercariSearchResult, interaction: ChatInputCommandInteraction) {
 	if (!results.items?.length) {
 		return {
 			embeds: [
@@ -36,10 +32,9 @@ function searchResultToReplyObject(results: any, interaction: ChatInputCommandIn
 			components: [], // Always include components for consistent typing
 		};
 	}
-	const embedItems = results.items.map((item: any) => {
-		return {
+	const embedItems = results.items.map((item) => {
+		const embed: any = {
 			title: item.name.substring(0, 100),
-			thumbnail: { url: item.photos[0].uri },
 			url: MercariURLs.ROOT_PRODUCT + item.id,
 			color: 0x0099ff,
 			fields: [
@@ -50,6 +45,10 @@ function searchResultToReplyObject(results: any, interaction: ChatInputCommandIn
 				{ name: 'updated', value: `<t:${item.updated}:R>`, inline: true },
 			],
 		};
+		if (item.photos && item.photos[0] && item.photos[0].uri) {
+			embed.thumbnail = { url: item.photos[0].uri };
+		}
+		return embed;
 	});
 
 	const prevPageButton = new ButtonBuilder()
@@ -68,7 +67,7 @@ function searchResultToReplyObject(results: any, interaction: ChatInputCommandIn
 		.setCustomId(`select-item:${interaction.id}`)
 		.setPlaceholder('Get item details')
 		.addOptions(
-			results.items.map((item: any) => {
+			results.items.map((item) => {
 				return new StringSelectMenuOptionBuilder()
 					.setLabel(item.id)
 					.setDescription(item.name.substring(0, 100))
@@ -87,9 +86,9 @@ function searchResultToReplyObject(results: any, interaction: ChatInputCommandIn
 	return replyObject;
 }
 
-async function searchAndGetReplyObject(
+async function getSearchResultViewModel(
 	interaction: ChatInputCommandInteraction,
-	requestData: any,
+	requestData: Partial<MercariSearchCondition>,
 	pageSize = 5,
 	pageToken = ''
 ) {
@@ -99,7 +98,7 @@ async function searchAndGetReplyObject(
 			pageSize: pageSize,
 			pageToken: pageToken,
 		});
-		const replyObject = searchResultToReplyObject(results, interaction);
+		const replyObject = SearchResultViewModel(results, interaction);
 		const meta = results.meta;
 		return {
 			replyObject: replyObject,
@@ -118,6 +117,7 @@ const searchCommand = {
 		.setName('search')
 		.setDescription('Search for items on Mercari')
 		.setContexts(InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel)
+		.setIntegrationTypes(ApplicationIntegrationType.UserInstall)
 		.addStringOption((option) =>
 			option
 				.setName('keyword')
@@ -185,14 +185,14 @@ const searchCommand = {
 		createdAfterDate.setMonth(createdAfterDate.getMonth() - 1);
 
 		const requestData = {
-			keyword,
-			excludeKeyword,
+			keyword: keyword ? keyword : '',
+			excludeKeyword: excludeKeyword ? excludeKeyword : '',
 			priceMin: priceMin ? priceMin : 0,
 			priceMax: priceMax ? priceMax : 0,
-			sort,
-			order,
+			sort: sort ? (sort as MercariSearchSort) : MercariSearchSort.CREATED_TIME,
+			order: order ? (order as MercariSearchOrder) : null,
 			itemConditionId: itemConditionUsed ? [2, 3, 4, 5, 6] : [],
-			createdAfterDate: Math.floor(Date.now() / 1000 - 86400 * 10),
+			createdAfterDate: String(Math.floor(Date.now() / 1000 - 86400 * 10)),
 			createdBeforeDate: '0',
 		};
 		console.log(requestData);
@@ -201,7 +201,7 @@ const searchCommand = {
 			content: 'Searching for items...',
 		});
 
-		let { replyObject, meta } = await searchAndGetReplyObject(
+		let { replyObject, meta } = await getSearchResultViewModel(
 			interaction,
 			requestData,
 			pageSize,
@@ -230,7 +230,7 @@ const searchCommand = {
 				const buttonCustomId = buttonInteraction.customId.replace(`:${interaction.id}`, '');
 				switch (buttonCustomId) {
 					case 'prev-page': {
-						const prevResults = await searchAndGetReplyObject(
+						const prevResults = await getSearchResultViewModel(
 							interaction,
 							requestData,
 							pageSize,
@@ -245,7 +245,7 @@ const searchCommand = {
 						break;
 					}
 					case 'next-page': {
-						const nextResults = await searchAndGetReplyObject(
+						const nextResults = await getSearchResultViewModel(
 							interaction,
 							requestData,
 							pageSize,

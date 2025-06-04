@@ -3,6 +3,7 @@ import {
 	ChatInputCommandInteraction,
 	APIEmbed,
 	InteractionContextType,
+	ApplicationIntegrationType,
 } from 'discord.js';
 import mercari from '../../mercari/mercari';
 import { MercariItem, MercariItemInfo, MercariItemTranslation, MercariURLs } from '../../mercari/types';
@@ -55,7 +56,6 @@ export async function getItemEmbeds(itemId: string, interaction: ChatInputComman
 		};
 		return {
 			embeds: [itemOverviewEmbed, itemDescriptionEmbed],
-			content: `Item details for ${item.id}`,
 		};
 	} catch (error) {
 		return {
@@ -70,6 +70,7 @@ const itemCommand = {
 		.setName('item')
 		.setDescription('Get details for a specific Mercari item by ID')
 		.setContexts([InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel])
+		.setIntegrationTypes(ApplicationIntegrationType.UserInstall)
 		.addStringOption((option) =>
 			option
 				.setName('item_id')

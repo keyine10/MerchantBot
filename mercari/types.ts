@@ -190,9 +190,9 @@ type MercariSearchMeta = {
 
 type MercariSearchCondition = {
     keyword: string;
-    excludeKeyword: string;
-    sort: MercariSearchSort;
-    order: MercariSearchOrder;
+    excludeKeyword: string | null;
+    sort: MercariSearchSort | null;
+    order: MercariSearchOrder | null;
     status: MercariSearchStatus[];
     sizeId: string[];
     categoryId: (MercariSearchCategoryID | string)[];
