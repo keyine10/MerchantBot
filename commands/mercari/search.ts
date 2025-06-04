@@ -12,7 +12,7 @@ import {
     InteractionContextType,
 } from 'discord.js';
 import mercari from '../../mercari/mercari';
-import { MercariURLs, MercariSearchSort } from '../../mercari/utils';
+import { MercariURLs, MercariSearchSort } from '../../mercari/types';
 import itemCommand from './item';
 
 // Add missing enums for sort and order
