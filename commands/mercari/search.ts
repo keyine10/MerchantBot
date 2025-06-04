@@ -1,4 +1,4 @@
-const {
+import {
 	SlashCommandBuilder,
 	EmbedBuilder,
 	ActionRowBuilder,
@@ -8,28 +8,23 @@ const {
 	StringSelectMenuOptionBuilder,
 	ComponentType,
 	MessageFlags,
-} = require('discord.js');
-const mercari = require('../../mercari/mercari.js');
-const {
-	MercariURLs,
-	MercariSearchStatus,
-	MercariSearchSort,
-	MercariSearchOrder,
-	MercariItemStatus,
-	MercariItemConditionId,
-	MercariSearchCategoryID,
-} = require('../../mercari/utils.js');
-const itemCommand = require('./item');
+	ChatInputCommandInteraction,
+    InteractionContextType,
+} from 'discord.js';
+import mercari from '../../mercari/mercari';
+import { MercariURLs, MercariSearchSort } from '../../mercari/utils';
+import itemCommand from './item';
 
-const pageSize = 5; // Default page size for search results
+// Add missing enums for sort and order
 
-/**
- * Renders the embeds for the search results.
- * @param {*} results - results from mercari.search()
- * @param {*} interaction - current interaction
- * @returns {Object} - reply object for editing the reply
- */
-function searchResultToReplyObject(results, interaction) {
+export enum MercariSearchOrder {
+	Ascending = 'asc',
+	Descending = 'desc',
+}
+
+const pageSize = 5;
+
+function searchResultToReplyObject(results: any, interaction: ChatInputCommandInteraction) {
 	if (!results.items?.length) {
 		return {
 			embeds: [
@@ -38,9 +33,10 @@ function searchResultToReplyObject(results, interaction) {
 					color: 0xff0000,
 				},
 			],
+			components: [], // Always include components for consistent typing
 		};
 	}
-	const embedItems = results.items.map((item) => {
+	const embedItems = results.items.map((item: any) => {
 		return {
 			title: item.name.substring(0, 100),
 			thumbnail: { url: item.photos[0].uri },
@@ -48,22 +44,10 @@ function searchResultToReplyObject(results, interaction) {
 			color: 0x0099ff,
 			fields: [
 				{ name: 'id', value: item.id, inline: true },
-				{
-					name: 'price',
-					value: item.price + ' yen',
-					inline: true,
-				},
+				{ name: 'price', value: item.price + ' yen', inline: true },
 				{ name: '\n', value: '\n' },
-				{
-					name: 'created',
-					value: `<t:${item.created}:R>`,
-					inline: true,
-				},
-				{
-					name: 'updated',
-					value: `<t:${item.updated}:R>`,
-					inline: true,
-				},
+				{ name: 'created', value: `<t:${item.created}:R>`, inline: true },
+				{ name: 'updated', value: `<t:${item.updated}:R>`, inline: true },
 			],
 		};
 	});
@@ -84,20 +68,18 @@ function searchResultToReplyObject(results, interaction) {
 		.setCustomId(`select-item:${interaction.id}`)
 		.setPlaceholder('Get item details')
 		.addOptions(
-			results.items.map((item) => {
+			results.items.map((item: any) => {
 				return new StringSelectMenuOptionBuilder()
 					.setLabel(item.id)
 					.setDescription(item.name.substring(0, 100))
 					.setValue(item.id);
 			})
 		);
-	const searchButtonRow = new ActionRowBuilder().addComponents(
+	const searchButtonRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
 		prevPageButton,
 		nextPageButton
 	);
-	const selectItemRow = new ActionRowBuilder().addComponents(
-		select
-	);
+	const selectItemRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(select);
 	const replyObject = {
 		embeds: embedItems,
 		components: [selectItemRow, searchButtonRow],
@@ -106,8 +88,8 @@ function searchResultToReplyObject(results, interaction) {
 }
 
 async function searchAndGetReplyObject(
-	interaction,
-	requestData,
+	interaction: ChatInputCommandInteraction,
+	requestData: any,
 	pageSize = 5,
 	pageToken = ''
 ) {
@@ -117,10 +99,7 @@ async function searchAndGetReplyObject(
 			pageSize: pageSize,
 			pageToken: pageToken,
 		});
-		const replyObject = searchResultToReplyObject(
-			results,
-			interaction
-		);
+		const replyObject = searchResultToReplyObject(results, interaction);
 		const meta = results.meta;
 		return {
 			replyObject: replyObject,
@@ -128,19 +107,17 @@ async function searchAndGetReplyObject(
 		};
 	} catch (error) {
 		await interaction.editReply({
-			content:
-				'Something went wrong while searching for items. Please try again later. ' +
-				error,
+			content: 'Something went wrong while searching for items. Please try again later. ' + error,
 		});
-		throw error; // Rethrow the error to be handled by the caller
+		throw error;
 	}
 }
 
-module.exports = {
+const searchCommand = {
 	data: new SlashCommandBuilder()
 		.setName('search')
 		.setDescription('Search for items on Mercari')
-		.setContexts(['Guild', 'BotDM', 'PrivateChannel'])
+		.setContexts(InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel)
 		.addStringOption((option) =>
 			option
 				.setName('keyword')
@@ -171,23 +148,20 @@ module.exports = {
 		.addStringOption((option) =>
 			option
 				.setName('sort')
-				.setDescription(
-					'sort items by default/date/likes/score/price'
-				)
+				.setDescription('sort items by default/date/likes/score/price')
 				.addChoices(
-					Object.keys(MercariSearchSort).map((key) => ({
+					(Object.keys(MercariSearchSort) as Array<keyof typeof MercariSearchSort>).map((key) => ({
 						name: key,
 						value: MercariSearchSort[key],
 					}))
 				)
 		)
-
 		.addStringOption((option) =>
 			option
 				.setName('order')
 				.setDescription('order items in ascending/descending')
 				.addChoices(
-					Object.keys(MercariSearchOrder).map((key) => ({
+					(Object.keys(MercariSearchOrder) as Array<keyof typeof MercariSearchOrder>).map((key) => ({
 						name: key,
 						value: MercariSearchOrder[key],
 					}))
@@ -199,17 +173,14 @@ module.exports = {
 				.setDescription('search for used items only')
 		),
 
-	async execute(interaction) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const keyword = interaction.options.getString('keyword');
-		const excludeKeyword =
-			interaction.options.getString('exclude_keyword');
+		const excludeKeyword = interaction.options.getString('exclude_keyword');
 		const priceMin = interaction.options.getNumber('price_min');
 		const priceMax = interaction.options.getNumber('price_max');
 		const sort = interaction.options.getString('sort');
 		const order = interaction.options.getString('order');
-		const itemConditionUsed = interaction.options.getBoolean(
-			'item_condition_used'
-		);
+		const itemConditionUsed = interaction.options.getBoolean('item_condition_used');
 		const createdAfterDate = new Date();
 		createdAfterDate.setMonth(createdAfterDate.getMonth() - 1);
 
@@ -221,9 +192,7 @@ module.exports = {
 			sort,
 			order,
 			itemConditionId: itemConditionUsed ? [2, 3, 4, 5, 6] : [],
-			createdAfterDate: Math.floor(
-				Date.now() / 1000 - 86400 * 10
-			),
+			createdAfterDate: Math.floor(Date.now() / 1000 - 86400 * 10),
 			createdBeforeDate: '0',
 		};
 		console.log(requestData);
@@ -238,42 +207,29 @@ module.exports = {
 			pageSize,
 			pageToken
 		);
-		// console.log(replyObject);
 		const response = await interaction.editReply({
 			...replyObject,
 			content: `Search results for "${keyword}"`,
-			withResponse: true,
+			components: replyObject.components.map((row: any) => row.toJSON()),
 		});
 
-		// Create a collector to listen for button interactions
-		const collectorFilter = (i) =>
+		const collectorFilter = (i: any) =>
 			(i.customId.startsWith(`prev-page:${interaction.id}`) ||
-				i.customId.startsWith(
-					`next-page:${interaction.id}`
-				) ||
-				i.customId.startsWith(
-					`select-item:${interaction.id}`
-				)) &&
+				i.customId.startsWith(`next-page:${interaction.id}`) ||
+				i.customId.startsWith(`select-item:${interaction.id}`)) &&
 			i.user.id === interaction.user.id;
-		if (interaction) {
-			const collector =
-				interaction.message.createMessageComponentCollector({
-					filter: collectorFilter,
-					time: 600000, //10 minutes
-				});
+		if (interaction.channel && typeof interaction.channel.createMessageComponentCollector === 'function') {
+			const collector = interaction.channel.createMessageComponentCollector({
+				filter: collectorFilter,
+				time: 600000, //10 minutes
+			});
 
-			collector.on('collect', async (buttonInteraction) => {
-				// Handle button interaction logic here
+			collector.on('collect', async (buttonInteraction: any) => {
 				await buttonInteraction.deferUpdate();
-				console.log(
-					`Button ${buttonInteraction.customId} clicked`
-				);
-				const buttonCustomId = buttonInteraction.customId.replace(
-					`:${interaction.id}`,
-					''
-				);
+				console.log(`Button ${buttonInteraction.customId} clicked`);
+				const buttonCustomId = buttonInteraction.customId.replace(`:${interaction.id}`, '');
 				switch (buttonCustomId) {
-					case 'prev-page':
+					case 'prev-page': {
 						const prevResults = await searchAndGetReplyObject(
 							interaction,
 							requestData,
@@ -284,11 +240,11 @@ module.exports = {
 						meta = prevResults.meta;
 						await interaction.editReply({
 							...replyObject,
-							withResponse: true,
+							components: replyObject.components.map((row: any) => row.toJSON()),
 						});
-
 						break;
-					case 'next-page':
+					}
+					case 'next-page': {
 						const nextResults = await searchAndGetReplyObject(
 							interaction,
 							requestData,
@@ -297,36 +253,38 @@ module.exports = {
 						);
 						replyObject = nextResults.replyObject;
 						meta = nextResults.meta;
-						const response = await interaction.editReply({
+						await interaction.editReply({
 							...replyObject,
-							withResponse: true,
+							components: replyObject.components.map((row: any) => row.toJSON()),
 						});
 						pageToken = meta.nextPageToken;
 						break;
-					case 'select-item':
+					}
+					case 'select-item': {
 						const selectedItemId = buttonInteraction.values[0];
 						console.log(`Item ${selectedItemId} selected`);
-
 						const result = await itemCommand.getItemEmbeds(selectedItemId, interaction);
 						await buttonInteraction.editReply(result);
 						break;
+					}
 					default:
 						break;
 				}
 			});
 
-			collector.on('end', async (collected) => {
-				if (collected.size === 0) {
-				} else {
-					console.log(
-						`Collected ${collected.size} interactions`
-					);
-				}
+			collector.on('end', async (collected: any) => {
 				await interaction.editReply({
 					...replyObject,
-					components: [], // Remove the buttons
+					components: [],
 				});
+			});
+		} else {
+			await interaction.editReply({
+				content: 'Interactive buttons are not supported in this context. Please make sure you have not disabled DMs from this bot, and that you are not using ephemeral replies.',
+				components: [],
 			});
 		}
 	},
 };
+
+export default searchCommand;

@@ -1,3 +1,5 @@
+// This file has been archived after TypeScript migration. See the corresponding .ts file for the latest implementation.
+
 const fs = require('node:fs');
 const path = require('node:path');
 const {

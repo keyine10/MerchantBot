@@ -1,4 +1,4 @@
-const {
+import {
 	SlashCommandBuilder,
 	EmbedBuilder,
 	ActionRowBuilder,
@@ -8,16 +8,43 @@ const {
 	StringSelectMenuOptionBuilder,
 	ComponentType,
 	MessageFlags,
-} = require('discord.js');
-const mercari = require('../../mercari/mercari.js');
-const { MercariURLs } = require('../../mercari/utils.js');
+	ChatInputCommandInteraction,
+	APIEmbed,
+	InteractionContextType,
+} from 'discord.js';
+import mercari from '../../mercari/mercari';
+import { MercariURLs } from '../../mercari/utils';
 
 const pageSize = 5; // Default page size for search results
 
+type MercariItem = {
+	id: string;
+	name: string;
+	photos: { uri: string }[] | string[];
+	created: number;
+	updated: number;
+	price: number;
+	converted_price: { price: number; currency_code: string };
+	seller: {
+		id: string;
+		is_official?: boolean;
+		register_sms_confirmation?: boolean;
+		num_ratings: number;
+		ratings: { good: number; bad: number };
+		star_rating_score: number;
+		photo_thumbnail_url: string;
+	};
+};
+
+type MercariTranslation = {
+	name: string;
+	description: string;
+};
+
 // Export a function to get item details and translation and return the embed objects
-async function getItemEmbeds(itemId, interaction) {
+export async function getItemEmbeds(itemId: string, interaction: ChatInputCommandInteraction): Promise<{ embeds: APIEmbed[]; content?: string }> {
 	try {
-		let data = await mercari.getItemDetails(itemId);
+		const data = await mercari.getItemDetails(itemId);
 		if (!data || !data.data) {
 			return {
 				embeds: [{
@@ -28,9 +55,9 @@ async function getItemEmbeds(itemId, interaction) {
 				content: undefined,
 			};
 		}
-		let translationData = await mercari.getItemTranslation(itemId);
-		const item = data.data;
-		const itemOverviewEmbed = {
+		const translationData: MercariTranslation = await mercari.getItemTranslation(itemId);
+		const item: MercariItem = data.data;
+		const itemOverviewEmbed: APIEmbed = {
 			title: translationData.name.substring(0, 100),
 			url: MercariURLs.ROOT_PRODUCT + item.id,
 			author: {
@@ -38,7 +65,7 @@ async function getItemEmbeds(itemId, interaction) {
 				icon_url: item.seller.photo_thumbnail_url,
 				url: `${MercariURLs.USER_PROFILE}${item.seller.id}`,
 			},
-			thumbnail: { url: item.photos[0] },
+			thumbnail: { url: Array.isArray(item.photos) && typeof item.photos[0] === 'string' ? item.photos[0] as string : (item.photos[0] as { uri: string }).uri },
 			fields: [
 				{ name: 'id', value: item.id, inline: true },
 				{ name: 'price', value: `${item.price}yen | ${item.converted_price.price}${item.converted_price.currency_code}`, inline: true },
@@ -47,7 +74,7 @@ async function getItemEmbeds(itemId, interaction) {
 				{ name: 'updated', value: `<t:${item.updated}:R>`, inline: true },
 			],
 		};
-		const itemDescriptionEmbed = {
+		const itemDescriptionEmbed: APIEmbed = {
 			title: 'Item description',
 			description: translationData.description,
 		};
@@ -63,11 +90,10 @@ async function getItemEmbeds(itemId, interaction) {
 	}
 }
 
-module.exports = {
+const itemCommand = {
 	data: new SlashCommandBuilder()
 		.setName('item')
-		.setDescription('Get information about an item on Mercari')
-		.setContexts(['Guild', 'BotDM', 'PrivateChannel'])
+		.setContexts([InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel])
 		.addStringOption((option) =>
 			option
 				.setName('item_id')
@@ -77,11 +103,13 @@ module.exports = {
 				.setRequired(true)
 		),
 
-	async execute(interaction) {
-		const itemId = interaction.options.getString('item_id');
+	async execute(interaction: ChatInputCommandInteraction) {
+		const itemId = interaction.options.getString('item_id', true);
 		await interaction.deferReply({});
 		const result = await getItemEmbeds(itemId, interaction);
 		await interaction.editReply(result);
 	},
 	getItemEmbeds, // export for reuse
 };
+
+export default itemCommand;

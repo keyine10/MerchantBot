@@ -1,6 +1,6 @@
-const { v4: uuidv4 } = require('uuid');
-const fs = require('fs');
-const {
+import { v4 as uuidv4 } from 'uuid';
+import fs from 'fs';
+import {
 	MercariURLs,
 	MercariSearchStatus,
 	MercariSearchSort,
@@ -10,13 +10,17 @@ const {
 	MercariSearchCategoryID,
 	getHeadersWithDpop,
 	fetchMercari,
-} = require('./utils.js');
+} from './utils';
+
 class MercariApi {
+	uuid: string | null = null;
+	key: any;
+	static _instance: MercariApi;
+
 	constructor() {
 		if (MercariApi._instance) {
 			return MercariApi._instance;
 		}
-		this.uuid = null;
 		this.key = null;
 		MercariApi._instance = this;
 		return this;
@@ -31,7 +35,7 @@ class MercariApi {
 		return this;
 	}
 
-	async getItemDetails(id, country_code = 'VN') {
+	async getItemDetails(id: string, country_code = 'VN') {
 		if (!id) throw new Error('Item id cannot be empty!');
 		const requestData = {
 			id,
@@ -47,10 +51,12 @@ class MercariApi {
 		};
 		const httpUrl = MercariURLs.ITEM_INFO;
 
+		// Fix: Pass this.uuid as undefined if null
+		const uuid = this.uuid ?? undefined;
 		const headersWithDpop = await getHeadersWithDpop(
 			'GET',
 			httpUrl,
-			this.uuid,
+			uuid,
 			this.key
 		);
 		const data = await fetchMercari(
@@ -67,7 +73,7 @@ class MercariApi {
 		return data;
 	}
 
-	async getItemTranslation(id) {
+	async getItemTranslation(id: string) {
 		if (!id) throw new Error('Item id cannot be empty!');
 		const requestData = {
 			name: id,
@@ -75,10 +81,12 @@ class MercariApi {
 		};
 		const httpUrl = MercariURLs.TRANSLATION + id + '/translation';
 
+		// Fix: Pass this.uuid as undefined if null
+		const uuid = this.uuid ?? undefined;
 		const headersWithDpop = await getHeadersWithDpop(
 			'GET',
 			httpUrl,
-			this.uuid,
+			uuid,
 			this.key
 		);
 		const data = await fetchMercari(
@@ -122,7 +130,7 @@ class MercariApi {
 		pageToken = '',
 		createdAfterDate = '0',
 		createdBeforeDate = '0',
-	}) {
+	}: any) {
 		const searchCondition = {
 			keyword: keyword,
 			excludeKeyword: excludeKeyword,
@@ -173,10 +181,12 @@ class MercariApi {
 				itemConditionId.length > 0 ? true : false,
 		};
 		console.log('running request:', requestData);
+		// Fix: Pass this.uuid as undefined if null
+		const uuid = this.uuid ?? undefined;
 		const headersWithDpop = await getHeadersWithDpop(
 			'POST',
 			MercariURLs.SEARCH,
-			this.uuid,
+			uuid,
 			this.key
 		);
 
@@ -200,4 +210,4 @@ const mercariInstance = new MercariApi();
 (async () => {
 	await mercariInstance.refreshTokens();
 })();
-module.exports = mercariInstance;
+export default mercariInstance;
