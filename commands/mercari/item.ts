@@ -5,28 +5,9 @@ import {
 	InteractionContextType,
 } from 'discord.js';
 import mercari from '../../mercari/mercari';
-import { MercariURLs } from '../../mercari/utils';
+import { MercariItem, MercariItemInfo, MercariURLs } from '../../mercari/types';
 
 const pageSize = 5; // Default page size for search results
-
-type MercariItem = {
-	id: string;
-	name: string;
-	photos: { uri: string }[] | string[];
-	created: number;
-	updated: number;
-	price: number;
-	converted_price: { price: number; currency_code: string };
-	seller: {
-		id: string;
-		is_official?: boolean;
-		register_sms_confirmation?: boolean;
-		num_ratings: number;
-		ratings: { good: number; bad: number };
-		star_rating_score: number;
-		photo_thumbnail_url: string;
-	};
-};
 
 type MercariTranslation = {
 	name: string;
@@ -48,7 +29,7 @@ export async function getItemEmbeds(itemId: string, interaction: ChatInputComman
 			};
 		}
 		const translationData: MercariTranslation = await mercari.getItemTranslation(itemId);
-		const item: MercariItem = data.data;
+		const item = data.data;
         // Helper to format numbers with commas
         const formatNumber = (num: number) => num.toLocaleString('en-US');
 
@@ -56,7 +37,7 @@ export async function getItemEmbeds(itemId: string, interaction: ChatInputComman
             title: translationData.name.substring(0, 100),
             url: MercariURLs.ROOT_PRODUCT + item.id,
             author: {
-                name: `${item.seller.id}${item.seller.is_official || item.seller.register_sms_confirmation ? '✅' : ''} | ${item.seller.num_ratings}(${item.seller.ratings.good}👍${item.seller.ratings.bad}👎) ${item.seller.star_rating_score}⭐`,
+                name: `${item.seller.id}${item.seller.is_official || item.seller.register_sms_confirmation.length>0 ? '✅' : ''} | ${item.seller.num_ratings}(${item.seller.ratings.good}👍${item.seller.ratings.bad}👎) ${item.seller.star_rating_score}⭐`,
                 icon_url: item.seller.photo_thumbnail_url,
                 url: `${MercariURLs.USER_PROFILE}${item.seller.id}`,
             },

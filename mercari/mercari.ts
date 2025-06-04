@@ -8,10 +8,15 @@ import {
 	MercariItemStatus,
 	MercariItemConditionId,
 	MercariSearchCategoryID,
-	getHeadersWithDpop,
-	fetchMercari,
-} from './utils';
+} from './types';
 import { GenerateKeyPairResult } from 'jose';
+import {
+  MercariSearchResult,
+  MercariItem,
+  MercariItemInfo,
+  MercariSearchCondition,
+} from './types';
+import { getHeadersWithDpop, fetchMercari } from './utils';
 
 class MercariApi {
 	uuid: string = '';
@@ -26,7 +31,7 @@ class MercariApi {
 		return this;
 	}
 
-	async refreshTokens() {
+	async refreshTokens(): Promise<this> {
 		const { generateKeyPair } = await import('jose');
 		this.uuid = uuidv4();
 		this.key = await generateKeyPair('ES256', {
@@ -35,7 +40,7 @@ class MercariApi {
 		return this;
 	}
 
-	async getItemDetails(id: string, country_code = 'VN') {
+	async getItemDetails(id: string, country_code = 'VN'): Promise<MercariItemInfo> {
 		if (!id) throw new Error('Item id cannot be empty!');
 		const requestData = {
 			id,
@@ -51,7 +56,7 @@ class MercariApi {
 		};
 		const httpUrl = MercariURLs.ITEM_INFO;
 
-		const uuid = this.uuid
+		const uuid = this.uuid || undefined;
 		const headersWithDpop = await getHeadersWithDpop(
 			'GET',
 			httpUrl,
@@ -69,10 +74,10 @@ class MercariApi {
 			JSON.stringify(data, null, 2),
 			'utf-8'
 		);
-		return data;
+		return data as MercariItemInfo;
 	}
 
-	async getItemTranslation(id: string) {
+	async getItemTranslation(id: string): Promise<any> {
 		if (!id) throw new Error('Item id cannot be empty!');
 		const requestData = {
 			name: id,
@@ -80,8 +85,7 @@ class MercariApi {
 		};
 		const httpUrl = MercariURLs.TRANSLATION + id + '/translation';
 
-		// Fix: Pass this.uuid as undefined if null
-		const uuid = this.uuid ?? undefined;
+		const uuid = this.uuid || undefined;
 		const headersWithDpop = await getHeadersWithDpop(
 			'GET',
 			httpUrl,
@@ -102,69 +106,72 @@ class MercariApi {
 		return data;
 	}
 
-	async search({
-		keyword = 'wacom',
-		excludeKeyword = '',
-		sort = MercariSearchSort.CREATED_TIME,
-		order = MercariSearchOrder.DESC,
-		status = [MercariSearchStatus.ON_SALE],
-		sizeId = [],
-		categoryId = [],
-		brandId = [],
-		sellerId = [],
-		priceMin = 0,
-		priceMax = 0,
-		itemConditionId = [],
-		shippingPayerId = [],
-		shippingFromArea = [],
-		shippingMethod = [],
-		colorId = [],
-		hasCoupon = false,
-		attributes = [],
-		itemTypes = [],
-		skuIds = [],
-		shopIds = [],
-		excludeShippingMethodIds = [],
-		pageSize = 120,
-		pageToken = '',
-		createdAfterDate = '0',
-		createdBeforeDate = '0',
-	}: any) {
-		const searchCondition = {
-			keyword: keyword,
-			excludeKeyword: excludeKeyword,
-			sort: sort,
-			order: order,
-			status: status,
-			sizeId: sizeId,
-			categoryId: categoryId,
-			brandId: brandId,
-			sellerId: sellerId,
-			priceMin: priceMin,
-			priceMax: priceMax,
-			itemConditionId: itemConditionId,
-			shippingPayerId: shippingPayerId,
-			shippingFromArea: shippingFromArea,
-			shippingMethod: shippingMethod,
-			colorId: colorId,
-			hasCoupon: hasCoupon,
-			attributes: attributes,
-			itemTypes: itemTypes,
-			skuIds: skuIds,
-			shopIds: shopIds,
-			excludeShippingMethodIds: excludeShippingMethodIds,
+	async search(params: Partial<MercariSearchCondition> & { pageSize?: number; pageToken?: string }): Promise<MercariSearchResult> {
+		const {
+			keyword = 'wacom',
+			excludeKeyword = '',
+			sort = MercariSearchSort.CREATED_TIME,
+			order = MercariSearchOrder.DESC,
+			status = [MercariSearchStatus.ON_SALE],
+			sizeId = [],
+			categoryId = [],
+			brandId = [],
+			sellerId = [],
+			priceMin = 0,
+			priceMax = 0,
+			itemConditionId = [],
+			shippingPayerId = [],
+			shippingFromArea = [],
+			shippingMethod = [],
+			colorId = [],
+			hasCoupon = false,
+			attributes = [],
+			itemTypes = [],
+			skuIds = [],
+			shopIds = [],
+			excludeShippingMethodIds = [],
+			createdAfterDate = '0',
+			createdBeforeDate = '0',
+			pageSize = 120,
+			pageToken = '',
+		} = params;
+
+		const searchCondition: MercariSearchCondition = {
+			keyword,
+			excludeKeyword,
+			sort,
+			order,
+			status,
+			sizeId,
+			categoryId,
+			brandId,
+			sellerId,
+			priceMin,
+			priceMax,
+			itemConditionId,
+			shippingPayerId,
+			shippingFromArea,
+			shippingMethod,
+			colorId,
+			hasCoupon,
+			attributes,
+			itemTypes,
+			skuIds,
+			shopIds,
+			promotionValidAt: null,
+			excludeShippingMethodIds,
 			createdAfterDate,
 			createdBeforeDate,
 		};
 		const requestData = {
 			userId: '',
-			pageSize: pageSize,
-			pageToken: pageToken,
+			pageSize,
+			pageToken,
 			searchSessionId: this.uuid,
 			laplaceDeviceUuid: this.uuid,
 			indexRouting: 'INDEX_ROUTING_UNSPECIFIED',
 			thumbnailTypes: [],
-			searchCondition: searchCondition,
+			searchCondition,
 			defaultDatasets: [],
 			serviceFrom: 'suruga',
 			withAuction: true,
@@ -176,11 +183,10 @@ class MercariApi {
 			withProductSuggest: false,
 			withParentProducts: false,
 			withProductArticles: true,
-			withSearchConditionId:
-				itemConditionId.length > 0 ? true : false,
+			withSearchConditionId: itemConditionId.length > 0 ? true : false,
 		};
 		console.log('running request:', requestData);
-		const uuid = this.uuid ;
+		const uuid = this.uuid || undefined;
 		const headersWithDpop = await getHeadersWithDpop(
 			'POST',
 			MercariURLs.SEARCH,
@@ -200,7 +206,7 @@ class MercariApi {
 			JSON.stringify(data, null, 2),
 			'utf-8'
 		);
-		return data;
+		return data as MercariSearchResult;
 	}
 }
 

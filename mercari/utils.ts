@@ -1,57 +1,14 @@
 import { GenerateKeyPairResult } from 'jose';
 import { promises as fs } from 'fs';
-
-export enum MercariURLs {
-    ROOT = 'https://api.mercari.jp/',
-    ROOT_PRODUCT = 'https://jp.mercari.com/en/item/',
-    SEARCH = 'https://api.mercari.jp/v2/entities:search',
-    ITEM_INFO = 'https://api.mercari.jp/items/get',
-    USER_PROFILE = 'https://jp.mercari.com/en/user/profile/',
-    TRANSLATION = 'https://api.mercari.jp/v2/itemtranslations/',
-}
-
-export enum MercariSearchStatus {
-    DEFAULT = 'STATUS_DEFAULT',
-    ON_SALE = 'STATUS_ON_SALE',
-    SOLD_OUT = 'STATUS_SOLD_OUT',
-}
-
-export enum MercariSearchSort {
-    DEFAULT = 'SORT_DEFAULT',
-    CREATED_TIME = 'SORT_CREATED_TIME',
-    NUM_LIKES = 'SORT_NUM_LIKES',
-    SCORE = 'SORT_SCORE',
-    PRICE = 'SORT_PRICE',
-}
-
-export enum MercariSearchOrder {
-    DESC = 'ORDER_DESC',
-    ASC = 'ORDER_ASC',
-}
-
-export enum MercariItemStatus {
-    UNSPECIFIED = 'ITEM_STATUS_UNSPECIFIED',
-    ON_SALE = 'ITEM_STATUS_ON_SALE',
-    TRADING = 'ITEM_STATUS_TRADING',
-    SOLD_OUT = 'ITEM_STATUS_SOLD_OUT',
-    STOP = 'ITEM_STATUS_STOP',
-    CANCEL = 'ITEM_STATUS_CANCEL',
-    ADMIN_CANCEL = 'ITEM_STATUS_ADMIN_CANCEL',
-}
-
-export enum MercariItemConditionId {
-    NEW = 1,
-    ALMOSTNEW = 2,
-    NOSCRATCHES = 3,
-    SMALLSCRATCHES = 4,
-    SCRATCHED = 5,
-    BAD = 6,
-}
-
-export enum MercariSearchCategoryID {
-    PHONES_TABLETS_COMPUTERS = 7,
-    PC_PERIPHERALS = 841,
-}
+import {
+  MercariURLs,
+  MercariSearchStatus,
+  MercariSearchSort,
+  MercariSearchOrder,
+  MercariItemStatus,
+  MercariItemConditionId,
+  MercariSearchCategoryID,
+} from './types';
 
 export async function generateDpop(
     method: string,
