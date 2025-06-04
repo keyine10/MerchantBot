@@ -1,6 +1,6 @@
 /node_modules/
 .env
-search_results.json
-config.json
-item_info.json
-
+dist/*
+*.tsbuildinfo
+*.js
+*.js.map
