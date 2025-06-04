@@ -8,6 +8,11 @@ type MercariItemBrand = {
     subName: string;
 } | null;
 
+type MercariItemTranslation = {
+    name: string;
+    description: string;
+}
+
 type MercariItemInfo = {
     result: string;
     data: {
@@ -227,6 +232,7 @@ export type {
     MercariItemPhoto,
     MercariSearchCondition,
     MercariSearchResult,
+    MercariItemTranslation
 };
 
 export enum MercariURLs {

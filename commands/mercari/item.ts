@@ -5,14 +5,9 @@ import {
 	InteractionContextType,
 } from 'discord.js';
 import mercari from '../../mercari/mercari';
-import { MercariItem, MercariItemInfo, MercariURLs } from '../../mercari/types';
+import { MercariItem, MercariItemInfo, MercariItemTranslation, MercariURLs } from '../../mercari/types';
 
 const pageSize = 5; // Default page size for search results
-
-type MercariTranslation = {
-	name: string;
-	description: string;
-};
 
 // Export a function to get item details and translation and return the embed objects
 export async function getItemEmbeds(itemId: string, interaction: ChatInputCommandInteraction): Promise<{ embeds: APIEmbed[]; content?: string }> {
@@ -28,7 +23,7 @@ export async function getItemEmbeds(itemId: string, interaction: ChatInputComman
 				content: undefined,
 			};
 		}
-		const translationData: MercariTranslation = await mercari.getItemTranslation(itemId);
+		const translationData: MercariItemTranslation = await mercari.getItemTranslation(itemId);
 		const item = itemDetails.data;
         // Helper to format numbers with commas
         const formatNumber = (num: number) => num.toLocaleString('en-US');

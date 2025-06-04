@@ -1,14 +1,4 @@
 import { GenerateKeyPairResult } from 'jose';
-import { promises as fs } from 'fs';
-import {
-  MercariURLs,
-  MercariSearchStatus,
-  MercariSearchSort,
-  MercariSearchOrder,
-  MercariItemStatus,
-  MercariItemConditionId,
-  MercariSearchCategoryID,
-} from './types';
 
 export async function generateDpop(
     method: string,
@@ -73,37 +63,4 @@ export async function getHeadersWithDpop(
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0',
     };
 }
-export async function fetchMercari(
-    httpMethod: string,
-    httpUrl: string,
-    headers: Record<string, string>,
-    requestData: any
-): Promise<any> {
-    let response: Response | null = null;
-    if (httpMethod === 'POST')
-        response = await fetch(httpUrl, {
-            method: httpMethod,
-            headers: headers,
-            body: JSON.stringify(requestData),
-        });
-    else if (httpMethod === 'GET') {
-        const httpUrlWithParams = `${httpUrl}?${new URLSearchParams(
-            requestData
-        ).toString()}`;
-        response = await fetch(httpUrlWithParams, {
-            method: httpMethod,
-            headers: headers,
-        });
-    }
-    if (!response) throw new Error('No response received from fetchMercari');
 
-    const data = await response.json();
-    if (!response.ok) {
-        throw new Error(
-            `Error while fetching: ${response.status} ${response.statusText
-            } ${JSON.stringify(data)}`,
-            {}
-        );
-    }
-    return data;
-}

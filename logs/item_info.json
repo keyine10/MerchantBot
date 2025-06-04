@@ -1,23 +1,23 @@
 {
   "result": "OK",
   "data": {
-    "id": "m23428891755",
+    "id": "m49656661844",
     "seller": {
-      "id": 341269545,
-      "name": "サブロー",
-      "photo_url": "https://static.mercdn.net/members/341269545.jpg?1572513519",
-      "photo_thumbnail_url": "https://static.mercdn.net/thumb/members/341269545.jpg?1572513519",
+      "id": 370483370,
+      "name": "KH",
+      "photo_url": "https://static.mercdn.net/members/370483370.jpg?1575186110",
+      "photo_thumbnail_url": "https://static.mercdn.net/thumb/members/370483370.jpg?1575186110",
       "register_sms_confirmation": "yes",
-      "register_sms_confirmation_at": "2019-10-31 13:55:46",
-      "created": 1572497746,
-      "num_sell_items": 8441,
+      "register_sms_confirmation_at": "2020-03-20 16:36:32",
+      "created": 1450848994,
+      "num_sell_items": 448,
       "ratings": {
-        "good": 8259,
-        "normal": 23,
-        "bad": 12
+        "good": 549,
+        "normal": 0,
+        "bad": 0
       },
-      "num_ratings": 8294,
-      "score": 8247,
+      "num_ratings": 549,
+      "score": 549,
       "is_official": false,
       "quick_shipper": false,
       "is_followable": true,
@@ -25,71 +25,70 @@
       "star_rating_score": 5
     },
     "converted_price": {
-      "price": 289400,
+      "price": 192900,
       "currency_code": "VND",
       "rate_updated": 1749003003
     },
     "status": "on_sale",
-    "name": "【ロングタイプ】 WacomProPen2用 ステンレス芯",
-    "price": 1500,
-    "description": "【ロングタイプ】 WacomProPen2用 ステンレス芯\r\n\r\n●［特徴］ ・ロングタイプですのでタブレット上でアナログ定規を使用可能。\r\n・通り傾き検知の幅の上昇。 ・ポインターの視認性の向上。\r\n素材がステンレスですので変形減りがかなり軽減されます。\r\n標準芯 ACK22201互換 　\r\n\r\n●［　使用可能なタブレット種類　］\r\n(DTHW1321,DTHW1621)\r\n(DTH-W1320,DTH-W1620)\r\n(DTH-1320,DTH-1620,DTH167,DTK-2420,DTH-2420,DTH-3220)\r\n(DTK1660K0D,DTK2260K0D)\r\n(PTH460,PTH-660,PTH-860)\r\n対応ペンWacom Pro Pen 2 (KP504E)\r\n\r\n●［ 付属物 ］ [・ステンレス芯１本　・取り扱い説明書１枚] \r\n注意　画像のタブレットのペンは、比較の為でペン本体は付属はいたしません。\r\n\r\n●［ ご使用上の注意 について ］ \r\n・摩耗しずらいステンレス芯ですので、タブレット表面を傷つけてしまう恐れがございます。 ご使用の際はオーバーレイシートや保護フィルムの使用を推奨しております。\r\n特に液タブ使用の場合は必ず保護フィルムを使用してくださいませ。 \r\n\r\n●他にも 「通常タイプ・ステンレス芯」「プロペン2用」「長身タイププロペン2用」 「WacomONE芯用」「Hi-uni DIGITALステンレス芯」も販売しております。\r\n\r\n♯akkkkki\r\nタッチペン",
+    "name": "ペンタブ WACOM Bamboo fun CTH-461",
+    "price": 1000,
+    "description": "WACOM\nBamboo fun \n型番 CTH-461\nイラスト ペンタブ バンブーファン ワコム Wacom\n\n- モデル名: Bamboo CTH-461\n- ブランド: Wacom\n- 色: ホワイト/オレンジ\n- 接続タイプ: USB\n\nタッチペン付き\nご理解頂ける方のみお願いいたします。",
     "photos": [
-      "https://static.mercdn.net/item/detail/orig/photos/m23428891755_1.jpg?1748612007",
-      "https://static.mercdn.net/item/detail/orig/photos/m23428891755_2.jpg?1748612307",
-      "https://static.mercdn.net/item/detail/orig/photos/m23428891755_3.jpg?1748612307",
-      "https://static.mercdn.net/item/detail/orig/photos/m23428891755_4.jpg?1748612307",
-      "https://static.mercdn.net/item/detail/orig/photos/m23428891755_5.jpg?1748612307",
-      "https://static.mercdn.net/item/detail/orig/photos/m23428891755_6.jpg?1748612307",
-      "https://static.mercdn.net/item/detail/orig/photos/m23428891755_7.jpg?1748612307"
+      "https://static.mercdn.net/item/detail/orig/photos/m49656661844_1.jpg?1748409962",
+      "https://static.mercdn.net/item/detail/orig/photos/m49656661844_2.jpg?1748409962"
     ],
     "photo_paths": [
-      "photos/m23428891755_1.jpg",
-      "photos/m23428891755_2.jpg",
-      "photos/m23428891755_3.jpg",
-      "photos/m23428891755_4.jpg",
-      "photos/m23428891755_5.jpg",
-      "photos/m23428891755_6.jpg",
-      "photos/m23428891755_7.jpg"
+      "photos/m49656661844_1.jpg",
+      "photos/m49656661844_2.jpg"
     ],
     "thumbnails": [
-      "https://static.mercdn.net/c!/w=240/thumb/photos/m23428891755_1.jpg?1748612007"
+      "https://static.mercdn.net/c!/w=240/thumb/photos/m49656661844_1.jpg?1748409962"
     ],
     "item_category": {
-      "id": 3278,
-      "name": "青汁",
-      "display_order": 3,
-      "parent_category_id": 3273,
-      "parent_category_name": "健康飲料",
-      "root_category_id": 3134,
-      "root_category_name": "ダイエット・健康",
-      "brand_group_id": 1
+      "id": 1689,
+      "name": "液タブ・ペンタブ",
+      "display_order": 7,
+      "parent_category_id": 968,
+      "parent_category_name": "タブレット",
+      "root_category_id": 7,
+      "root_category_name": "スマホ・タブレット・パソコン"
     },
     "item_category_ntiers": {
-      "id": 3278,
-      "name": "青汁",
+      "id": 1842,
+      "name": "ペンタブレット本体(板タブ)",
       "display_order": 3,
-      "parent_category_id": 3273,
-      "parent_category_name": "健康飲料",
-      "root_category_id": 3134,
-      "root_category_name": "ダイエット・健康",
+      "parent_category_id": 1689,
+      "parent_category_name": "液タブ・ペンタブ",
+      "root_category_id": 7,
+      "root_category_name": "スマホ・タブレット・パソコン",
       "brand_group_id": 1
     },
     "parent_categories_ntiers": [
       {
-        "id": 3134,
-        "name": "ダイエット・健康",
+        "id": 7,
+        "name": "スマホ・タブレット・パソコン",
         "display_order": 0
       },
       {
-        "id": 3273,
-        "name": "健康飲料",
+        "id": 968,
+        "name": "タブレット",
+        "display_order": 0
+      },
+      {
+        "id": 1689,
+        "name": "液タブ・ペンタブ",
         "display_order": 0
       }
     ],
     "item_condition": {
-      "id": 1,
-      "name": "新品、未使用",
-      "subname": "新品で購入し、一度も使用していない"
+      "id": 4,
+      "name": "やや傷や汚れあり",
+      "subname": "目につく傷や汚れがある"
+    },
+    "item_brand": {
+      "id": 54524,
+      "name": "ワコム",
+      "sub_name": "wacom"
     },
     "colors": [],
     "shipping_payer": {
@@ -98,13 +97,13 @@
       "code": "seller"
     },
     "shipping_method": {
-      "id": 14,
-      "name": "らくらくメルカリ便",
+      "id": 9,
+      "name": "郵便（定型、定形外、書留など）",
       "is_deprecated": "no"
     },
     "shipping_from_area": {
-      "id": 8,
-      "name": "茨城県"
+      "id": 14,
+      "name": "神奈川県"
     },
     "shipping_duration": {
       "id": 2,
@@ -125,16 +124,16 @@
     "num_comments": 0,
     "registered_prices_count": 0,
     "comments": [],
-    "updated": 1749007925,
-    "created": 1748612007,
-    "pager_id": 5666302004,
+    "updated": 1748409962,
+    "created": 1748409962,
+    "pager_id": 5665695869,
     "liked": false,
-    "checksum": "1da83f2a54a4cbf0bd7127cde5deecb8",
+    "checksum": "54b585ab583a4fc35de013d580976395",
     "is_dynamic_shipping_fee": false,
     "application_attributes": {},
     "is_shop_item": "no",
     "hash_tags": [],
-    "is_anonymous_shipping": true,
+    "is_anonymous_shipping": false,
     "is_web_visible": true,
     "is_offerable": false,
     "is_organizational_user": false,
@@ -145,7 +144,7 @@
     "additional_services": [],
     "has_additional_service": false,
     "has_like_list": false,
-    "is_offerable_v2": false,
+    "is_offerable_v2": true,
     "item_attributes": [
       {
         "id": "f7f186cc-a16e-474b-a7a9-ee179b5565c0",
@@ -158,26 +157,18 @@
           {
             "id": "",
             "text": ""
-          },
+          }
+        ],
+        "deep_facet_filterable": false,
+        "show_on_ui": false
+      },
+      {
+        "id": "b6b9be89-648c-4af9-b3fe-1b77de4833d1",
+        "text": "ブランド",
+        "values": [
           {
-            "id": "",
-            "text": ""
-          },
-          {
-            "id": "",
-            "text": ""
-          },
-          {
-            "id": "",
-            "text": ""
-          },
-          {
-            "id": "",
-            "text": ""
-          },
-          {
-            "id": "",
-            "text": ""
+            "id": "de9af53c-56e0-5026-96ae-76299a4acf98",
+            "text": "ワコム"
           }
         ],
         "deep_facet_filterable": false,
@@ -187,16 +178,10 @@
     "is_dismissed": false,
     "photo_descriptions": [
       "",
-      "",
-      "",
-      "",
-      "",
-      "",
       ""
     ],
-    "meta_title": "【ロングタイプ】 WacomProPen2用 ステンレス芯",
-    "meta_subtitle": "新品、未使用"
+    "meta_title": "ペンタブ WACOM Bamboo fun CTH-461",
+    "meta_subtitle": "ワコム・やや傷や汚れあり"
   },
   "meta": {}
 }
-

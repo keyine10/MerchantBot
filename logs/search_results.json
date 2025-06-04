@@ -1,86 +1,86 @@
 {
   "meta": {
-    "nextPageToken": "v1:1",
-    "previousPageToken": "",
-    "numFound": "282",
+    "nextPageToken": "v1:3",
+    "previousPageToken": "v1:1",
+    "numFound": "17",
     "properties": []
   },
   "items": [
     {
-      "id": "m23428891755",
-      "sellerId": "341269545",
+      "id": "m70490111098",
+      "sellerId": "559435296",
       "buyerId": "",
       "status": "ITEM_STATUS_ON_SALE",
-      "name": "【ロングタイプ】 WacomProPen2用 ステンレス芯",
-      "price": "1500",
-      "created": "1748612007",
-      "updated": "1749007925",
+      "name": "Wacom Pro Pen 2 用替え芯 20個入",
+      "price": "455",
+      "created": "1748517916",
+      "updated": "1748517916",
       "thumbnails": [
-        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m23428891755_1.jpg?1748612007"
+        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m70490111098_1.jpg?1748517916"
       ],
       "itemType": "ITEM_TYPE_MERCARI",
-      "itemConditionId": "1",
+      "itemConditionId": "2",
       "shippingPayerId": "2",
       "itemSizes": [],
       "itemBrand": null,
       "itemPromotions": [],
       "shopName": "",
       "itemSize": null,
-      "shippingMethodId": "14",
-      "categoryId": "3278",
+      "shippingMethodId": "9",
+      "categoryId": "3832",
       "isNoPrice": false,
       "title": "",
       "isLiked": false,
       "photos": [
         {
-          "uri": "https://static.mercdn.net/item/detail/webp/photos/m23428891755_1.jpg?1748612007"
+          "uri": "https://static.mercdn.net/item/detail/webp/photos/m70490111098_1.jpg?1748517916"
         }
       ],
       "auction": null
     },
     {
-      "id": "m65643583067",
-      "sellerId": "341269545",
+      "id": "m93509334410",
+      "sellerId": "559435296",
       "buyerId": "",
       "status": "ITEM_STATUS_ON_SALE",
-      "name": "ワコム・ステンレス替え芯 【メルカリ便発送】",
-      "price": "900",
-      "created": "1748669462",
-      "updated": "1749007694",
+      "name": "Wacom Pro Pen 2 用替え芯 10個入",
+      "price": "300",
+      "created": "1748517576",
+      "updated": "1748517576",
       "thumbnails": [
-        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m65643583067_1.jpg?1748669462"
+        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m93509334410_1.jpg?1748517576"
       ],
       "itemType": "ITEM_TYPE_MERCARI",
-      "itemConditionId": "1",
+      "itemConditionId": "2",
       "shippingPayerId": "2",
       "itemSizes": [],
       "itemBrand": null,
       "itemPromotions": [],
       "shopName": "",
       "itemSize": null,
-      "shippingMethodId": "14",
-      "categoryId": "3661",
+      "shippingMethodId": "9",
+      "categoryId": "1778",
       "isNoPrice": false,
       "title": "",
       "isLiked": false,
       "photos": [
         {
-          "uri": "https://static.mercdn.net/item/detail/webp/photos/m65643583067_1.jpg?1748669462"
+          "uri": "https://static.mercdn.net/item/detail/webp/photos/m93509334410_1.jpg?1748517576"
         }
       ],
       "auction": null
     },
     {
-      "id": "m46207876186",
-      "sellerId": "421809394",
+      "id": "m39543049678",
+      "sellerId": "557818002",
       "buyerId": "",
       "status": "ITEM_STATUS_ON_SALE",
-      "name": "Wacom Cintiq16 DTK1660K0D",
-      "price": "48999",
-      "created": "1748914493",
-      "updated": "1749007024",
+      "name": "マウス　Intuos3 Mouse",
+      "price": "1200",
+      "created": "1748441772",
+      "updated": "1748508825",
       "thumbnails": [
-        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m46207876186_1.jpg?1748914680"
+        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m39543049678_1.jpg?1748441772"
       ],
       "itemType": "ITEM_TYPE_MERCARI",
       "itemConditionId": "3",
@@ -94,29 +94,29 @@
       "itemPromotions": [],
       "shopName": "",
       "itemSize": null,
-      "shippingMethodId": "14",
-      "categoryId": "1702",
+      "shippingMethodId": "5",
+      "categoryId": "3717",
       "isNoPrice": false,
       "title": "",
       "isLiked": false,
       "photos": [
         {
-          "uri": "https://static.mercdn.net/item/detail/webp/photos/m46207876186_1.jpg?1748914680"
+          "uri": "https://static.mercdn.net/item/detail/webp/photos/m39543049678_1.jpg?1748441772"
         }
       ],
       "auction": null
     },
     {
-      "id": "m24294952557",
-      "sellerId": "739608782",
+      "id": "m49656661844",
+      "sellerId": "370483370",
       "buyerId": "",
       "status": "ITEM_STATUS_ON_SALE",
-      "name": "お絵描きやイラスト描くのにおすすめ！富士通製タブレット✨ワコムのタッチペン付き",
-      "price": "10100",
-      "created": "1748563997",
-      "updated": "1749003848",
+      "name": "ペンタブ WACOM Bamboo fun CTH-461",
+      "price": "1000",
+      "created": "1748409962",
+      "updated": "1748409962",
       "thumbnails": [
-        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m24294952557_1.jpg?1748563997"
+        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m49656661844_1.jpg?1748409962"
       ],
       "itemType": "ITEM_TYPE_MERCARI",
       "itemConditionId": "4",
@@ -130,29 +130,29 @@
       "itemPromotions": [],
       "shopName": "",
       "itemSize": null,
-      "shippingMethodId": "17",
-      "categoryId": "1702",
+      "shippingMethodId": "9",
+      "categoryId": "1842",
       "isNoPrice": false,
       "title": "",
       "isLiked": false,
       "photos": [
         {
-          "uri": "https://static.mercdn.net/item/detail/webp/photos/m24294952557_1.jpg?1748563997"
+          "uri": "https://static.mercdn.net/item/detail/webp/photos/m49656661844_1.jpg?1748409962"
         }
       ],
       "auction": null
     },
     {
-      "id": "m45280431858",
-      "sellerId": "519219004",
+      "id": "m77595093050",
+      "sellerId": "194672266",
       "buyerId": "",
       "status": "ITEM_STATUS_ON_SALE",
-      "name": "wacom movink 13　DTH135K0C",
-      "price": "79600",
-      "created": "1748956055",
-      "updated": "1749003814",
+      "name": "ワコム WACOM Intuos 3 PTZ-630/S用 オーバーレイシート",
+      "price": "400",
+      "created": "1748319599",
+      "updated": "1748377491",
       "thumbnails": [
-        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m45280431858_1.jpg?1748956055"
+        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m77595093050_1.jpg?1748319599"
       ],
       "itemType": "ITEM_TYPE_MERCARI",
       "itemConditionId": "3",
@@ -167,16 +167,21 @@
       "shopName": "",
       "itemSize": null,
       "shippingMethodId": "17",
-      "categoryId": "1702",
+      "categoryId": "2108",
       "isNoPrice": false,
       "title": "",
       "isLiked": false,
       "photos": [
         {
-          "uri": "https://static.mercdn.net/item/detail/webp/photos/m45280431858_1.jpg?1748956055"
+          "uri": "https://static.mercdn.net/item/detail/webp/photos/m77595093050_1.jpg?1748319599"
         }
       ],
-      "auction": null
+      "auction": {
+        "id": "",
+        "bidDeadline": "2025-06-05T11:25:08.799197749Z",
+        "totalBid": "0",
+        "highestBid": "400"
+      }
     }
   ],
   "components": [],
@@ -193,14 +198,20 @@
     "brandId": [],
     "sellerId": [],
     "priceMin": 0,
-    "priceMax": 0,
-    "itemConditionId": [],
+    "priceMax": 1200,
+    "itemConditionId": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
     "shippingPayerId": [],
     "shippingFromArea": [],
     "shippingMethod": [],
     "colorId": [],
     "hasCoupon": false,
-    "createdAfterDate": "1748144280",
+    "createdAfterDate": "1748147015",
     "createdBeforeDate": "0",
     "attributes": [],
     "itemTypes": [],
@@ -209,5 +220,5 @@
     "promotionValidAt": null,
     "excludeShippingMethodIds": []
   },
-  "searchConditionId": ""
+  "searchConditionId": "1c3QdMRxwbWEdMTIwMBxpY2QdMh4zHjQeNR42HGsdd2Fjb20cY2FkHTE3NDgxNDcwMTU"
 }
