@@ -1,0 +1,213 @@
+{
+  "meta": {
+    "nextPageToken": "v1:1",
+    "previousPageToken": "",
+    "numFound": "282",
+    "properties": []
+  },
+  "items": [
+    {
+      "id": "m23428891755",
+      "sellerId": "341269545",
+      "buyerId": "",
+      "status": "ITEM_STATUS_ON_SALE",
+      "name": "【ロングタイプ】 WacomProPen2用 ステンレス芯",
+      "price": "1500",
+      "created": "1748612007",
+      "updated": "1749007925",
+      "thumbnails": [
+        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m23428891755_1.jpg?1748612007"
+      ],
+      "itemType": "ITEM_TYPE_MERCARI",
+      "itemConditionId": "1",
+      "shippingPayerId": "2",
+      "itemSizes": [],
+      "itemBrand": null,
+      "itemPromotions": [],
+      "shopName": "",
+      "itemSize": null,
+      "shippingMethodId": "14",
+      "categoryId": "3278",
+      "isNoPrice": false,
+      "title": "",
+      "isLiked": false,
+      "photos": [
+        {
+          "uri": "https://static.mercdn.net/item/detail/webp/photos/m23428891755_1.jpg?1748612007"
+        }
+      ],
+      "auction": null
+    },
+    {
+      "id": "m65643583067",
+      "sellerId": "341269545",
+      "buyerId": "",
+      "status": "ITEM_STATUS_ON_SALE",
+      "name": "ワコム・ステンレス替え芯 【メルカリ便発送】",
+      "price": "900",
+      "created": "1748669462",
+      "updated": "1749007694",
+      "thumbnails": [
+        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m65643583067_1.jpg?1748669462"
+      ],
+      "itemType": "ITEM_TYPE_MERCARI",
+      "itemConditionId": "1",
+      "shippingPayerId": "2",
+      "itemSizes": [],
+      "itemBrand": null,
+      "itemPromotions": [],
+      "shopName": "",
+      "itemSize": null,
+      "shippingMethodId": "14",
+      "categoryId": "3661",
+      "isNoPrice": false,
+      "title": "",
+      "isLiked": false,
+      "photos": [
+        {
+          "uri": "https://static.mercdn.net/item/detail/webp/photos/m65643583067_1.jpg?1748669462"
+        }
+      ],
+      "auction": null
+    },
+    {
+      "id": "m46207876186",
+      "sellerId": "421809394",
+      "buyerId": "",
+      "status": "ITEM_STATUS_ON_SALE",
+      "name": "Wacom Cintiq16 DTK1660K0D",
+      "price": "48999",
+      "created": "1748914493",
+      "updated": "1749007024",
+      "thumbnails": [
+        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m46207876186_1.jpg?1748914680"
+      ],
+      "itemType": "ITEM_TYPE_MERCARI",
+      "itemConditionId": "3",
+      "shippingPayerId": "2",
+      "itemSizes": [],
+      "itemBrand": {
+        "id": "54524",
+        "name": "ワコム",
+        "subName": "wacom"
+      },
+      "itemPromotions": [],
+      "shopName": "",
+      "itemSize": null,
+      "shippingMethodId": "14",
+      "categoryId": "1702",
+      "isNoPrice": false,
+      "title": "",
+      "isLiked": false,
+      "photos": [
+        {
+          "uri": "https://static.mercdn.net/item/detail/webp/photos/m46207876186_1.jpg?1748914680"
+        }
+      ],
+      "auction": null
+    },
+    {
+      "id": "m24294952557",
+      "sellerId": "739608782",
+      "buyerId": "",
+      "status": "ITEM_STATUS_ON_SALE",
+      "name": "お絵描きやイラスト描くのにおすすめ！富士通製タブレット✨ワコムのタッチペン付き",
+      "price": "10100",
+      "created": "1748563997",
+      "updated": "1749003848",
+      "thumbnails": [
+        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m24294952557_1.jpg?1748563997"
+      ],
+      "itemType": "ITEM_TYPE_MERCARI",
+      "itemConditionId": "4",
+      "shippingPayerId": "2",
+      "itemSizes": [],
+      "itemBrand": {
+        "id": "54524",
+        "name": "ワコム",
+        "subName": "wacom"
+      },
+      "itemPromotions": [],
+      "shopName": "",
+      "itemSize": null,
+      "shippingMethodId": "17",
+      "categoryId": "1702",
+      "isNoPrice": false,
+      "title": "",
+      "isLiked": false,
+      "photos": [
+        {
+          "uri": "https://static.mercdn.net/item/detail/webp/photos/m24294952557_1.jpg?1748563997"
+        }
+      ],
+      "auction": null
+    },
+    {
+      "id": "m45280431858",
+      "sellerId": "519219004",
+      "buyerId": "",
+      "status": "ITEM_STATUS_ON_SALE",
+      "name": "wacom movink 13　DTH135K0C",
+      "price": "79600",
+      "created": "1748956055",
+      "updated": "1749003814",
+      "thumbnails": [
+        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m45280431858_1.jpg?1748956055"
+      ],
+      "itemType": "ITEM_TYPE_MERCARI",
+      "itemConditionId": "3",
+      "shippingPayerId": "2",
+      "itemSizes": [],
+      "itemBrand": {
+        "id": "54524",
+        "name": "ワコム",
+        "subName": "wacom"
+      },
+      "itemPromotions": [],
+      "shopName": "",
+      "itemSize": null,
+      "shippingMethodId": "17",
+      "categoryId": "1702",
+      "isNoPrice": false,
+      "title": "",
+      "isLiked": false,
+      "photos": [
+        {
+          "uri": "https://static.mercdn.net/item/detail/webp/photos/m45280431858_1.jpg?1748956055"
+        }
+      ],
+      "auction": null
+    }
+  ],
+  "components": [],
+  "searchCondition": {
+    "keyword": "wacom",
+    "excludeKeyword": "",
+    "sort": "SORT_DEFAULT",
+    "order": "ORDER_DESC",
+    "status": [
+      "STATUS_ON_SALE"
+    ],
+    "sizeId": [],
+    "categoryId": [],
+    "brandId": [],
+    "sellerId": [],
+    "priceMin": 0,
+    "priceMax": 0,
+    "itemConditionId": [],
+    "shippingPayerId": [],
+    "shippingFromArea": [],
+    "shippingMethod": [],
+    "colorId": [],
+    "hasCoupon": false,
+    "createdAfterDate": "1748144280",
+    "createdBeforeDate": "0",
+    "attributes": [],
+    "itemTypes": [],
+    "skuIds": [],
+    "shopIds": [],
+    "promotionValidAt": null,
+    "excludeShippingMethodIds": []
+  },
+  "searchConditionId": ""
+}

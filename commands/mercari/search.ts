@@ -44,7 +44,7 @@ function searchResultToReplyObject(results: any, interaction: ChatInputCommandIn
 			color: 0x0099ff,
 			fields: [
 				{ name: 'id', value: item.id, inline: true },
-				{ name: 'price', value: item.price + ' yen', inline: true },
+				{ name: 'price', value: item.price + '¥', inline: true },
 				{ name: '\n', value: '\n' },
 				{ name: 'created', value: `<t:${item.created}:R>`, inline: true },
 				{ name: 'updated', value: `<t:${item.updated}:R>`, inline: true },

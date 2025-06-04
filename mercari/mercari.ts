@@ -11,17 +11,17 @@ import {
 	getHeadersWithDpop,
 	fetchMercari,
 } from './utils';
+import { GenerateKeyPairResult } from 'jose';
 
 class MercariApi {
-	uuid: string | null = null;
-	key: any;
+	uuid: string = '';
+	key!: GenerateKeyPairResult;
 	static _instance: MercariApi;
 
 	constructor() {
 		if (MercariApi._instance) {
 			return MercariApi._instance;
 		}
-		this.key = null;
 		MercariApi._instance = this;
 		return this;
 	}
@@ -51,8 +51,7 @@ class MercariApi {
 		};
 		const httpUrl = MercariURLs.ITEM_INFO;
 
-		// Fix: Pass this.uuid as undefined if null
-		const uuid = this.uuid ?? undefined;
+		const uuid = this.uuid
 		const headersWithDpop = await getHeadersWithDpop(
 			'GET',
 			httpUrl,
@@ -66,7 +65,7 @@ class MercariApi {
 			requestData
 		);
 		fs.writeFileSync(
-			'item_info.json',
+			'logs/item_info.json',
 			JSON.stringify(data, null, 2),
 			'utf-8'
 		);
@@ -96,7 +95,7 @@ class MercariApi {
 			requestData
 		);
 		fs.writeFileSync(
-			'item_translation.json',
+			'logs/item_translation.json',
 			JSON.stringify(data, null, 2),
 			'utf-8'
 		);
@@ -170,19 +169,18 @@ class MercariApi {
 			serviceFrom: 'suruga',
 			withAuction: true,
 			withItemBrand: true,
-			withItemPromotions: true,
+			withItemPromotions: false,
 			useDynamicAttribute: true,
-			withSuggestedItems: true,
-			withOfferPricePromotion: true,
-			withProductSuggest: true,
+			withSuggestedItems: false,
+			withOfferPricePromotion: false,
+			withProductSuggest: false,
 			withParentProducts: false,
 			withProductArticles: true,
 			withSearchConditionId:
 				itemConditionId.length > 0 ? true : false,
 		};
 		console.log('running request:', requestData);
-		// Fix: Pass this.uuid as undefined if null
-		const uuid = this.uuid ?? undefined;
+		const uuid = this.uuid ;
 		const headersWithDpop = await getHeadersWithDpop(
 			'POST',
 			MercariURLs.SEARCH,
@@ -198,7 +196,7 @@ class MercariApi {
 		);
 
 		fs.writeFileSync(
-			'search_results.json',
+			'logs/search_results.json',
 			JSON.stringify(data, null, 2),
 			'utf-8'
 		);
