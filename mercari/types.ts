@@ -48,7 +48,7 @@ type MercariItemInfo = {
         name: string;
         price: number;
         description: string;
-        photos: MercariItemPhoto[];
+        photos: MercariItemPhoto[] | string[];
         photo_paths: string[];
         thumbnails: string[];
         item_category: {
@@ -190,30 +190,30 @@ type MercariSearchMeta = {
 
 type MercariSearchCondition = {
     keyword: string;
-    excludeKeyword: string | null;
-    sort: MercariSearchSort | null;
-    order: MercariSearchOrder | null;
-    status: MercariSearchStatus[];
-    sizeId: string[];
-    categoryId: (MercariSearchCategoryID | string)[];
-    brandId: string[];
-    sellerId: string[];
-    priceMin: number;
-    priceMax: number;
-    itemConditionId: MercariItemConditionId[];
-    shippingPayerId: string[];
-    shippingFromArea: string[];
-    shippingMethod: string[];
-    colorId: string[];
-    hasCoupon: boolean;
-    createdAfterDate: string;
-    createdBeforeDate: string;
-    attributes: Record<string, unknown>[];
-    itemTypes: string[];
-    skuIds: string[];
-    shopIds: string[];
-    promotionValidAt: string | null;
-    excludeShippingMethodIds: string[];
+    excludeKeyword?: string | null;
+    sort?: MercariSearchSort | null;
+    order?: MercariSearchOrder | null;
+    status?: MercariSearchStatus[];
+    sizeId?: string[];
+    categoryId?: (MercariSearchCategoryID | string)[];
+    brandId?: string[];
+    sellerId?: string[];
+    priceMin?: number;
+    priceMax?: number;
+    itemConditionId?: MercariItemConditionId[];
+    shippingPayerId?: string[];
+    shippingFromArea?: string[];
+    shippingMethod?: string[];
+    colorId?: string[];
+    hasCoupon?: boolean;
+    createdAfterDate?: string;
+    createdBeforeDate?: string;
+    attributes?: Record<string, unknown>[];
+    itemTypes?: string[];
+    skuIds?: string[];
+    shopIds?: string[];
+    promotionValidAt?: string | null;
+    excludeShippingMethodIds?: string[];
 };
 
 type MercariSearchResult = {

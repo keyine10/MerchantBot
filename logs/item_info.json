@@ -1,23 +1,23 @@
 {
   "result": "OK",
   "data": {
-    "id": "m49656661844",
+    "id": "m32802575949",
     "seller": {
-      "id": 370483370,
-      "name": "KH",
-      "photo_url": "https://static.mercdn.net/members/370483370.jpg?1575186110",
-      "photo_thumbnail_url": "https://static.mercdn.net/thumb/members/370483370.jpg?1575186110",
+      "id": 357750052,
+      "name": "marisa",
+      "photo_url": "https://static.mercdn.net/members/357750052.jpg?1571447281",
+      "photo_thumbnail_url": "https://static.mercdn.net/thumb/members/357750052.jpg?1571447281",
       "register_sms_confirmation": "yes",
-      "register_sms_confirmation_at": "2020-03-20 16:36:32",
-      "created": 1450848994,
-      "num_sell_items": 448,
+      "register_sms_confirmation_at": "2023-04-04 02:38:32",
+      "created": 1436099857,
+      "num_sell_items": 4,
       "ratings": {
-        "good": 549,
+        "good": 8,
         "normal": 0,
         "bad": 0
       },
-      "num_ratings": 549,
-      "score": 549,
+      "num_ratings": 8,
+      "score": 8,
       "is_official": false,
       "quick_shipper": false,
       "is_followable": true,
@@ -25,70 +25,57 @@
       "star_rating_score": 5
     },
     "converted_price": {
-      "price": 192900,
+      "price": 12730100,
       "currency_code": "VND",
-      "rate_updated": 1749003003
+      "rate_updated": 1749089403
     },
     "status": "on_sale",
-    "name": "ペンタブ WACOM Bamboo fun CTH-461",
-    "price": 1000,
-    "description": "WACOM\nBamboo fun \n型番 CTH-461\nイラスト ペンタブ バンブーファン ワコム Wacom\n\n- モデル名: Bamboo CTH-461\n- ブランド: Wacom\n- 色: ホワイト/オレンジ\n- 接続タイプ: USB\n\nタッチペン付き\nご理解頂ける方のみお願いいたします。",
+    "name": "maimai aime グッズキャンペーン 18枚(縦9枚 横9枚)",
+    "price": 66000,
+    "description": "maimaiでらっくすグッズキャンペーン第6弾 Aimeカード18点セットです。\n\nmaimaiPRISM\nオリジナルAimeカードです(縦9枚×横9枚セットになります)\n即購入OK\n未使用未開封品です。\n\n※未開封ですが、外装フィルムに折れ目があります。\n※自宅保管のため多少の傷等ある場合がございます。\n（目視では目立つ傷がありません）\n（未開封品のため、開封しての確認はしません）\n※神経質な方、几帳面な方はご遠慮ください",
     "photos": [
-      "https://static.mercdn.net/item/detail/orig/photos/m49656661844_1.jpg?1748409962",
-      "https://static.mercdn.net/item/detail/orig/photos/m49656661844_2.jpg?1748409962"
+      "https://static.mercdn.net/item/detail/orig/photos/m32802575949_1.jpg?1748924551"
     ],
     "photo_paths": [
-      "photos/m49656661844_1.jpg",
-      "photos/m49656661844_2.jpg"
+      "photos/m32802575949_1.jpg"
     ],
     "thumbnails": [
-      "https://static.mercdn.net/c!/w=240/thumb/photos/m49656661844_1.jpg?1748409962"
+      "https://static.mercdn.net/c!/w=240/thumb/photos/m32802575949_1.jpg?1748924551"
     ],
     "item_category": {
-      "id": 1689,
-      "name": "液タブ・ペンタブ",
-      "display_order": 7,
-      "parent_category_id": 968,
-      "parent_category_name": "タブレット",
-      "root_category_id": 7,
-      "root_category_name": "スマホ・タブレット・パソコン"
+      "id": 980,
+      "name": "その他",
+      "display_order": 9999,
+      "parent_category_id": 745,
+      "parent_category_name": "キャラクターグッズ",
+      "root_category_id": 1328,
+      "root_category_name": "ゲーム・おもちゃ・グッズ"
     },
     "item_category_ntiers": {
-      "id": 1842,
-      "name": "ペンタブレット本体(板タブ)",
-      "display_order": 3,
-      "parent_category_id": 1689,
-      "parent_category_name": "液タブ・ペンタブ",
-      "root_category_id": 7,
-      "root_category_name": "スマホ・タブレット・パソコン",
-      "brand_group_id": 1
+      "id": 980,
+      "name": "その他",
+      "display_order": 9999,
+      "parent_category_id": 745,
+      "parent_category_name": "キャラクターグッズ",
+      "root_category_id": 1328,
+      "root_category_name": "ゲーム・おもちゃ・グッズ"
     },
     "parent_categories_ntiers": [
       {
-        "id": 7,
-        "name": "スマホ・タブレット・パソコン",
+        "id": 1328,
+        "name": "ゲーム・おもちゃ・グッズ",
         "display_order": 0
       },
       {
-        "id": 968,
-        "name": "タブレット",
-        "display_order": 0
-      },
-      {
-        "id": 1689,
-        "name": "液タブ・ペンタブ",
+        "id": 745,
+        "name": "キャラクターグッズ",
         "display_order": 0
       }
     ],
     "item_condition": {
-      "id": 4,
-      "name": "やや傷や汚れあり",
-      "subname": "目につく傷や汚れがある"
-    },
-    "item_brand": {
-      "id": 54524,
-      "name": "ワコム",
-      "sub_name": "wacom"
+      "id": 1,
+      "name": "新品、未使用",
+      "subname": "新品で購入し、一度も使用していない"
     },
     "colors": [],
     "shipping_payer": {
@@ -97,19 +84,19 @@
       "code": "seller"
     },
     "shipping_method": {
-      "id": 9,
-      "name": "郵便（定型、定形外、書留など）",
+      "id": 14,
+      "name": "らくらくメルカリ便",
       "is_deprecated": "no"
     },
     "shipping_from_area": {
-      "id": 14,
-      "name": "神奈川県"
+      "id": 13,
+      "name": "東京都"
     },
     "shipping_duration": {
-      "id": 2,
-      "name": "2~3日で発送",
-      "min_days": 2,
-      "max_days": 3
+      "id": 1,
+      "name": "1~2日で発送",
+      "min_days": 1,
+      "max_days": 2
     },
     "shipping_class": {
       "id": 0,
@@ -124,16 +111,16 @@
     "num_comments": 0,
     "registered_prices_count": 0,
     "comments": [],
-    "updated": 1748409962,
-    "created": 1748409962,
-    "pager_id": 5665695869,
+    "updated": 1749085296,
+    "created": 1748924551,
+    "pager_id": 5667239636,
     "liked": false,
-    "checksum": "54b585ab583a4fc35de013d580976395",
+    "checksum": "0bbdcdda2d1541e898b26284da10c358",
     "is_dynamic_shipping_fee": false,
     "application_attributes": {},
     "is_shop_item": "no",
     "hash_tags": [],
-    "is_anonymous_shipping": false,
+    "is_anonymous_shipping": true,
     "is_web_visible": true,
     "is_offerable": false,
     "is_organizational_user": false,
@@ -144,7 +131,7 @@
     "additional_services": [],
     "has_additional_service": false,
     "has_like_list": false,
-    "is_offerable_v2": true,
+    "is_offerable_v2": false,
     "item_attributes": [
       {
         "id": "f7f186cc-a16e-474b-a7a9-ee179b5565c0",
@@ -153,22 +140,6 @@
           {
             "id": "",
             "text": ""
-          },
-          {
-            "id": "",
-            "text": ""
-          }
-        ],
-        "deep_facet_filterable": false,
-        "show_on_ui": false
-      },
-      {
-        "id": "b6b9be89-648c-4af9-b3fe-1b77de4833d1",
-        "text": "ブランド",
-        "values": [
-          {
-            "id": "de9af53c-56e0-5026-96ae-76299a4acf98",
-            "text": "ワコム"
           }
         ],
         "deep_facet_filterable": false,
@@ -177,11 +148,10 @@
     ],
     "is_dismissed": false,
     "photo_descriptions": [
-      "",
       ""
     ],
-    "meta_title": "ペンタブ WACOM Bamboo fun CTH-461",
-    "meta_subtitle": "ワコム・やや傷や汚れあり"
+    "meta_title": "maimai aime グッズキャンペーン 18枚(縦9枚 横9枚)",
+    "meta_subtitle": "新品、未使用"
   },
   "meta": {}
 }

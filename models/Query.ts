@@ -1,16 +1,17 @@
 import mongoose from 'mongoose';
 
 import {
+    MercariItem,
     MercariSearchCondition
 } from '../mercari/types';
 export interface IQuery extends mongoose.Document {
     userId: string;
     name: string;
     service: string; // e.g., 'mercari'
-    searchParams: Partial<MercariSearchCondition>;
+    searchParams: MercariSearchCondition;
     isTracked: boolean;
     lastRun: Date;
-    lastResults: string[];
+    lastResults: MercariItem[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -22,12 +23,9 @@ const QuerySchema = new mongoose.Schema(
         searchParams: { type: Object, required: true },
         isTracked: { type: Boolean, default: false },
         lastRun: { type: Date, default: Date.now },
-        lastResults: [{ type: String }], // Array of item IDs from the last search
+        lastResults: [{ type: Object }],
     },
     { timestamps: true }
 );
-
-// Create a compound index for userId and name to ensure unique queries per user
-QuerySchema.index({ userId: 1, name: 1 }, { unique: true });
 
 export default mongoose.model<IQuery>('Query', QuerySchema);

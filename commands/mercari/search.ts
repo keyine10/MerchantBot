@@ -174,23 +174,24 @@ const searchCommand = {
 		),
 
 	async execute(interaction: ChatInputCommandInteraction) {
-		const keyword = interaction.options.getString('keyword');
-		const excludeKeyword = interaction.options.getString('exclude_keyword');
-		const priceMin = interaction.options.getNumber('price_min');
-		const priceMax = interaction.options.getNumber('price_max');
-		const sort = interaction.options.getString('sort');
-		const order = interaction.options.getString('order');
-		const itemConditionUsed = interaction.options.getBoolean('item_condition_used');
+		const keyword = interaction.options.getString('keyword', true);
+		const excludeKeyword = interaction.options.getString('exclude_keyword') || '';
+		const priceMin = interaction.options.getNumber('price_min') || 300;
+		const priceMax = interaction.options.getNumber('price_max') || 9999999;
+		const sort = interaction.options.getString('sort') as MercariSearchSort || MercariSearchSort.CREATED_TIME;
+		const order = interaction.options.getString('order') as MercariSearchOrder || MercariSearchOrder.DESC;
+		const itemConditionUsed = interaction.options.getBoolean('item_condition_used') || false;
+
 		const createdAfterDate = new Date();
 		createdAfterDate.setMonth(createdAfterDate.getMonth() - 1);
 
 		const requestData = {
-			keyword: keyword ? keyword : '',
-			excludeKeyword: excludeKeyword ? excludeKeyword : '',
-			priceMin: priceMin ? priceMin : 0,
-			priceMax: priceMax ? priceMax : 0,
-			sort: sort ? (sort as MercariSearchSort) : MercariSearchSort.CREATED_TIME,
-			order: order ? (order as MercariSearchOrder) : null,
+			keyword,
+			excludeKeyword,
+			priceMin,
+			priceMax,
+			sort,
+			order,
 			itemConditionId: itemConditionUsed ? [2, 3, 4, 5, 6] : [],
 			createdAfterDate: String(Math.floor(Date.now() / 1000 - 86400 * 10)),
 			createdBeforeDate: '0',

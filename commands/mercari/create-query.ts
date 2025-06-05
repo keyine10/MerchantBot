@@ -1,6 +1,8 @@
 import {
     SlashCommandBuilder,
     ChatInputCommandInteraction,
+    ApplicationIntegrationType,
+    InteractionContextType,
 } from 'discord.js';
 import mercari from '../../mercari/mercari';
 import Query from '../../models/Query';
@@ -10,55 +12,91 @@ export default {
     data: new SlashCommandBuilder()
         .setName('create-query')
         .setDescription('Create a named search query that can be rerun later')
-        .addStringOption(option => 
-            option.setName('name')
+        .setContexts([InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel])
+        .setIntegrationTypes(ApplicationIntegrationType.UserInstall, ApplicationIntegrationType.GuildInstall)
+
+        .addStringOption((option) =>
+            option
+                .setName('name')
                 .setDescription('Name of the query')
-                .setRequired(true))
-        .addStringOption(option => 
-            option.setName('keyword')
-                .setDescription('Search keyword')
-                .setRequired(true))
-        .addStringOption(option => 
-            option.setName('exclude')
-                .setDescription('Keywords to exclude'))
-        .addNumberOption(option => 
-            option.setName('pricemin')
-                .setDescription('Minimum price'))
-        .addNumberOption(option => 
-            option.setName('pricemax')
-                .setDescription('Maximum price'))
-        .addStringOption(option => 
-            option.setName('sort')
-                .setDescription('Sort by')
+                .setMaxLength(100)
+                .setMinLength(1)
+                .setRequired(true)
+        )
+        .addStringOption((option) =>
+            option
+                .setName('keyword')
+                .setDescription('Keyword to search for')
+                .setMaxLength(100)
+                .setMinLength(1)
+                .setRequired(true)
+        )
+        .addStringOption((option) =>
+            option
+                .setName('exclude_keyword')
+                .setDescription('Exclude keyword')
+                .setMaxLength(100)
+                .setMinLength(0)
+        )
+        .addNumberOption((option) =>
+            option
+                .setName('price_min')
+                .setDescription('Minimum item price')
+                .setMinValue(300)
+        )
+        .addNumberOption((option) =>
+            option
+                .setName('price_max')
+                .setDescription('Maximum item price')
+                .setMaxValue(9999999)
+        )
+        .addStringOption((option) =>
+            option
+                .setName('sort')
+                .setDescription('sort items by default/date/likes/score/price')
                 .addChoices(
-                    { name: 'Created Time', value: MercariSearchSort.CREATED_TIME },
-                    { name: 'Price', value: MercariSearchSort.PRICE },
-                    { name: 'Likes', value: MercariSearchSort.NUM_LIKES },
-                ))
-        .addStringOption(option => 
-            option.setName('order')
-                .setDescription('Sort order')
+                    (Object.keys(MercariSearchSort) as Array<keyof typeof MercariSearchSort>).map((key) => ({
+                        name: key,
+                        value: MercariSearchSort[key],
+                    }))
+                )
+        )
+        .addStringOption((option) =>
+            option
+                .setName('order')
+                .setDescription('order items in ascending/descending')
                 .addChoices(
-                    { name: 'Ascending', value: MercariSearchOrder.ASC },
-                    { name: 'Descending', value: MercariSearchOrder.DESC },
-                ))
-        .addBooleanOption(option => 
+                    (Object.keys(MercariSearchOrder) as Array<keyof typeof MercariSearchOrder>).map((key) => ({
+                        name: key,
+                        value: MercariSearchOrder[key],
+                    }))
+                )
+        )
+        .addBooleanOption((option) =>
+            option
+                .setName('item_condition_used')
+                .setDescription('search for used items only')
+        )
+        .addBooleanOption(option =>
             option.setName('track')
                 .setDescription('Track this query for notifications')),
 
     async execute(interaction: ChatInputCommandInteraction) {
         await interaction.deferReply();
-        
+
         try {
             const userId = interaction.user.id;
             const name = interaction.options.getString('name', true);
             const keyword = interaction.options.getString('keyword', true);
-            const excludeKeyword = interaction.options.getString('exclude') || '';
-            const priceMin = interaction.options.getNumber('pricemin') || 0;
-            const priceMax = interaction.options.getNumber('pricemax') || 0;
+            const excludeKeyword = interaction.options.getString('exclude_keyword') || '';
+            const priceMin = interaction.options.getNumber('price_min') || 300;
+            const priceMax = interaction.options.getNumber('price_max') || 9999999;
             const sort = interaction.options.getString('sort') as MercariSearchSort || MercariSearchSort.CREATED_TIME;
             const order = interaction.options.getString('order') as MercariSearchOrder || MercariSearchOrder.DESC;
+            const itemConditionUsed = interaction.options.getBoolean('item_condition_used') || false;
             const isTracked = interaction.options.getBoolean('track') || false;
+            const
+                itemConditionId = itemConditionUsed ? [2, 3, 4, 5, 6] : [];
 
             // Build search parameters
             const searchParams = {
@@ -68,7 +106,7 @@ export default {
                 priceMax,
                 sort,
                 order,
-                status: [MercariSearchStatus.ON_SALE]
+                itemConditionId,
             };
 
             // Test the search to ensure it works
@@ -83,7 +121,7 @@ export default {
                 name,
                 searchParams,
                 isTracked,
-                lastResults: testSearch.items?.map(item => item.id) || []
+                lastResults: []
             });
 
             await query.save();
@@ -93,13 +131,13 @@ export default {
             });
         } catch (error) {
             console.error('Error creating query:', error);
-            
+
             if (error.code === 11000) { // Duplicate key error
                 return interaction.editReply({
                     content: '⚠️ A query with this name already exists. Please choose a different name.',
                 });
             }
-            
+
             return interaction.editReply({
                 content: '⚠️ An error occurred while creating the query.',
             });

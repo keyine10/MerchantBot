@@ -10,6 +10,7 @@ import {
 	Partials
 } from 'discord.js';
 import { token } from './config.json';
+import { connectToDatabase } from './utils/db';
 
 // Extend the Client type to include a commands property
 interface MerchantBotClient extends Client {
@@ -32,7 +33,11 @@ client.once(Events.ClientReady, (readyClient) => {
 });
 
 loadCommandsAndHandle();
-client.login(token);
+
+(async () => {
+	await connectToDatabase();
+	client.login(token);
+})();
 
 function loadCommandsAndHandle() {
 	client.commands = new Collection();
