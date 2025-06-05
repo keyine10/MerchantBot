@@ -1,81 +1,123 @@
 {
   "result": "OK",
   "data": {
-    "id": "m32802575949",
+    "id": "m42277665435",
     "seller": {
-      "id": 357750052,
-      "name": "marisa",
-      "photo_url": "https://static.mercdn.net/members/357750052.jpg?1571447281",
-      "photo_thumbnail_url": "https://static.mercdn.net/thumb/members/357750052.jpg?1571447281",
+      "id": 466836523,
+      "name": "カナカナ",
+      "photo_url": "https://static.mercdn.net/members/466836523.jpg?1730062602",
+      "photo_thumbnail_url": "https://static.mercdn.net/thumb/members/466836523.jpg?1730062602",
       "register_sms_confirmation": "yes",
-      "register_sms_confirmation_at": "2023-04-04 02:38:32",
-      "created": 1436099857,
-      "num_sell_items": 4,
+      "register_sms_confirmation_at": "2020-09-17 20:45:13",
+      "created": 1600343113,
+      "num_sell_items": 647,
       "ratings": {
-        "good": 8,
+        "good": 578,
         "normal": 0,
-        "bad": 0
+        "bad": 7
       },
-      "num_ratings": 8,
-      "score": 8,
+      "num_ratings": 585,
+      "score": 571,
       "is_official": false,
-      "quick_shipper": false,
+      "quick_shipper": true,
       "is_followable": true,
       "is_blocked": false,
       "star_rating_score": 5
     },
     "converted_price": {
-      "price": 12730100,
+      "price": 2353200,
       "currency_code": "VND",
       "rate_updated": 1749089403
     },
     "status": "on_sale",
-    "name": "maimai aime グッズキャンペーン 18枚(縦9枚 横9枚)",
-    "price": 66000,
-    "description": "maimaiでらっくすグッズキャンペーン第6弾 Aimeカード18点セットです。\n\nmaimaiPRISM\nオリジナルAimeカードです(縦9枚×横9枚セットになります)\n即購入OK\n未使用未開封品です。\n\n※未開封ですが、外装フィルムに折れ目があります。\n※自宅保管のため多少の傷等ある場合がございます。\n（目視では目立つ傷がありません）\n（未開封品のため、開封しての確認はしません）\n※神経質な方、几帳面な方はご遠慮ください",
+    "name": "CHANEL シャネル 財布 キャビアスキン ココマーク シリアルナンバー有",
+    "price": 12200,
+    "description": "CHANEL財布\n\n✨キャビアスキン\n\n✨ブラック\n\n✨ココマーク\n\n\n真贋判定ショップにて購入\n\n\nシリアルナンバー有り\n\n\nリペア済み\n\n\n\n無言購入OK☆*°値下げコメント大歓迎\nお気軽にお声掛けしてください(*^^*)\n\n‼️他のサイトにも出品しておりますので突然ページを削除する事がございますのでご了承くださいませm(_ _)m\n\n✨当ページをご覧頂きありがとうございます(*^^*)\n\n\nブランド CHANEL\n\n状態  使用感はありますがまだまだ使って頂ける商品です(((o(*゜▽゜*)o)))\n\nサイズ\n縦10センチ\n横10.5センチ\n\n\n素人の採寸ですのでご了承くださいませm(_ _)m\n\n\n\n‼️サイズが合わないという理由での返品は受付できませんm(_ _)m不安な場合はブティックで試着してご購入くださいませ(⁎ᴗ͈ˬᴗ͈⁎)\n\nカラー ブラック\n\n\n.*˚❄️️❅.:❄️.*˚❄️.*˚❄️.:❅❄️.*˚\n\n\n\nよろしくお願いいたしますᏊᵒ̴̶̷̤ ‧̫ ᵒ̴̶̷̤Ꮚ",
     "photos": [
-      "https://static.mercdn.net/item/detail/orig/photos/m32802575949_1.jpg?1748924551"
+      "https://static.mercdn.net/item/detail/orig/photos/m42277665435_1.jpg?1749079141",
+      "https://static.mercdn.net/item/detail/orig/photos/m42277665435_2.jpg?1749079141",
+      "https://static.mercdn.net/item/detail/orig/photos/m42277665435_3.jpg?1749079141",
+      "https://static.mercdn.net/item/detail/orig/photos/m42277665435_4.jpg?1749079141",
+      "https://static.mercdn.net/item/detail/orig/photos/m42277665435_5.jpg?1749079141",
+      "https://static.mercdn.net/item/detail/orig/photos/m42277665435_6.jpg?1749079141",
+      "https://static.mercdn.net/item/detail/orig/photos/m42277665435_7.jpg?1749079141",
+      "https://static.mercdn.net/item/detail/orig/photos/m42277665435_8.jpg?1749079141",
+      "https://static.mercdn.net/item/detail/orig/photos/m42277665435_9.jpg?1749079141",
+      "https://static.mercdn.net/item/detail/orig/photos/m42277665435_10.jpg?1749079141",
+      "https://static.mercdn.net/item/detail/orig/photos/m42277665435_11.jpg?1749079141",
+      "https://static.mercdn.net/item/detail/orig/photos/m42277665435_12.jpg?1749079141",
+      "https://static.mercdn.net/item/detail/orig/photos/m42277665435_13.jpg?1749094067",
+      "https://static.mercdn.net/item/detail/orig/photos/m42277665435_14.jpg?1749094760"
     ],
     "photo_paths": [
-      "photos/m32802575949_1.jpg"
+      "photos/m42277665435_1.jpg",
+      "photos/m42277665435_2.jpg",
+      "photos/m42277665435_3.jpg",
+      "photos/m42277665435_4.jpg",
+      "photos/m42277665435_5.jpg",
+      "photos/m42277665435_6.jpg",
+      "photos/m42277665435_7.jpg",
+      "photos/m42277665435_8.jpg",
+      "photos/m42277665435_9.jpg",
+      "photos/m42277665435_10.jpg",
+      "photos/m42277665435_11.jpg",
+      "photos/m42277665435_12.jpg",
+      "photos/m42277665435_13.jpg",
+      "photos/m42277665435_14.jpg"
     ],
     "thumbnails": [
-      "https://static.mercdn.net/c!/w=240/thumb/photos/m32802575949_1.jpg?1748924551"
+      "https://static.mercdn.net/c!/w=240/thumb/photos/m42277665435_1.jpg?1749079141"
     ],
     "item_category": {
-      "id": 980,
-      "name": "その他",
-      "display_order": 9999,
-      "parent_category_id": 745,
-      "parent_category_name": "キャラクターグッズ",
-      "root_category_id": 1328,
-      "root_category_name": "ゲーム・おもちゃ・グッズ"
+      "id": 23,
+      "name": "小物",
+      "display_order": 8,
+      "parent_category_id": 1,
+      "parent_category_name": "レディース",
+      "root_category_id": 3088,
+      "root_category_name": "ファッション"
     },
     "item_category_ntiers": {
-      "id": 980,
+      "id": 1694,
       "name": "その他",
-      "display_order": 9999,
-      "parent_category_id": 745,
-      "parent_category_name": "キャラクターグッズ",
-      "root_category_id": 1328,
-      "root_category_name": "ゲーム・おもちゃ・グッズ"
+      "display_order": 3,
+      "parent_category_id": 242,
+      "parent_category_name": "折り財布",
+      "root_category_id": 3088,
+      "root_category_name": "ファッション",
+      "brand_group_id": 1
     },
     "parent_categories_ntiers": [
       {
-        "id": 1328,
-        "name": "ゲーム・おもちゃ・グッズ",
+        "id": 3088,
+        "name": "ファッション",
         "display_order": 0
       },
       {
-        "id": 745,
-        "name": "キャラクターグッズ",
+        "id": 1,
+        "name": "レディース",
+        "display_order": 0
+      },
+      {
+        "id": 23,
+        "name": "小物",
+        "display_order": 0
+      },
+      {
+        "id": 242,
+        "name": "折り財布",
         "display_order": 0
       }
     ],
     "item_condition": {
-      "id": 1,
-      "name": "新品、未使用",
-      "subname": "新品で購入し、一度も使用していない"
+      "id": 5,
+      "name": "傷や汚れあり",
+      "subname": "多くの人が見てわかるような傷や汚れがある"
+    },
+    "item_brand": {
+      "id": 658,
+      "name": "シャネル",
+      "sub_name": "CHANEL"
     },
     "colors": [],
     "shipping_payer": {
@@ -89,14 +131,14 @@
       "is_deprecated": "no"
     },
     "shipping_from_area": {
-      "id": 13,
-      "name": "東京都"
+      "id": 34,
+      "name": "広島県"
     },
     "shipping_duration": {
-      "id": 1,
-      "name": "1~2日で発送",
-      "min_days": 1,
-      "max_days": 2
+      "id": 2,
+      "name": "2~3日で発送",
+      "min_days": 2,
+      "max_days": 3
     },
     "shipping_class": {
       "id": 0,
@@ -107,15 +149,60 @@
       "total_fee": 0,
       "is_pickup": false
     },
-    "num_likes": 0,
-    "num_comments": 0,
+    "num_likes": 4,
+    "num_comments": 4,
     "registered_prices_count": 0,
-    "comments": [],
-    "updated": 1749085296,
-    "created": 1748924551,
-    "pager_id": 5667239636,
+    "comments": [
+      {
+        "id": 4129580581003431000,
+        "user": {
+          "id": 466836523,
+          "name": "カナカナ",
+          "photo_url": "https://static.mercdn.net/members/466836523.jpg?1730062602",
+          "photo_thumbnail_url": "https://static.mercdn.net/thumb/members/466836523.jpg?1730062602"
+        },
+        "message": "14番参照シワや汚れ等は普通にありますが酷く目立つ汚れや傷は無いと思います\n(*^^*)\n\nラムスキンですがツルっとしたレザーですm(_ _)m\n\n\nよろしくお願いいたします(⁎ᴗ͈ˬᴗ͈⁎)",
+        "created": 1749095026
+      },
+      {
+        "id": 3833998962547493400,
+        "user": {
+          "id": 234408586,
+          "name": "5k",
+          "photo_url": "https://static.mercdn.net/images/member_photo_noimage.png",
+          "photo_thumbnail_url": "https://static.mercdn.net/images/member_photo_noimage_thumb.png"
+        },
+        "message": "ありがとうございます！\n光の加減で不躾な質問してしまいすみません、ラムスキンですよね？\n表面スレや傷で目立つ箇所ございますか？？",
+        "created": 1749094521
+      },
+      {
+        "id": 7503274683112502000,
+        "user": {
+          "id": 466836523,
+          "name": "カナカナ",
+          "photo_url": "https://static.mercdn.net/members/466836523.jpg?1730062602",
+          "photo_thumbnail_url": "https://static.mercdn.net/thumb/members/466836523.jpg?1730062602"
+        },
+        "message": "コメントありがとうございます(*^^*)\n\nリペアは、角スレ等リカラーです\nm(_ _)m\n\nカード入れは13番写真画像追加しました。\n6枚収納出来ます(⁎ᴗ͈ˬᴗ͈⁎)\n\n\nよろしくお願いいたしますm(_ _)m",
+        "created": 1749094251
+      },
+      {
+        "id": 6281491291895546000,
+        "user": {
+          "id": 234408586,
+          "name": "5k",
+          "photo_url": "https://static.mercdn.net/images/member_photo_noimage.png",
+          "photo_thumbnail_url": "https://static.mercdn.net/images/member_photo_noimage_thumb.png"
+        },
+        "message": "コメント失礼いたします。商品の状態を確認させてください。\nリペア箇所はどこですか？？\nまた、カード収納箇所は何ヶ所でしょうか？",
+        "created": 1749091616
+      }
+    ],
+    "updated": 1749097943,
+    "created": 1749079113,
+    "pager_id": 5667703322,
     "liked": false,
-    "checksum": "0bbdcdda2d1541e898b26284da10c358",
+    "checksum": "c45c0acb97866313504d6d8c44dcec54",
     "is_dynamic_shipping_fee": false,
     "application_attributes": {},
     "is_shop_item": "no",
@@ -140,18 +227,107 @@
           {
             "id": "",
             "text": ""
+          },
+          {
+            "id": "",
+            "text": ""
+          },
+          {
+            "id": "",
+            "text": ""
+          },
+          {
+            "id": "",
+            "text": ""
+          },
+          {
+            "id": "",
+            "text": ""
+          },
+          {
+            "id": "",
+            "text": ""
+          },
+          {
+            "id": "",
+            "text": ""
+          },
+          {
+            "id": "",
+            "text": ""
+          },
+          {
+            "id": "",
+            "text": ""
+          },
+          {
+            "id": "",
+            "text": ""
+          },
+          {
+            "id": "",
+            "text": ""
+          },
+          {
+            "id": "",
+            "text": ""
+          },
+          {
+            "id": "",
+            "text": ""
+          },
+          {
+            "id": "",
+            "text": ""
           }
         ],
         "deep_facet_filterable": false,
+        "show_on_ui": false
+      },
+      {
+        "id": "b6b9be89-648c-4af9-b3fe-1b77de4833d1",
+        "text": "ブランド",
+        "values": [
+          {
+            "id": "fa924891-d9fa-464e-8100-f21df622fb09",
+            "text": "シャネル"
+          }
+        ],
+        "deep_facet_filterable": false,
+        "show_on_ui": false
+      },
+      {
+        "id": "e6cec404-5b34-46aa-8316-cda6695a85f3",
+        "text": "あんしん鑑定",
+        "values": [
+          {
+            "id": "a2364058-0db2-4a68-bc92-afcc2f79787e",
+            "text": "あんしん鑑定利用可能"
+          }
+        ],
+        "deep_facet_filterable": true,
         "show_on_ui": false
       }
     ],
     "is_dismissed": false,
     "photo_descriptions": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
       ""
     ],
-    "meta_title": "maimai aime グッズキャンペーン 18枚(縦9枚 横9枚)",
-    "meta_subtitle": "新品、未使用"
+    "meta_title": "CHANEL シャネル 財布 キャビアスキン ココマーク シリアルナンバー有",
+    "meta_subtitle": "シャネル・傷や汚れあり"
   },
   "meta": {}
 }

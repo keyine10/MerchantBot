@@ -2,157 +2,129 @@
   "meta": {
     "nextPageToken": "v1:1",
     "previousPageToken": "",
-    "numFound": "137",
+    "numFound": "15000",
     "properties": []
   },
   "items": [
     {
-      "id": "m73215494908",
-      "sellerId": "500135817",
+      "id": "m42277665435",
+      "sellerId": "466836523",
       "buyerId": "",
       "status": "ITEM_STATUS_ON_SALE",
-      "name": "Sanrio ピューロランド限定　マイマイ 10周年記念 ぬいぐるみ",
-      "price": "5200",
-      "created": "1748765810",
-      "updated": "1749096138",
+      "name": "CHANEL シャネル 財布 キャビアスキン ココマーク シリアルナンバー有",
+      "price": "12200",
+      "created": "1749079113",
+      "updated": "1749097943",
       "thumbnails": [
-        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m73215494908_1.jpg?1748765810"
+        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m42277665435_1.jpg?1749079141"
       ],
       "itemType": "ITEM_TYPE_MERCARI",
-      "itemConditionId": "1",
+      "itemConditionId": "5",
       "shippingPayerId": "2",
       "itemSizes": [],
       "itemBrand": {
-        "id": "3965",
-        "name": "サンリオ",
-        "subName": "サンリオ"
+        "id": "658",
+        "name": "シャネル",
+        "subName": "CHANEL"
       },
       "itemPromotions": [],
       "shopName": "",
       "itemSize": null,
-      "shippingMethodId": "9",
-      "categoryId": "10869",
+      "shippingMethodId": "14",
+      "categoryId": "1694",
       "isNoPrice": false,
       "title": "",
       "isLiked": false,
       "photos": [
         {
-          "uri": "https://static.mercdn.net/item/detail/webp/photos/m73215494908_1.jpg?1748765810"
+          "uri": "https://static.mercdn.net/item/detail/webp/photos/m42277665435_1.jpg?1749079141"
         }
       ],
       "auction": null
     },
     {
-      "id": "m64803125128",
-      "sellerId": "431679555",
+      "id": "m70254833123",
+      "sellerId": "728483604",
       "buyerId": "",
       "status": "ITEM_STATUS_ON_SALE",
-      "name": "土曜ナイトドラマ 「おっさんずラブ」公式ブック 文藝春秋",
-      "price": "450",
-      "created": "1749095190",
-      "updated": "1749095227",
+      "name": "グレイル　バックレースアップタックシャツミニワンピース　シャツワンピース　ピンク",
+      "price": "2080",
+      "created": "1748398344",
+      "updated": "1749097937",
       "thumbnails": [
-        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m64803125128_1.jpg?1749095190"
+        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m70254833123_1.jpg?1748398344"
       ],
       "itemType": "ITEM_TYPE_MERCARI",
       "itemConditionId": "3",
       "shippingPayerId": "2",
       "itemSizes": [],
-      "itemBrand": null,
-      "itemPromotions": [],
-      "shopName": "",
-      "itemSize": null,
-      "shippingMethodId": "6",
-      "categoryId": "679",
-      "isNoPrice": false,
-      "title": "",
-      "isLiked": false,
-      "photos": [
-        {
-          "uri": "https://static.mercdn.net/item/detail/webp/photos/m64803125128_1.jpg?1749095190"
-        }
-      ],
-      "auction": null
-    },
-    {
-      "id": "m68639762822",
-      "sellerId": "536700528",
-      "buyerId": "",
-      "status": "ITEM_STATUS_ON_SALE",
-      "name": "【送料込み】maimai PRISM グッズキャンペーン Aime 2種×3枚",
-      "price": "16999",
-      "created": "1748590527",
-      "updated": "1749090997",
-      "thumbnails": [
-        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m68639762822_1.jpg?1748590527"
-      ],
-      "itemType": "ITEM_TYPE_MERCARI",
-      "itemConditionId": "1",
-      "shippingPayerId": "2",
-      "itemSizes": [],
-      "itemBrand": null,
-      "itemPromotions": [],
-      "shopName": "",
-      "itemSize": null,
-      "shippingMethodId": "14",
-      "categoryId": "7289",
-      "isNoPrice": false,
-      "title": "",
-      "isLiked": false,
-      "photos": [
-        {
-          "uri": "https://static.mercdn.net/item/detail/webp/photos/m68639762822_1.jpg?1748590527"
-        }
-      ],
-      "auction": null
-    },
-    {
-      "id": "m51479793668",
-      "sellerId": "254672499",
-      "buyerId": "",
-      "status": "ITEM_STATUS_ON_SALE",
-      "name": "■新品LL■しまむら まいまい 大きいサイズ タックワンピース 中白",
-      "price": "1200",
-      "created": "1749087811",
-      "updated": "1749090326",
-      "thumbnails": [
-        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m51479793668_1.jpg?1749087811"
-      ],
-      "itemType": "ITEM_TYPE_MERCARI",
-      "itemConditionId": "1",
-      "shippingPayerId": "2",
-      "itemSizes": [],
       "itemBrand": {
-        "id": "644",
-        "name": "シマムラ",
-        "subName": "しまむら"
+        "id": "3628",
+        "name": "グレイル",
+        "subName": "GRL"
       },
       "itemPromotions": [],
       "shopName": "",
       "itemSize": null,
       "shippingMethodId": "17",
-      "categoryId": "1470",
+      "categoryId": "1458",
       "isNoPrice": false,
       "title": "",
       "isLiked": false,
       "photos": [
         {
-          "uri": "https://static.mercdn.net/item/detail/webp/photos/m51479793668_1.jpg?1749087811"
+          "uri": "https://static.mercdn.net/item/detail/webp/photos/m70254833123_1.jpg?1748398344"
         }
       ],
       "auction": null
     },
     {
-      "id": "m32802575949",
-      "sellerId": "357750052",
+      "id": "m71979497745",
+      "sellerId": "644631311",
       "buyerId": "",
       "status": "ITEM_STATUS_ON_SALE",
-      "name": "maimai aime グッズキャンペーン 18枚(縦9枚 横9枚)",
-      "price": "66000",
-      "created": "1748924551",
-      "updated": "1749085296",
+      "name": "a.v.v シアーフリルカットソー ダークブラウン ストライプ サイズ38 M",
+      "price": "2999",
+      "created": "1748218463",
+      "updated": "1749097934",
       "thumbnails": [
-        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m32802575949_1.jpg?1748924551"
+        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m71979497745_1.jpg?1748218463"
+      ],
+      "itemType": "ITEM_TYPE_MERCARI",
+      "itemConditionId": "3",
+      "shippingPayerId": "2",
+      "itemSizes": [],
+      "itemBrand": {
+        "id": "23",
+        "name": "a.v.v",
+        "subName": "a.v.v"
+      },
+      "itemPromotions": [],
+      "shopName": "",
+      "itemSize": null,
+      "shippingMethodId": "17",
+      "categoryId": "119",
+      "isNoPrice": false,
+      "title": "",
+      "isLiked": false,
+      "photos": [
+        {
+          "uri": "https://static.mercdn.net/item/detail/webp/photos/m71979497745_1.jpg?1748218463"
+        }
+      ],
+      "auction": null
+    },
+    {
+      "id": "m44657187646",
+      "sellerId": "682425497",
+      "buyerId": "",
+      "status": "ITEM_STATUS_ON_SALE",
+      "name": "sale❗フットジェルネイルシール４枚④",
+      "price": "300",
+      "created": "1749097919",
+      "updated": "1749097919",
+      "thumbnails": [
+        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m44657187646_1.jpg?1749097919"
       ],
       "itemType": "ITEM_TYPE_MERCARI",
       "itemConditionId": "1",
@@ -162,14 +134,46 @@
       "itemPromotions": [],
       "shopName": "",
       "itemSize": null,
-      "shippingMethodId": "14",
-      "categoryId": "980",
+      "shippingMethodId": "9",
+      "categoryId": "3554",
       "isNoPrice": false,
       "title": "",
       "isLiked": false,
       "photos": [
         {
-          "uri": "https://static.mercdn.net/item/detail/webp/photos/m32802575949_1.jpg?1748924551"
+          "uri": "https://static.mercdn.net/item/detail/webp/photos/m44657187646_1.jpg?1749097919"
+        }
+      ],
+      "auction": null
+    },
+    {
+      "id": "m12379407779",
+      "sellerId": "336752684",
+      "buyerId": "",
+      "status": "ITEM_STATUS_ON_SALE",
+      "name": "新品未使用✨ マイクロファイバー ピアノキーカバー お手入れクロス クリーム❤️",
+      "price": "1099",
+      "created": "1748437663",
+      "updated": "1749097917",
+      "thumbnails": [
+        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m12379407779_1.jpg?1748437663"
+      ],
+      "itemType": "ITEM_TYPE_MERCARI",
+      "itemConditionId": "1",
+      "shippingPayerId": "2",
+      "itemSizes": [],
+      "itemBrand": null,
+      "itemPromotions": [],
+      "shopName": "",
+      "itemSize": null,
+      "shippingMethodId": "17",
+      "categoryId": "4499",
+      "isNoPrice": false,
+      "title": "",
+      "isLiked": false,
+      "photos": [
+        {
+          "uri": "https://static.mercdn.net/item/detail/webp/photos/m12379407779_1.jpg?1748437663"
         }
       ],
       "auction": null
@@ -177,7 +181,7 @@
   ],
   "components": [],
   "searchCondition": {
-    "keyword": "Maimai",
+    "keyword": "O",
     "excludeKeyword": "",
     "sort": "SORT_CREATED_TIME",
     "order": "ORDER_DESC",
@@ -196,7 +200,7 @@
     "shippingMethod": [],
     "colorId": [],
     "hasCoupon": false,
-    "createdAfterDate": "1748233173",
+    "createdAfterDate": "1748233995",
     "createdBeforeDate": "0",
     "attributes": [],
     "itemTypes": [],
