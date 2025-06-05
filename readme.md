@@ -13,14 +13,14 @@
 
 ### At the moment the bot can:
 
--   🔍 **Search Mercari Listings**: Search for items on Mercari with filters like keyword, exclude keyword, price range, item condition, sorting, order.
--   📄 **Pagination**: Navigate through search results using buttons for previous and next pages (Mercari api uses endless scrolling but as pages)
--   🕒 **Custom Date Filters**: Search for items created within a specific time range. (WIP)
+-   **Search Mercari Listings**: Search for items on Mercari with filters like keyword, exclude keyword, price range, item condition, sorting, order.
+-   **Pagination**: Navigate through search results using buttons for previous and next pages (Mercari api uses endless scrolling but as pages)
 -   **Item Details**:Retrieve detailed information about a specific item on Mercari.
-
-### Todo:
-
 -   **Per user query creation and tracking**
--   **New item notification**
+### Todo:
+-   **Custom Date Filters**: Search for items created within a specific time range. (WIP)
+-   **Categories and Conditions**
+-   **Actual tracking cronjob**
+-   **Hosting**
 
 ---
