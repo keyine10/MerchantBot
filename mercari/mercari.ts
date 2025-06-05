@@ -209,7 +209,6 @@ class MercariApi {
             withProductArticles: true,
             withSearchConditionId: itemConditionId.length > 0 ? true : false,
         };
-        console.log('running request:', requestData);
 
         const data = await this.fetchMercari(
             'POST',

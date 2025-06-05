@@ -11,7 +11,9 @@ import { MercariItem, MercariItemInfo, MercariItemTranslation, MercariURLs } fro
 const pageSize = 5; // Default page size for search results
 
 // Export a function to get item details and translation and return the embed objects
-export async function getItemEmbeds(itemId: string, interaction: ChatInputCommandInteraction): Promise<{ embeds: APIEmbed[]; content?: string }> {
+export async function getItemDetailViewModel(itemId: string): Promise<{ embeds: APIEmbed[]; content?: string }> {
+	if(!itemId) throw new Error('Item ID is required');
+	
 	try {
 		const itemDetails = await mercari.getItemDetails(itemId);
 		if (!itemDetails || !itemDetails.data) {
@@ -40,7 +42,7 @@ export async function getItemEmbeds(itemId: string, interaction: ChatInputComman
 			},
 			...(thumbnailUrl && { thumbnail: { url: thumbnailUrl } }),
 			fields: [
-				{ name: 'id', value: item.id, inline: true },
+				{ name: 'id', value: `\`${item.id}\``, inline: true },
 				{ 
 					name: 'price', 
 					value: `${formatNumber(item.price)}¥ | ${formatNumber(item.converted_price.price)}${item.converted_price.currency_code}`, 
@@ -84,10 +86,10 @@ const itemCommand = {
 	async execute(interaction: ChatInputCommandInteraction) {
 		const itemId = interaction.options.getString('item_id', true);
 		await interaction.deferReply({});
-		const result = await getItemEmbeds(itemId, interaction);
+		const result = await getItemDetailViewModel(itemId);
 		await interaction.editReply(result);
 	},
-	getItemEmbeds, // export for reuse
+	getItemDetailViewModel, // export for reuse
 };
 
 export default itemCommand;

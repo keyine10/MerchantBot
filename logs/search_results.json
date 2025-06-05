@@ -2,178 +2,38 @@
   "meta": {
     "nextPageToken": "v1:1",
     "previousPageToken": "",
-    "numFound": "15000",
+    "numFound": "104",
     "properties": []
   },
   "items": [
     {
-      "id": "m42277665435",
-      "sellerId": "466836523",
+      "id": "45QqN2fGRtaqsdnaNQh2XE",
+      "sellerId": "298236595",
       "buyerId": "",
       "status": "ITEM_STATUS_ON_SALE",
-      "name": "CHANEL シャネル 財布 キャビアスキン ココマーク シリアルナンバー有",
-      "price": "12200",
-      "created": "1749079113",
-      "updated": "1749097943",
+      "name": "ニットトップ レディース ケーブルニット 長袖 ニット ローゲージ きれいめ フード付き Vネック ニットパーカー セーター 送料無料 シンプル フード付き フーディー 無地 可愛い ケーブル編み  3qqQ792",
+      "price": "2614",
+      "created": "1749109293",
+      "updated": "1749109293",
       "thumbnails": [
-        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m42277665435_1.jpg?1749079141"
+        "https://assets.mercari-shops-static.com/-/small/plain/sdT2fUPy4z83mAeR2MeenC.jpg@webp"
       ],
-      "itemType": "ITEM_TYPE_MERCARI",
-      "itemConditionId": "5",
-      "shippingPayerId": "2",
-      "itemSizes": [],
-      "itemBrand": {
-        "id": "658",
-        "name": "シャネル",
-        "subName": "CHANEL"
-      },
-      "itemPromotions": [],
-      "shopName": "",
-      "itemSize": null,
-      "shippingMethodId": "14",
-      "categoryId": "1694",
-      "isNoPrice": false,
-      "title": "",
-      "isLiked": false,
-      "photos": [
-        {
-          "uri": "https://static.mercdn.net/item/detail/webp/photos/m42277665435_1.jpg?1749079141"
-        }
-      ],
-      "auction": null
-    },
-    {
-      "id": "m70254833123",
-      "sellerId": "728483604",
-      "buyerId": "",
-      "status": "ITEM_STATUS_ON_SALE",
-      "name": "グレイル　バックレースアップタックシャツミニワンピース　シャツワンピース　ピンク",
-      "price": "2080",
-      "created": "1748398344",
-      "updated": "1749097937",
-      "thumbnails": [
-        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m70254833123_1.jpg?1748398344"
-      ],
-      "itemType": "ITEM_TYPE_MERCARI",
-      "itemConditionId": "3",
-      "shippingPayerId": "2",
-      "itemSizes": [],
-      "itemBrand": {
-        "id": "3628",
-        "name": "グレイル",
-        "subName": "GRL"
-      },
-      "itemPromotions": [],
-      "shopName": "",
-      "itemSize": null,
-      "shippingMethodId": "17",
-      "categoryId": "1458",
-      "isNoPrice": false,
-      "title": "",
-      "isLiked": false,
-      "photos": [
-        {
-          "uri": "https://static.mercdn.net/item/detail/webp/photos/m70254833123_1.jpg?1748398344"
-        }
-      ],
-      "auction": null
-    },
-    {
-      "id": "m71979497745",
-      "sellerId": "644631311",
-      "buyerId": "",
-      "status": "ITEM_STATUS_ON_SALE",
-      "name": "a.v.v シアーフリルカットソー ダークブラウン ストライプ サイズ38 M",
-      "price": "2999",
-      "created": "1748218463",
-      "updated": "1749097934",
-      "thumbnails": [
-        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m71979497745_1.jpg?1748218463"
-      ],
-      "itemType": "ITEM_TYPE_MERCARI",
-      "itemConditionId": "3",
-      "shippingPayerId": "2",
-      "itemSizes": [],
-      "itemBrand": {
-        "id": "23",
-        "name": "a.v.v",
-        "subName": "a.v.v"
-      },
-      "itemPromotions": [],
-      "shopName": "",
-      "itemSize": null,
-      "shippingMethodId": "17",
-      "categoryId": "119",
-      "isNoPrice": false,
-      "title": "",
-      "isLiked": false,
-      "photos": [
-        {
-          "uri": "https://static.mercdn.net/item/detail/webp/photos/m71979497745_1.jpg?1748218463"
-        }
-      ],
-      "auction": null
-    },
-    {
-      "id": "m44657187646",
-      "sellerId": "682425497",
-      "buyerId": "",
-      "status": "ITEM_STATUS_ON_SALE",
-      "name": "sale❗フットジェルネイルシール４枚④",
-      "price": "300",
-      "created": "1749097919",
-      "updated": "1749097919",
-      "thumbnails": [
-        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m44657187646_1.jpg?1749097919"
-      ],
-      "itemType": "ITEM_TYPE_MERCARI",
+      "itemType": "ITEM_TYPE_BEYOND",
       "itemConditionId": "1",
-      "shippingPayerId": "2",
+      "shippingPayerId": "0",
       "itemSizes": [],
       "itemBrand": null,
       "itemPromotions": [],
       "shopName": "",
       "itemSize": null,
-      "shippingMethodId": "9",
-      "categoryId": "3554",
+      "shippingMethodId": "0",
+      "categoryId": "132",
       "isNoPrice": false,
       "title": "",
       "isLiked": false,
       "photos": [
         {
-          "uri": "https://static.mercdn.net/item/detail/webp/photos/m44657187646_1.jpg?1749097919"
-        }
-      ],
-      "auction": null
-    },
-    {
-      "id": "m12379407779",
-      "sellerId": "336752684",
-      "buyerId": "",
-      "status": "ITEM_STATUS_ON_SALE",
-      "name": "新品未使用✨ マイクロファイバー ピアノキーカバー お手入れクロス クリーム❤️",
-      "price": "1099",
-      "created": "1748437663",
-      "updated": "1749097917",
-      "thumbnails": [
-        "https://static.mercdn.net/c!/w=240,f=webp/thumb/photos/m12379407779_1.jpg?1748437663"
-      ],
-      "itemType": "ITEM_TYPE_MERCARI",
-      "itemConditionId": "1",
-      "shippingPayerId": "2",
-      "itemSizes": [],
-      "itemBrand": null,
-      "itemPromotions": [],
-      "shopName": "",
-      "itemSize": null,
-      "shippingMethodId": "17",
-      "categoryId": "4499",
-      "isNoPrice": false,
-      "title": "",
-      "isLiked": false,
-      "photos": [
-        {
-          "uri": "https://static.mercdn.net/item/detail/webp/photos/m12379407779_1.jpg?1748437663"
+          "uri": "https://assets.mercari-shops-static.com/-/large/plain/sdT2fUPy4z83mAeR2MeenC.jpg@webp"
         }
       ],
       "auction": null
@@ -181,7 +41,7 @@
   ],
   "components": [],
   "searchCondition": {
-    "keyword": "O",
+    "keyword": "Qqqq",
     "excludeKeyword": "",
     "sort": "SORT_CREATED_TIME",
     "order": "ORDER_DESC",
@@ -200,7 +60,7 @@
     "shippingMethod": [],
     "colorId": [],
     "hasCoupon": false,
-    "createdAfterDate": "1748233995",
+    "createdAfterDate": "0",
     "createdBeforeDate": "0",
     "attributes": [],
     "itemTypes": [],

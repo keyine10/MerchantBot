@@ -95,8 +95,7 @@ export default {
             const order = interaction.options.getString('order') as MercariSearchOrder || MercariSearchOrder.DESC;
             const itemConditionUsed = interaction.options.getBoolean('item_condition_used') || false;
             const isTracked = interaction.options.getBoolean('track') || false;
-            const
-                itemConditionId = itemConditionUsed ? [2, 3, 4, 5, 6] : [];
+            const itemConditionId = itemConditionUsed ? [2, 3, 4, 5, 6] : [];
 
             // Build search parameters
             const searchParams = {
@@ -108,12 +107,6 @@ export default {
                 order,
                 itemConditionId,
             };
-
-            // Test the search to ensure it works
-            const testSearch = await mercari.search({
-                ...searchParams,
-                pageSize: 1
-            });
 
             // Save query to database
             const query = new Query({
