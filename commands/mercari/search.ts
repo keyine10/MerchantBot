@@ -34,7 +34,7 @@ function SearchResultViewModel(results: MercariSearchResult, interaction: ChatIn
 	}
 	const embedItems = results.items.map((item) => {
 		const embed: any = {
-			title: item.name.substring(0, 100),
+			title: item.name.length > 97 ? item.name.substring(0, 97) + '...' : item.name,
 			url: MercariURLs.ROOT_PRODUCT + item.id,
 			color: 0x0099ff,
 			fields: [
@@ -44,10 +44,8 @@ function SearchResultViewModel(results: MercariSearchResult, interaction: ChatIn
 				{ name: 'created', value: `<t:${item.created}:R>`, inline: true },
 				{ name: 'updated', value: `<t:${item.updated}:R>`, inline: true },
 			],
+			thumbnail: { url: item.thumbnails[0] }
 		};
-		if (item.photos && item.photos[0] && item.photos[0].uri) {
-			embed.thumbnail = { url: item.photos[0].uri };
-		}
 		return embed;
 	});
 
