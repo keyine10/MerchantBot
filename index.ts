@@ -15,6 +15,7 @@ const token = process.env.TOKEN;
 import { connectToDatabase } from './utils/db';
 import { CronJobService } from './services/cronjobs';
 import { MerchantBotClient } from './types/client';
+import { logger } from './utils/logger';
 
 const client = new Client({
 	intents: [
@@ -28,7 +29,7 @@ const client = new Client({
 }) as MerchantBotClient;
 
 client.once(Events.ClientReady, (readyClient) => {
-	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+	logger.log(`Ready! Logged in as ${readyClient.user.tag}`);
 	
 	// Initialize and start cron jobs
 	const cronJobService = new CronJobService(client);
@@ -59,7 +60,7 @@ function loadCommandsAndHandle() {
 			if ('data' in command && 'execute' in command) {
 				client.commands.set(command.data.name, command);
 			} else {
-				console.log(
+				logger.log(
 					`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`
 				);
 			}
@@ -73,7 +74,7 @@ function loadCommandsAndHandle() {
 		);
 
 		if (!command) {
-			console.error(
+			logger.error(
 				`No command matching ${interaction.commandName} was found.`
 			);
 			return;
@@ -82,7 +83,9 @@ function loadCommandsAndHandle() {
 		try {
 			await command.execute(interaction);
 		} catch (error) {
-			console.error(error);
+			logger.error(
+				`Error executing ${interaction.commandName}: ${error}`
+			);
 			if (interaction.replied || interaction.deferred) {
 				await interaction.followUp({
 					content:

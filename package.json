@@ -6,7 +6,9 @@
 	"scripts": {
 		"build": "rm -rf dist && npx tsc",
 		"start": "npm run build  && node dist/deploy-commands.js && node dist/index.js",
+		"start:prod": "NODE_ENV=production npm run build && NODE_ENV=production node dist/deploy-commands.js && NODE_ENV=production node dist/index.js",
 		"deploy": "npm run build && node dist/deploy-commands.js && pm2 reload dist/index.js --name merchant-bot --update-env || pm2 start dist/index.js --name merchant-bot && pm2 save",
+		"deploy:prod": "NODE_ENV=production npm run build && NODE_ENV=production node dist/deploy-commands.js && NODE_ENV=production pm2 reload dist/index.js --name merchant-bot --update-env || NODE_ENV=production pm2 start dist/index.js --name merchant-bot && pm2 save",
 		"redeploy-commands": "npm run build && node dist/deploy-commands.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},

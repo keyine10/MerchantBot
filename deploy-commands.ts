@@ -4,6 +4,7 @@ dotenv.config();
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { logger } from './utils/logger';
 
 const commands: any[] = [];
 const foldersPath = path.join(__dirname, 'commands');
@@ -20,7 +21,7 @@ for (const folder of commandFolders) {
 		if ('data' in command && 'execute' in command) {
 			commands.push(command.data.toJSON());
 		} else {
-			console.log(
+			logger.log(
 				`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`
 			);
 		}
@@ -31,17 +32,17 @@ const rest = new REST().setToken(process.env.TOKEN || '');
 
 (async () => {
 	try {
-		console.log(
+		logger.log(
 			`Started refreshing ${commands.length} application (/) commands.`
 		);
 		const data: any = await rest.put(
 			Routes.applicationCommands(process.env.CLIENT_ID || ''),
 			{ body: commands }
 		);
-		console.log(
+		logger.log(
 			`Successfully reloaded ${data.length} application (/) commands.`
 		);
 	} catch (error) {
-		console.error(error);
+		logger.error(error);
 	}
 })();

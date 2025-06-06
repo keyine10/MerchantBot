@@ -7,6 +7,7 @@ import {
 } from 'discord.js';
 import Query, { IQuery } from '../../models/Query';
 import { MerchantBotClient } from '../../types/client';
+import logger from '../../utils/logger';
 
 export default {
     data: new SlashCommandBuilder()
@@ -60,7 +61,7 @@ export default {
                         content: '✅ Manual check completed. You should have received DMs for any new items found.',
                     });
                 } catch (error) {
-                    console.error('Error during manual check:', error);
+                    logger.error('Error during manual check:', error);
                     await interaction.followUp({
                         content: '⚠️ Manual check initiated but there may have been some errors.',
                     });
@@ -72,7 +73,7 @@ export default {
             }
 
         } catch (error) {
-            console.error('Error in check-tracked command:', error);
+            logger.error('Error in check-tracked command:', error);
             await interaction.editReply({
                 content: 'There was an error while checking your queries!',
             });

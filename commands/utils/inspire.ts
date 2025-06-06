@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, MessageFlags, ChatInputCommandInteraction, InteractionContextType, ApplicationIntegrationType } from 'discord.js';
+import logger from '../../utils/logger';
 
 const inspireCommand = {
 	data: new SlashCommandBuilder()
@@ -23,7 +24,7 @@ const inspireCommand = {
 				files: [{ attachment: buffer, name: 'inspire.jpg' }],
 			});
 		} catch (error) {
-			console.error(error);
+			logger.error("Error fetching inspirational image:", error);
 			await interaction.editReply({
 				content: 'Sorry, I could not fetch an inspirational image at the moment.',
 			});

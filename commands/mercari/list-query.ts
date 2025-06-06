@@ -19,6 +19,7 @@ import {
   MercariSearchOrder,
   MercariSearchSort,
 } from "../../mercari/types";
+import logger from "../../utils/logger";
 
 function buildQueryEmbedAndSelectRow(
   queries: IQuery[],
@@ -182,10 +183,10 @@ async function handleRunQuery(
         priceMax,
         sort,
         order,
-        itemConditionUsed,
+              itemConditionUsed,
       });
     } catch (err) {
-      console.log(err);
+      logger.error("Failed to run search:", err);
       await componentInteraction.followUp({
         content: "Failed to run search." + err,
         flags: "Ephemeral",
@@ -380,7 +381,7 @@ export default {
               | StringSelectMenuInteraction
           ) => {
             await componentInteraction.deferUpdate();
-            console.log(`Component ${componentInteraction.customId} clicked`);
+            logger.log(`Component ${componentInteraction.customId} clicked`);
             const customId = componentInteraction.customId.replace(
               `:${interaction.id}`,
               ""
@@ -449,7 +450,7 @@ export default {
         });
       }
     } catch (error) {
-      console.error("Error in list-queries command:", error);
+      logger.error("Error in list-queries command:", error);
       await interaction.editReply({
         content: "There was an error while executing this command!",
       });

@@ -11,6 +11,7 @@ import {
   MercariSearchSort,
   MercariSearchStatus,
 } from "../../mercari/types";
+import { logger } from "../../utils/logger";
 
 export default {
   data: new SlashCommandBuilder()
@@ -186,7 +187,7 @@ export default {
         }. Note that some search parameters will be overwritten for the best tracking result.\nThe first time the query is run, items that were created in the last 24 hours will be returned.`,
       });
     } catch (error) {
-      console.error("Error creating query:", error);
+      logger.error("Error creating query:", error);
 
       if (error.code === 11000) {
         // Duplicate key error

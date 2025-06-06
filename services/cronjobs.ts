@@ -11,6 +11,7 @@ import {
 } from "../mercari/types";
 import { MerchantBotClient } from "../types/client";
 import searchCommand from "../commands/mercari/search";
+import { logger } from '../utils/logger';
 
 export class CronJobService {
   private client: MerchantBotClient;
@@ -23,26 +24,26 @@ export class CronJobService {
 
   start() {
     if (this.isRunning) {
-      console.log("Cron jobs are already running");
+      logger.log("Cron jobs are already running");
       return;
     }
 
-    console.log("Starting cron jobs...");
+    logger.log("Starting cron jobs...");
 
     // Read cron schedule from environment variable, default to every 15 minutes
     const cronSchedule = process.env.CRON_SCHEDULE || "*/15 * * * *";
     this.cronTask = cron.schedule(cronSchedule, async () => {
-      console.log("Running tracked queries check...");
+      logger.log("Running tracked queries check...");
       await this.checkTrackedQueries();
     });
 
     this.isRunning = true;
-    console.log("Cron jobs started successfully");
+    logger.log("Cron jobs started successfully");
   }
 
   stop() {
     if (!this.isRunning) {
-      console.log("Cron jobs are not running");
+      logger.log("Cron jobs are not running");
       return;
     }
 
@@ -51,12 +52,12 @@ export class CronJobService {
       this.cronTask = null;
     }
     this.isRunning = false;
-    console.log("Cron jobs stopped");
+    logger.log("Cron jobs stopped");
   }
 
   public async checkTrackedQueries(userId?: string) {
     if (userId)
-      console.log(`Manually checking tracked queries for user: ${userId}`);
+      logger.log(`Manually checking tracked queries for user: ${userId}`);
     try {
       // Get all tracked queries from database
       let trackedQueries: IQuery[] = await Query.find({ isTracked: true });
@@ -68,11 +69,11 @@ export class CronJobService {
       }
 
       if (trackedQueries.length === 0) {
-        console.log("No tracked queries found");
+        logger.log("No tracked queries found");
         return;
       }
 
-      console.log(`Found ${trackedQueries.length} tracked queries`);
+      logger.log(`Found ${trackedQueries.length} tracked queries`);
 
       // Process all queries and collect updates
       const bulkUpdates: any[] = [];
@@ -99,9 +100,9 @@ export class CronJobService {
 
       // Execute all database updates in a single batch operation
       if (bulkUpdates.length > 0) {
-        console.log(`Executing batch update for ${bulkUpdates.length} queries`);
+        logger.log(`Executing batch update for ${bulkUpdates.length} queries`);
         await Query.bulkWrite(bulkUpdates);
-        console.log("Batch update completed successfully");
+        logger.log("Batch update completed successfully");
       }
 
       // Send all notifications
@@ -115,7 +116,7 @@ export class CronJobService {
         await this.delay(500);
       }
     } catch (error) {
-      console.error("Error checking tracked queries:", error);
+      logger.error("Error checking tracked queries:", error);
     }
   }
 
@@ -128,17 +129,18 @@ export class CronJobService {
     };
   } | null> {
     try {
-      console.log(`Processing query: ${query.name} for user: ${query.userId}`);
+      logger.log(`Processing query: ${query.name} for user: ${query.userId}`);
 
       // Perform search with the query parameters - only get items created after last run
       const now = new Date();
-      console.log(`lastRun: ${query.lastRun}, now: ${now}`);
-      const lastRunTimestamp = Math.floor(query.lastRun.getTime() / 1000);
-
-      console.log(
+      const lastRunTimestamp = query.lastRun
+        ? Math.floor(query.lastRun.getTime() / 1000)
+        : Math.floor((now.getTime() - 24 * 60 * 60 * 1000) / 1000); // Default to 24 hours ago if no last run
+      logger.log(`lastRun: ${query.lastRun}, now: ${now}`);
+      logger.log(
         `Last run timestamp for query ${query.name}: ${lastRunTimestamp}`
       );
-      console.log("last run:", query.lastRun.toTimeString());
+      logger.log("last run:", query.lastRun.toTimeString());
       const searchResult: MercariSearchResult = await mercariInstance.search({
         keyword: query.searchParams.keyword,
         excludeKeyword: query.searchParams.excludeKeyword,
@@ -169,14 +171,14 @@ export class CronJobService {
       });
 
       if (!searchResult.items || searchResult.items.length === 0) {
-        console.log(`No new items found for query: ${query.name}`);
+        logger.log(`No new items found for query: ${query.name}`);
         return { bulkUpdate };
       }
 
       // Get the user for notification
       const user = await this.client.users.fetch(query.userId);
       if (!user) {
-        console.log(`User not found: ${query.userId}`);
+        logger.log(`User not found: ${query.userId}`);
         return null;
       }
 
@@ -185,7 +187,7 @@ export class CronJobService {
         notification: { user, query, searchResult },
       };
     } catch (error) {
-      console.error(`Error processing query ${query.name}:`, error);
+      logger.error(`Error processing query ${query.name}:`, error);
       return null;
     }
   }
@@ -245,11 +247,11 @@ export class CronJobService {
         await this.delay(500);
       }
 
-      console.log(
+      logger.log(
         `Sent query results to user ${user.username} for query: ${query.name}`
       );
     } catch (error) {
-      console.error(`Error sending query results to user ${user.id}:`, error);
+      logger.error(`Error sending query results to user ${user.id}:`, error);
     }
   }
 

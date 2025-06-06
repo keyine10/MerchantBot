@@ -24,6 +24,7 @@ import {
   MercariSearchCondition,
 } from "../../mercari/types";
 import itemCommand from "./item";
+import logger from '../../utils/logger';
 
 // Add missing enums for sort and order
 
@@ -170,7 +171,7 @@ async function runSearch(
     createdAfterDate,
     createdBeforeDate,
   };
-  console.log(requestData);
+  logger.log(JSON.stringify(requestData));
   let selectedItem = "";
   let pageToken = "";
 
@@ -217,7 +218,7 @@ async function runSearch(
         buttonInteraction: ButtonInteraction | StringSelectMenuInteraction
       ) => {
         await buttonInteraction.deferUpdate();
-        console.log(`Button ${buttonInteraction.customId} clicked`);
+        logger.log(`Button ${buttonInteraction.customId} clicked`);
         const buttonCustomId = buttonInteraction.customId.replace(
           `:${interaction.id}`,
           ""
@@ -265,7 +266,7 @@ async function runSearch(
           case "select-item": {
             if (buttonInteraction.isStringSelectMenu()) {
               const selectedItemId = buttonInteraction.values[0] || "";
-              console.log(`Item ${selectedItemId} selected`);
+              logger.log(`Item ${selectedItemId} selected`);
               const result = await itemCommand.getItemDetailViewModel(
                 selectedItemId
               );
