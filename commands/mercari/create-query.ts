@@ -134,6 +134,16 @@ export default {
             "⚠️ Minimum price cannot be greater than maximum price. Please adjust your price range.",
         });
       }
+
+      // Check if user already has 5 queries
+      const userQueryCount = await Query.countDocuments({ userId });
+      if (userQueryCount >= 5) {
+        return interaction.editReply({
+          content:
+            "⚠️ You can only have up to 5 queries for now. Please delete an existing query before creating a new one.",
+        });
+      }
+      
       // Check if a query with the same keyword already exists for this user
       const existingQuery = await Query.findOne({
         userId,
