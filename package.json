@@ -4,7 +4,7 @@
 	"description": "discord bot for searching on mercarijp",
 	"main": "dist/index.js",
 	"scripts": {
-		"build": "tsc",
+		"build": "npx tsc",
 		"start": "rm -rf dist && npm run build  && node dist/deploy-commands.js && node dist/index.js",
 		"redeploy-commands": "npm run build && node dist/deploy-commands.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
