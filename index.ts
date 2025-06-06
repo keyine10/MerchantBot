@@ -11,7 +11,7 @@ import {
 } from 'discord.js';
 import { token } from './config.json';
 import { connectToDatabase } from './utils/db';
-import { CronJobService } from './services/cronJobs';
+import { CronJobService } from './services/cronjobs';
 import { MerchantBotClient } from './types/client';
 
 const client = new Client({

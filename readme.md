@@ -1,6 +1,6 @@
 # Merchant Bot
 
-## Merchant Bot is a Discord Bot for interacting with the Mercari Search API.
+A Discord bot for searching and tracking Mercari listings with advanced filtering and automated notifications.
 
 <div style="display: flex; align-items: start;">
     <img src="./assets/search.png" alt="Search Results" width="200">
@@ -11,16 +11,16 @@
 
 ## Features
 
-### At the moment the bot can:
+- **Advanced Search** - Filter by keyword, price range, condition, and sorting options
+- **Paginated Results** - Navigate through search results with interactive buttons
+- **Item Details** - View comprehensive information for any listing
+- **Query Management** - Save, track, and reuse custom search queries
+- **Automated Tracking** - Get notifications when new items match your saved queries
 
--   **Search Mercari Listings**: Search for items on Mercari with filters like keyword, exclude keyword, price range, item condition, sorting, order.
--   **Pagination**: Navigate through search results using buttons for previous and next pages (Mercari api uses endless scrolling but as pages)
--   **Item Details**:Retrieve detailed information about a specific item on Mercari.
--   **Per user query creation and tracking**
-### Todo:
--   **Custom Date Filters**: Search for items created within a specific time range. (WIP)
--   **Categories and Conditions**
--   **Actual tracking cronjob**
--   **Hosting**
+## Todo
+- Display more item images for item details
+- Custom date range filters
+- Category and condition improvements  
+- Deployment
 
 ---

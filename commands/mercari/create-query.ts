@@ -26,7 +26,7 @@ export default {
         .addStringOption((option) =>
             option
                 .setName('keyword')
-                .setDescription('Keyword to search for')
+                .setDescription('Keyword to search for, must be different from existing queries')
                 .setMaxLength(100)
                 .setMinLength(1)
                 .setRequired(true)
@@ -41,19 +41,19 @@ export default {
         .addNumberOption((option) =>
             option
                 .setName('price_min')
-                .setDescription('Minimum item price')
+                .setDescription('Minimum item price, default:300')
                 .setMinValue(300)
         )
         .addNumberOption((option) =>
             option
                 .setName('price_max')
-                .setDescription('Maximum item price')
+                .setDescription('Maximum item price, default:9999999')
                 .setMaxValue(9999999)
         )
         .addStringOption((option) =>
             option
                 .setName('sort')
-                .setDescription('sort items by default/date/likes/score/price')
+                .setDescription('Sort items by default/date/likes/score/price, not guaranteed to work')
                 .addChoices(
                     (Object.keys(MercariSearchSort) as Array<keyof typeof MercariSearchSort>).map((key) => ({
                         name: key,
@@ -79,7 +79,8 @@ export default {
         )
         .addBooleanOption(option =>
             option.setName('track')
-                .setDescription('Track this query for notifications')),
+                .setDescription('Track this query for notifications')
+                .setRequired(true)),
 
     async execute(interaction: ChatInputCommandInteraction) {
         await interaction.deferReply();
