@@ -45,6 +45,9 @@ function buildQueryEmbedAndSelectRow(
       if (excludeKeyword) fieldValue += `\nExclude: ${excludeKeyword}`;
       if (priceMin) fieldValue += `\nMin Price: ${priceMin}¥`;
       if (priceMax) fieldValue += `\nMax Price: ${priceMax}¥`;
+      if(query.lastRun) {
+        fieldValue += `\nLast Run: <t:${Math.floor(query.lastRun.getTime()/1000)}:R>`;
+      }
       fieldValue += `\nTracked: ${query.isTracked ? "✅" : "❌"}`;
       embed.addFields({ name: query.name, value: fieldValue });
     });
@@ -206,6 +209,7 @@ async function handleToggleTrackQuery(
   const query = await Query.findOne({ _id: selectedQueryId });
   if (selectedQueryId && query) {
     query.isTracked = !query.isTracked;
+    query.lastRun = new Date(Date.now());
     await query.save();
     await componentInteraction.followUp({
       content: `Tracking for "${query.name}" is now ${

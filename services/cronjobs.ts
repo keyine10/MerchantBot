@@ -132,7 +132,9 @@ export class CronJobService {
 
       // Perform search with the query parameters - only get items created after last run
       const now = new Date();
-      const lastRunTimestamp = Math.floor(query.lastRun.getTime() / 1000)
+      console.log(`lastRun: ${query.lastRun}, now: ${now}`);
+      const lastRunTimestamp = Math.floor(query.lastRun.getTime() / 1000);
+
       console.log(
         `Last run timestamp for query ${query.name}: ${lastRunTimestamp}`
       );
@@ -163,13 +165,6 @@ export class CronJobService {
 
       // Only take items that were created after the last run timestamp
       searchResult.items = searchResult.items.filter((item: MercariItem) => {
-        console.log(
-          `Checking item ${item.id} created at ${
-            item.created
-          }, last run at ${lastRunTimestamp},  comparison: ${
-            Number(item.created) > lastRunTimestamp
-          }`
-        );
         return Number(item.created) > lastRunTimestamp;
       });
 
@@ -210,7 +205,8 @@ export class CronJobService {
         .setDescription(
           hasNewItems
             ? `🆕 Found ${newItems.length} new items matching your tracked query!`
-            : `Found ${searchResult.meta.numFound} items matching your tracked query` + "\nCheck item details with /item <item_id> command."
+            : `Found ${searchResult.meta.numFound} items matching your tracked query` +
+                "\nCheck item details with /item <item_id> command."
         )
         .setTimestamp();
 

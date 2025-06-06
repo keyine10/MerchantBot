@@ -174,7 +174,7 @@ export default {
         name,
         searchParams,
         isTracked,
-        lastRun: new Date(Date.now() - 86400),
+        lastRun: new Date(Date.now() - 24 * 60 * 60 * 1000),
         lastResults: [],
       });
 
