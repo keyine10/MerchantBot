@@ -11,11 +11,8 @@ import {
 } from 'discord.js';
 import { token } from './config.json';
 import { connectToDatabase } from './utils/db';
-
-// Extend the Client type to include a commands property
-interface MerchantBotClient extends Client {
-	commands: Collection<string, any>;
-}
+import { CronJobService } from './services/cronJobs';
+import { MerchantBotClient } from './types/client';
 
 const client = new Client({
 	intents: [
@@ -30,6 +27,11 @@ const client = new Client({
 
 client.once(Events.ClientReady, (readyClient) => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+	
+	// Initialize and start cron jobs
+	const cronJobService = new CronJobService(client);
+	client.cronService = cronJobService;
+	cronJobService.start();
 });
 
 loadCommandsAndHandle();

@@ -5,7 +5,7 @@
 	"main": "dist/index.js",
 	"scripts": {
 		"build": "tsc",
-		"start": "npm run build  && node dist/deploy-commands.js && node dist/index.js",
+		"start": "rm -rf dist && npm run build  && node dist/deploy-commands.js && node dist/index.js",
 		"redeploy-commands": "npm run build && node dist/deploy-commands.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
@@ -27,10 +27,12 @@
 	},
 	"dependencies": {
 		"@types/mongoose": "^5.11.96",
-		"discord.js": "^14.18.0",
+		"@types/node-cron": "^3.0.11",
+		"discord.js": "^14.19.3",
 		"dotenv": "^16.4.7",
 		"jose": "^6.0.10",
 		"mongoose": "^8.15.1",
+		"node-cron": "^4.1.0",
 		"tsconfig": "^7.0.0",
 		"uuid": "^11.1.0"
 	}

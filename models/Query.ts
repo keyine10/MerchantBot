@@ -1,31 +1,31 @@
-import mongoose from 'mongoose';
+import mongoose, { ObjectId } from "mongoose";
 
-import {
-    MercariItem,
-    MercariSearchCondition
-} from '../mercari/types';
+import { MercariItem, MercariSearchCondition } from "../mercari/types";
+
 export interface IQuery extends mongoose.Document {
-    userId: string;
-    name: string;
-    service: string; // e.g., 'mercari'
-    searchParams: MercariSearchCondition;
-    isTracked: boolean;
-    lastRun: Date;
-    lastResults: MercariItem[];
-    createdAt: Date;
-    updatedAt: Date;
+  _id: ObjectId;
+  userId: string;
+  name: string;
+  service: string; // e.g., 'mercari'
+  searchParams: MercariSearchCondition;
+  isTracked: boolean;
+  lastRun: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const QuerySchema = new mongoose.Schema(
-    {
-        userId: { type: String, required: true },
-        name: { type: String, required: true },
-        searchParams: { type: Object, required: true },
-        isTracked: { type: Boolean, default: false },
-        lastRun: { type: Date, default: Date.now },
-        lastResults: [{ type: Object }],
-    },
-    { timestamps: true }
+  {
+    userId: { type: String, required: true },
+    name: { type: String, required: true },
+    searchParams: { type: Object, required: true },
+    isTracked: { type: Boolean, default: false },
+    lastRun: { type: Date, default: Date.now },
+  },
+  { timestamps: true }
 );
 
-export default mongoose.model<IQuery>('Query', QuerySchema);
+// Create compound unique index on userId and searchParams.keyword
+QuerySchema.index({ userId: 1, 'searchParams.keyword': 1 }, { unique: true });
+
+export default mongoose.model<IQuery>("Query", QuerySchema);

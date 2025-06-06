@@ -86,9 +86,9 @@ export default {
 
         try {
             const userId = interaction.user.id;
-            const name = interaction.options.getString('name', true);
-            const keyword = interaction.options.getString('keyword', true);
-            const excludeKeyword = interaction.options.getString('exclude_keyword') || '';
+            const name = interaction.options.getString('name', true).trim();
+            const keyword = interaction.options.getString('keyword', true).trim();
+            const excludeKeyword = interaction.options.getString('exclude_keyword')?.trim() || '';
             const priceMin = interaction.options.getNumber('price_min') || 300;
             const priceMax = interaction.options.getNumber('price_max') || 9999999;
             const sort = interaction.options.getString('sort') as MercariSearchSort || MercariSearchSort.CREATED_TIME;
@@ -96,6 +96,18 @@ export default {
             const itemConditionUsed = interaction.options.getBoolean('item_condition_used') || false;
             const isTracked = interaction.options.getBoolean('track') || false;
             const itemConditionId = itemConditionUsed ? [2, 3, 4, 5, 6] : [];
+
+            // Check if a query with the same keyword already exists for this user
+            const existingQuery = await Query.findOne({ 
+                userId, 
+                'searchParams.keyword': keyword 
+            });
+
+            if (existingQuery) {
+                return interaction.editReply({
+                    content: `⚠️ You already have a query with the keyword "${keyword}". Each keyword must be unique per user. Please use a different keyword.`,
+                });
+            }
 
             // Build search parameters
             const searchParams = {
@@ -126,9 +138,16 @@ export default {
             console.error('Error creating query:', error);
 
             if (error.code === 11000) { // Duplicate key error
-                return interaction.editReply({
-                    content: '⚠️ A query with this name already exists. Please choose a different name.',
-                });
+                // Check if the error is specifically about the keyword uniqueness
+                if (error.message.includes('searchParams.keyword')) {
+                    return interaction.editReply({
+                        content: `⚠️ You already have a query with this keyword. Each keyword must be unique per user. Please use a different keyword.`,
+                    });
+                } else {
+                    return interaction.editReply({
+                        content: '⚠️ A query with this name already exists. Please choose a different name.',
+                    });
+                }
             }
 
             return interaction.editReply({
