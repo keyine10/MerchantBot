@@ -143,7 +143,7 @@ export default {
             "⚠️ You can only have up to 5 queries for now. Please delete an existing query before creating a new one.",
         });
       }
-      
+
       // Check if a query with the same keyword already exists for this user
       const existingQuery = await Query.findOne({
         userId,
@@ -168,12 +168,13 @@ export default {
       };
 
       // Save query to database
+
       const query = new Query({
         userId,
         name,
         searchParams,
         isTracked,
-        lastRun: Math.floor(Date.now() / 1000 - 86400),
+        lastRun: new Date(Date.now() - 86400),
         lastResults: [],
       });
 
