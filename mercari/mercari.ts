@@ -17,6 +17,7 @@ import {
     MercariSearchCondition,
 } from './types';
 import { getHeadersWithDpop } from './utils';
+import { saveLog } from '../utils/saveLog';
 
 class MercariApi {
     uuid: string = '';
@@ -61,11 +62,8 @@ class MercariApi {
             httpUrl,
             requestData
         );
-        fs.writeFileSync(
-            'logs/item_info.json',
-            JSON.stringify(data, null, 2),
-            'utf-8'
-        );
+        saveLog('logs/item_info.json', data);
+
         return data as MercariItemInfo;
     }
 
@@ -82,11 +80,7 @@ class MercariApi {
             httpUrl,
             requestData
         );
-        fs.writeFileSync(
-            'logs/item_translation.json',
-            JSON.stringify(data, null, 2),
-            'utf-8'
-        );
+        saveLog('logs/item_translation.json', data);
         return data;
     }
 
@@ -216,11 +210,7 @@ class MercariApi {
             requestData
         );
 
-        fs.writeFileSync(
-            'logs/search_results.json',
-            JSON.stringify(data, null, 2),
-            'utf-8'
-        );
+        saveLog('logs/search_results.json', data);
         return data as MercariSearchResult;
     }
 }
