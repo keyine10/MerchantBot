@@ -9,7 +9,9 @@ import {
 	ChatInputCommandInteraction,
 	Partials
 } from 'discord.js';
-import { token } from './config.json';
+import dotenv from 'dotenv';
+dotenv.config();
+const token = process.env.TOKEN;
 import { connectToDatabase } from './utils/db';
 import { CronJobService } from './services/cronjobs';
 import { MerchantBotClient } from './types/client';

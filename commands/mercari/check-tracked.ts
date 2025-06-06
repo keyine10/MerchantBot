@@ -58,19 +58,16 @@ export default {
                     await client.cronService.checkTrackedQueries(userId);
                     await interaction.followUp({
                         content: '✅ Manual check completed. You should have received DMs for any new items found.',
-                        ephemeral: true
                     });
                 } catch (error) {
                     console.error('Error during manual check:', error);
                     await interaction.followUp({
-                        content: '⚠️ Manual check initiated but there may have been some errors. Check your DMs.',
-                        ephemeral: true
+                        content: '⚠️ Manual check initiated but there may have been some errors.',
                     });
                 }
             } else {
                 await interaction.followUp({
                     content: '⚠️ Cron service not available. Please try again later.',
-                    ephemeral: true
                 });
             }
 

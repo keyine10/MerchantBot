@@ -19,7 +19,7 @@ export default {
 
         try {
             // Check if user has permission to view cron status (you can modify this logic)
-            const allowedUserIds = ['YOUR_USER_ID']; // Replace with actual admin user IDs
+            const allowedUserIds = process.env.ALLOWED_USER_IDS ? process.env.ALLOWED_USER_IDS.split(',') : [];
             
             if (!allowedUserIds.includes(interaction.user.id)) {
                 return interaction.editReply({

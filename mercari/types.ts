@@ -282,6 +282,15 @@ export enum MercariItemConditionId {
     BAD = 6,
 }
 
+export const MercariItemConditionIdObject = {
+    [MercariItemConditionId.NEW]: 'New',
+    [MercariItemConditionId.ALMOSTNEW]: 'Almost New',
+    [MercariItemConditionId.NOSCRATCHES]: 'No Scratches',
+    [MercariItemConditionId.SMALLSCRATCHES]: 'Small Scratches',
+    [MercariItemConditionId.SCRATCHED]: 'Scratched',
+    [MercariItemConditionId.BAD]: 'Bad Condition',
+};
+
 export enum MercariSearchCategoryID {
     PHONES_TABLETS_COMPUTERS = 7,
     PC_PERIPHERALS = 841,

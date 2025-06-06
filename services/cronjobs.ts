@@ -2,8 +2,15 @@ import cron from "node-cron";
 import { Client, EmbedBuilder, User } from "discord.js";
 import Query, { IQuery } from "../models/Query";
 import mercariInstance from "../mercari/mercari";
-import { MercariSearchResult, MercariItem } from "../mercari/types";
+import {
+  MercariSearchResult,
+  MercariItem,
+  MercariItemConditionId,
+  MercariItemConditionIdObject,
+  MercariURLs,
+} from "../mercari/types";
 import { MerchantBotClient } from "../types/client";
+import searchCommand from "../commands/mercari/search";
 
 export class CronJobService {
   private client: MerchantBotClient;
@@ -22,8 +29,9 @@ export class CronJobService {
 
     console.log("Starting cron jobs...");
 
-    // Schedule job to run every 5 minutes
-    this.cronTask = cron.schedule("*/5 * * * *", async () => {
+    // Read cron schedule from environment variable, default to every 15 minutes
+    const cronSchedule = process.env.CRON_SCHEDULE || "*/15 * * * *";
+    this.cronTask = cron.schedule(cronSchedule, async () => {
       console.log("Running tracked queries check...");
       await this.checkTrackedQueries();
     });
@@ -124,9 +132,7 @@ export class CronJobService {
 
       // Perform search with the query parameters - only get items created after last run
       const now = new Date();
-      const lastRunTimestamp = query.lastRun
-        ? Math.floor(query.lastRun.getTime() / 1000)
-        : Math.floor((now.getTime() - 24 * 60 * 60 * 1000) / 1000); // Default to 24 hours ago if no last run
+      const lastRunTimestamp = Math.floor(query.lastRun.getTime() / 1000)
       console.log(
         `Last run timestamp for query ${query.name}: ${lastRunTimestamp}`
       );
@@ -155,7 +161,7 @@ export class CronJobService {
         },
       };
 
-      // Filter items that were created before the last run timestamp
+      // Only take items that were created after the last run timestamp
       searchResult.items = searchResult.items.filter((item: MercariItem) => {
         console.log(
           `Checking item ${item.id} created at ${
@@ -197,7 +203,6 @@ export class CronJobService {
     try {
       const newItems = searchResult.items;
       const hasNewItems = newItems.length > 0;
-      const itemsToShow = newItems.slice(0, 5);
 
       const embed = new EmbedBuilder()
         .setTitle(`🔔 Tracked Query: ${query.name}`)
@@ -205,11 +210,10 @@ export class CronJobService {
         .setDescription(
           hasNewItems
             ? `🆕 Found ${newItems.length} new items matching your tracked query!`
-            : `Found ${searchResult.meta.numFound} items matching your tracked query`
+            : `Found ${searchResult.meta.numFound} items matching your tracked query` + "\nCheck item details with /item <item_id> command."
         )
         .setTimestamp();
 
-      // Add query parameters info
       let queryInfo = "";
       if (query.searchParams.keyword)
         queryInfo += `**Keyword:** ${query.searchParams.keyword}\n`;
@@ -219,7 +223,14 @@ export class CronJobService {
         queryInfo += `**Min Price:** ${query.searchParams.priceMin}¥\n`;
       if (query.searchParams.priceMax)
         queryInfo += `**Max Price:** ${query.searchParams.priceMax}¥\n`;
-
+      if (
+        query.searchParams.itemConditionId &&
+        query.searchParams.itemConditionId.length > 0
+      ) {
+        queryInfo += `**Condition:** ${query.searchParams.itemConditionId
+          .map((id) => MercariItemConditionIdObject[id])
+          .join(", ")}\n`;
+      }
       if (queryInfo) {
         embed.addFields({
           name: "Search Parameters",
@@ -227,24 +238,17 @@ export class CronJobService {
           inline: false,
         });
       }
+      await user.send({ embeds: [embed] });
 
-      // Add items
-      for (const [index, item] of itemsToShow.entries()) {
-        const isNew =
-          hasNewItems || newItems.some((newItem) => newItem.id === item.id);
-        const itemValue = `**Price:** ${item.price}¥\n**ID:** \`${
-          item.id
-        }\`\n**Status:** ${item.status}${isNew ? " 🆕" : ""}`;
-        embed.addFields({
-          name: `${index + 1}. ${item.name.substring(0, 100)}${
-            item.name.length > 100 ? "..." : ""
-          }`,
-          value: itemValue,
-          inline: true,
-        });
+      // Add items and send in batches of 5 embeds per message
+      const itemsPerMessage = 5;
+      for (let i = 0; i < newItems.length; i += itemsPerMessage) {
+        const itemsToShow = newItems.slice(i, i + itemsPerMessage);
+        const embeds = searchCommand.createEmbedForItems(itemsToShow);
+        await user.send({ embeds });
+        await this.delay(500);
       }
 
-      await user.send({ embeds: [embed] });
       console.log(
         `Sent query results to user ${user.username} for query: ${query.name}`
       );
