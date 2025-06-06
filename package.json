@@ -4,8 +4,9 @@
 	"description": "discord bot for searching on mercarijp",
 	"main": "dist/index.js",
 	"scripts": {
-		"build": "npx tsc",
-		"start": "rm -rf dist && npm run build  && node dist/deploy-commands.js && node dist/index.js",
+		"build": "rm -rf dist && npx tsc",
+		"start": "npm run build  && node dist/deploy-commands.js && node dist/index.js",
+		"deploy": "npm run build && node dist/deploy-commands.js && pm2 reload dist/index.js --name merchant-bot --update-env || pm2 start dist/index.js --name merchant-bot && pm2 save",
 		"redeploy-commands": "npm run build && node dist/deploy-commands.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
