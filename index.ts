@@ -25,7 +25,7 @@ const client = new Client({
 		GatewayIntentBits.DirectMessages,
 		GatewayIntentBits.DirectMessageTyping
 	],
-	partials: [Partials.Channel], // Required to receive DMs
+	partials: [Partials.Channel, Partials.Message], // Required to receive DMs
 }) as MerchantBotClient;
 
 client.once(Events.ClientReady, (readyClient) => {
