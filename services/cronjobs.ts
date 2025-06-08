@@ -211,9 +211,9 @@ export class CronJobService {
         .setColor(hasNewItems ? 0x00ff00 : 0x0099ff)
         .setDescription(
           (hasNewItems
-            ? `🆕 Found ${newItems.length} new items matching your tracked query!`
-            : `Found ${searchResult.meta.numFound} items matching your tracked query`) +
-            ".Check item details with /item <item_id> command."
+        ? `🆕 Found ${newItems.length} new items matching your tracked query!`
+        : `Found ${searchResult.meta.numFound} items matching your tracked query`) +
+        "\nCheck item details with `/item <item_id>` command."
         )
         .setTimestamp();
 
