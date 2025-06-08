@@ -11,7 +11,7 @@ import {
 } from "../mercari/types";
 import { MerchantBotClient } from "../types/client";
 import searchCommand from "../commands/mercari/search";
-import { logger } from '../utils/logger';
+import { logger } from "../utils/logger";
 
 export class CronJobService {
   private client: MerchantBotClient;
@@ -140,7 +140,6 @@ export class CronJobService {
       logger.log(
         `Last run timestamp for query ${query.name}: ${lastRunTimestamp}`
       );
-      logger.log("last run:", query.lastRun.toTimeString());
       const searchResult: MercariSearchResult = await mercariInstance.search({
         keyword: query.searchParams.keyword,
         excludeKeyword: query.searchParams.excludeKeyword,
@@ -149,9 +148,10 @@ export class CronJobService {
         sort: query.searchParams.sort,
         order: query.searchParams.order,
         itemConditionId: query.searchParams.itemConditionId,
-        createdAfterDate: lastRunTimestamp.toString(),
+        // createdAfterDate: lastRunTimestamp.toString(),
+        createdAfterDate: query.searchParams.createdAfterDate || "0",
         createdBeforeDate: query.searchParams.createdBeforeDate || "0",
-        pageSize: 100,
+        pageSize: 2000,
       });
 
       const bulkUpdate = {
@@ -165,21 +165,26 @@ export class CronJobService {
         },
       };
 
-      // Only take items that were created after the last run timestamp
+      // Only take items that were updated after the last run timestamp
       searchResult.items = searchResult.items.filter((item: MercariItem) => {
-        return Number(item.created) > lastRunTimestamp;
+        return Number(item.updated) > lastRunTimestamp;
       });
-
-      if (!searchResult.items || searchResult.items.length === 0) {
-        logger.log(`No new items found for query: ${query.name}`);
-        return { bulkUpdate };
-      }
 
       // Get the user for notification
       const user = await this.client.users.fetch(query.userId);
       if (!user) {
         logger.log(`User not found: ${query.userId}`);
+        // Delete all queries for this user since they don't exist anymore
+        logger.log(
+          `User ${query.userId} not found, deleting all their queries`
+        );
+        await Query.deleteMany({ userId: query.userId });
         return null;
+      }
+
+      if (!searchResult.items || searchResult.items.length === 0) {
+        logger.log(`No new items found for query: ${query.name}`);
+        return { bulkUpdate };
       }
 
       return {
@@ -205,10 +210,10 @@ export class CronJobService {
         .setTitle(`🔔 Tracked Query: ${query.name}`)
         .setColor(hasNewItems ? 0x00ff00 : 0x0099ff)
         .setDescription(
-          hasNewItems
+          (hasNewItems
             ? `🆕 Found ${newItems.length} new items matching your tracked query!`
-            : `Found ${searchResult.meta.numFound} items matching your tracked query` +
-                "\nCheck item details with /item <item_id> command."
+            : `Found ${searchResult.meta.numFound} items matching your tracked query`) +
+            ".Check item details with /item <item_id> command."
         )
         .setTimestamp();
 

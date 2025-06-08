@@ -61,8 +61,8 @@ export default {
     .addNumberOption((option) =>
       option
         .setName("price_min")
-        .setDescription("Minimum item price, default:300")
-        .setMinValue(300)
+        .setDescription("Minimum item price, default:0")
+        .setMinValue(0)
     )
     .addNumberOption((option) =>
       option
@@ -117,7 +117,7 @@ export default {
       const keyword = interaction.options.getString("keyword", true).trim();
       const excludeKeyword =
         interaction.options.getString("exclude_keyword")?.trim() || "";
-      const priceMin = interaction.options.getNumber("price_min") || 300;
+      const priceMin = interaction.options.getNumber("price_min") || 0;
       const priceMax = interaction.options.getNumber("price_max") || 9999999;
       const sort =
         (interaction.options.getString("sort") as MercariSearchSort) ||
@@ -184,7 +184,7 @@ export default {
       return interaction.editReply({
         content: `✅ Query "${name}" has been created successfully${
           isTracked ? " and will be tracked for notifications" : ""
-        }. Note that some search parameters will be overwritten for the best tracking result.\nThe first time the query is run, items that were created in the last 24 hours will be returned.`,
+        }. Note that some search parameters will be overwritten for the best tracking result.\nThe first time the query is run, items that were updated in the last 24 hours will be returned.`,
       });
     } catch (error) {
       logger.error("Error creating query:", error);
