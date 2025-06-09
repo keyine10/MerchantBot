@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
+import Bottleneck from "bottleneck";
 import {
   MercariURLs,
   MercariSearchStatus,
@@ -18,16 +19,28 @@ import {
 } from "./types";
 import { getHeadersWithDpop } from "./utils";
 import { saveLog } from "../utils/saveLog";
+import logger from "../utils/logger";
 
 class MercariApi {
   uuid: string = "";
   key!: GenerateKeyPairResult;
   static _instance: MercariApi;
+  private rateLimiter!: Bottleneck;
 
   constructor() {
     if (MercariApi._instance) {
       return MercariApi._instance;
     }
+    
+    // Initialize Bottleneck rate limiter
+    this.rateLimiter = new Bottleneck({
+      minTime: 60000 / 100, // 100 requests per minute
+      maxConcurrent: 2, // Only one request at a time
+      reservoir: 100, // Total number of requests allowed
+      reservoirRefreshAmount: 100, // Refresh with full amount
+      reservoirRefreshInterval: 60 * 1000, // Refresh every minute
+    });
+    
     MercariApi._instance = this;
     return this;
   }
@@ -84,40 +97,54 @@ class MercariApi {
     httpUrl: string,
     requestData: any
   ): Promise<any> {
-    const headers = await getHeadersWithDpop(
-      httpMethod,
-      httpUrl,
-      this.uuid,
-      this.key
-    );
-    let response: Response | null = null;
-    if (httpMethod === "POST")
-      response = await fetch(httpUrl, {
-        method: httpMethod,
-        headers: headers,
-        body: JSON.stringify(requestData),
-      });
-    else if (httpMethod === "GET") {
-      const httpUrlWithParams = `${httpUrl}?${new URLSearchParams(
-        requestData
-      ).toString()}`;
-      response = await fetch(httpUrlWithParams, {
-        method: httpMethod,
-        headers: headers,
-      });
-    }
-    if (!response) throw new Error("No response received from fetchMercari");
-
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(
-        `Error while fetching: ${response.status} ${
-          response.statusText
-        } ${JSON.stringify(data)}`,
-        {}
+    // Use rate limiter to control API request frequency
+    return this.rateLimiter.schedule(async () => {
+      logger.log(`Making ${httpMethod} request to ${httpUrl} (rate limited)`);
+      
+      const headers = await getHeadersWithDpop(
+        httpMethod,
+        httpUrl,
+        this.uuid,
+        this.key
       );
-    }
-    return data;
+      
+      let response: Response | null = null;
+      
+      try {
+        if (httpMethod === "POST") {
+          response = await fetch(httpUrl, {
+            method: httpMethod,
+            headers: headers,
+            body: JSON.stringify(requestData),
+          });
+        } else if (httpMethod === "GET") {
+          const httpUrlWithParams = `${httpUrl}?${new URLSearchParams(
+            requestData
+          ).toString()}`;
+          response = await fetch(httpUrlWithParams, {
+            method: httpMethod,
+            headers: headers,
+          });
+        }
+        
+        if (!response) throw new Error("No response received from fetchMercari");
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(
+            `Error while fetching: ${response.status} ${
+              response.statusText
+            } ${JSON.stringify(data)}`
+          );
+        }
+        
+        logger.log(`Successfully completed ${httpMethod} request to ${httpUrl}`);
+        return data;
+      } catch (error) {
+        logger.error(`Failed ${httpMethod} request to ${httpUrl}:`, error);
+        throw error;
+      }
+    });
   }
 
   async search(
@@ -213,14 +240,34 @@ class MercariApi {
       uuid: this.uuid,
     });
 
-    const data = await this.fetchMercari(
+    let data: MercariSearchResult = await this.fetchMercari(
       "POST",
       MercariURLs.SEARCH,
       requestData
     );
 
+    data.items = data.items.filter((item: MercariItem) => {
+      // Filter out items that are shop items
+      return item.id.charAt(0) === "m";
+    });
+
     saveLog("logs/search_results.json", data);
-    return data as MercariSearchResult;
+    return data;
+  }
+
+  /**
+   * Get rate limiter statistics for monitoring
+   */
+  getRateLimiterStats() {
+    return {
+      running: this.rateLimiter.running(),
+      queued: this.rateLimiter.queued(),
+      empty: this.rateLimiter.empty(),
+      config: {
+        requestsPerMinute: 100,
+        minTime: 60000 / 100,
+      }
+    };
   }
 }
 

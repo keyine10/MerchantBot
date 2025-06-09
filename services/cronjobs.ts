@@ -5,9 +5,7 @@ import mercariInstance from "../mercari/mercari";
 import {
   MercariSearchResult,
   MercariItem,
-  MercariItemConditionId,
   MercariItemConditionIdObject,
-  MercariURLs,
 } from "../mercari/types";
 import { MerchantBotClient } from "../types/client";
 import searchCommand from "../commands/mercari/search";
@@ -30,8 +28,7 @@ export class CronJobService {
 
     logger.log("Starting cron jobs...");
 
-    // Read cron schedule from environment variable, default to every 15 minutes
-    const cronSchedule = process.env.CRON_SCHEDULE || "*/15 * * * *";
+    const cronSchedule =  "*/15 * * * *";
     this.cronTask = cron.schedule(cronSchedule, async () => {
       logger.log("Running tracked queries check...");
       await this.checkTrackedQueries();
@@ -84,19 +81,21 @@ export class CronJobService {
       }> = [];
 
       // Process each tracked query
-      for (const query of trackedQueries) {
-        const result = await this.processTrackedQueryForBatch(query);
-        if (result) {
-          if (result.bulkUpdate) {
-            bulkUpdates.push(result.bulkUpdate);
-          }
-          if (result.notification) {
-            notifications.push(result.notification);
-          }
-        }
-        // Add a small delay between API calls to avoid rate limiting
-        await this.delay(1000);
-      }
+      await Promise.all(
+        trackedQueries.map((query) =>
+          this.processTrackedQueryForBatch(query).then((result) => {
+            if (result) {
+              if (result.bulkUpdate) {
+                bulkUpdates.push(result.bulkUpdate);
+              }
+              if (result.notification) {
+                notifications.push(result.notification);
+              }
+            }
+            return result;
+          })
+        )
+      );
 
       // Execute all database updates in a single batch operation
       if (bulkUpdates.length > 0) {
@@ -106,15 +105,15 @@ export class CronJobService {
       }
 
       // Send all notifications
-      for (const notificationData of notifications) {
-        await this.sendQueryResults(
-          notificationData.user,
-          notificationData.query,
-          notificationData.searchResult
-        );
-        // Small delay between notifications to avoid rate limiting Discord
-        await this.delay(500);
-      }
+      await Promise.all(
+        notifications.map((notificationData) =>
+          this.sendQueryResults(
+            notificationData.user,
+            notificationData.query,
+            notificationData.searchResult
+          )
+        )
+      );
     } catch (error) {
       logger.error("Error checking tracked queries:", error);
     }
@@ -211,7 +210,7 @@ export class CronJobService {
         .setColor(hasNewItems ? 0x00ff00 : 0x0099ff)
         .setDescription(
           (hasNewItems
-        ? `🆕 Found ${newItems.length} new items matching your tracked query!`
+            ? `🆕 Found ${newItems.length} new items matching your tracked query!`
         : `Found ${searchResult.meta.numFound} items matching your tracked query`) +
         "\nCheck item details with `/item <item_id>` command."
         )

@@ -44,12 +44,11 @@ const pingCommand = {
 					{ name: '🤖 Bot Latency', value: `${interaction.client.ws.ping}ms`, inline: true },
 					{ name: '\u200b', value: '\u200b', inline: true }, // Empty field for layout
 					{ name: '📝 Latest Commit', value: `\`${commitHash}\``, inline: true },
-					{ name: '📅 Commit Date', value: commitDate, inline: true },
+					{ name: '📅 Commit Date', value: commitDate !== 'Unknown' ? `<t:${Math.floor(new Date(commitDate).getTime() / 1000)}:F>` : 'Unknown', inline: true },
 					{ name: '\u200b', value: '\u200b', inline: true }, // Empty field for layout
 					{ name: '💬 Commit Message', value: commitMessage.length > 100 ? commitMessage.substring(0, 97) + '...' : commitMessage, inline: false }
 				)
 				.setTimestamp()
-				.setFooter({ text: 'MerchantBot' });
 
 			await interaction.editReply({ embeds: [embed] });
 		} catch (error) {
