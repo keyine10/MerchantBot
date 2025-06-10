@@ -18,14 +18,37 @@ class Logger {
     }
   }
 
-  private formatMessage(level: string, message: string): string {
+  private formatMessage(level: string, message: string, caller?: string): string {
     const timestamp = new Date().toISOString();
-    return `[${timestamp}] [${level.toUpperCase()}] ${message}`;
+    const callerInfo = caller ? ` [${caller}]` : '';
+    return `[${timestamp}] [${level.toUpperCase()}]${callerInfo} ${message}`;
+  }
+
+  private getCaller(): string {
+    const stack = new Error().stack;
+    if (!stack) return 'unknown';
+    
+    const lines = stack.split('\n');
+    // Skip the first 4 lines: Error, getCaller, the log method, and find the actual caller
+    for (let i = 4; i < lines.length; i++) {
+      const line = lines[i];
+      if (line && !line.includes('node_modules') && !line.includes('logger.ts')) {
+        // Extract file and function info from stack trace
+        const match = line.match(/at (?:(.+?)\s+\()?.*[\/\\]([^\/\\]+):(\d+):\d+/);
+        if (match) {
+          const [, functionName, fileName, lineNumber] = match;
+          const func = functionName && functionName !== 'Object.<anonymous>' ? functionName : 'anonymous';
+          return `${fileName}:${lineNumber}:${func}`;
+        }
+      }
+    }
+    return 'unknown';
   }
 
   private writeToFile(filename: string, message: string) {
     const logFile = path.join(this.logDir, filename);
-    const formattedMessage = this.formatMessage('INFO', message) + '\n';
+    const caller = this.getCaller();
+    const formattedMessage = this.formatMessage('INFO', message, caller) + '\n';
     
     try {
       fs.appendFileSync(logFile, formattedMessage, 'utf8');
@@ -38,8 +61,9 @@ class Logger {
    * Log a message to both console and file
    */
   log(message: string, filename: string = 'app.log') {
+    const caller = this.getCaller();
     if (process.env.NODE_ENV !== 'production') {
-      console.log(message);
+      console.log(`[${caller}] ${message}`);
     }
     this.writeToFile(filename, message);
   }
@@ -48,8 +72,9 @@ class Logger {
    * Log an error message to both console and file
    */
   error(message: string, filename: string = 'error.log') {
-    console.error(message);
-    const formattedMessage = this.formatMessage('ERROR', message) + '\n';
+    const caller = this.getCaller();
+    console.error(`[${caller}] ${message}`);
+    const formattedMessage = this.formatMessage('ERROR', message, caller) + '\n';
     const logFile = path.join(this.logDir, filename);
     
     try {
@@ -63,8 +88,9 @@ class Logger {
    * Log a warning message to both console and file
    */
   warn(message: string, filename: string = 'app.log') {
-    console.warn(message);
-    const formattedMessage = this.formatMessage('WARN', message) + '\n';
+    const caller = this.getCaller();
+    console.warn(`[${caller}] ${message}`);
+    const formattedMessage = this.formatMessage('WARN', message, caller) + '\n';
     const logFile = path.join(this.logDir, filename);
     
     try {

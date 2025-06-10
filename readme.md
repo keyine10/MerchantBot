@@ -13,14 +13,12 @@ A Discord bot for searching and tracking Mercari listings with advanced filterin
 
 - **Advanced Search** - Filter by keyword, price range, condition, and sorting options
 - **Paginated Results** - Navigate through search results with interactive buttons
-- **Item Details** - View comprehensive information for any listing
+- **Item Details** - View comprehensive information for any listing, including images, price, and seller details
 - **Query Management** - Save, track, and reuse custom search queries
 - **Automated Tracking** - Get notifications when new items match your saved queries
+- **Deployed** - Available on Discord, ready to use.
 
 ## Todo
-- Display more item images for item details
 - Custom date range filters
 - Category and condition improvements  
-- Deployment
-
 ---
