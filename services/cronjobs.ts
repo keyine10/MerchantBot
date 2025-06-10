@@ -28,7 +28,7 @@ export class CronJobService {
 
     logger.log("Starting cron jobs...");
 
-    const cronSchedule =  "*/15 * * * *";
+    const cronSchedule = "*/15 * * * *";
     this.cronTask = cron.schedule(cronSchedule, async () => {
       logger.log("Running tracked queries check...");
       await this.checkTrackedQueries();
@@ -105,13 +105,11 @@ export class CronJobService {
       }
 
       // Send all notifications
-      await Promise.all(
-        notifications.map((notificationData) =>
-          this.sendQueryResults(
-            notificationData.user,
-            notificationData.query,
-            notificationData.searchResult
-          )
+      notifications.map((notificationData) =>
+        this.sendQueryResults(
+          notificationData.user,
+          notificationData.query,
+          notificationData.searchResult
         )
       );
     } catch (error) {
@@ -211,8 +209,8 @@ export class CronJobService {
         .setDescription(
           (hasNewItems
             ? `🆕 Found ${newItems.length} new items matching your tracked query!`
-        : `Found ${searchResult.meta.numFound} items matching your tracked query`) +
-        "\nCheck item details with `/item <item_id>` command."
+            : `Found ${searchResult.meta.numFound} items matching your tracked query`) +
+            "\nCheck item details with `/item <item_id>` command."
         )
         .setTimestamp();
 
@@ -248,7 +246,6 @@ export class CronJobService {
         const itemsToShow = newItems.slice(i, i + itemsPerMessage);
         const embeds = searchCommand.createEmbedForItems(itemsToShow);
         await user.send({ embeds });
-        await this.delay(500);
       }
 
       logger.log(
