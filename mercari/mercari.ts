@@ -31,16 +31,16 @@ class MercariApi {
     if (MercariApi._instance) {
       return MercariApi._instance;
     }
-    
+
     // Initialize Bottleneck rate limiter
     this.rateLimiter = new Bottleneck({
-      minTime: 60000 / 100, // 100 requests per minute
-      maxConcurrent: 2, // Only one request at a time
-      reservoir: 100, // Total number of requests allowed
-      reservoirRefreshAmount: 100, // Refresh with full amount
+      minTime: 60000 / 200, // 200 requests per minute
+      maxConcurrent: 5,
+      reservoir: 200, // Total number of requests allowed
+      reservoirRefreshAmount: 200, // Refresh with full amount
       reservoirRefreshInterval: 60 * 1000, // Refresh every minute
     });
-    
+
     MercariApi._instance = this;
     return this;
   }
@@ -99,18 +99,21 @@ class MercariApi {
   ): Promise<any> {
     // Use rate limiter to control API request frequency
     return this.rateLimiter.schedule(async () => {
-      logger.log(`Making ${httpMethod} request to ${httpUrl} (inside rate limiter)`);
-      
-      const headers = await getHeadersWithDpop(
-        httpMethod,
-        httpUrl,
-        this.uuid,
-        this.key
+      logger.log(
+        `Making ${httpMethod} request to ${httpUrl} (inside rate limiter)`
       );
       
-      let response: Response | null = null;
-      
       try {
+        // Generate headers inside the rate limiter to ensure they're fresh
+        const headers = await getHeadersWithDpop(
+          httpMethod,
+          httpUrl,
+          this.uuid,
+          this.key
+        );
+        
+        let response: Response | null = null;
+        
         if (httpMethod === "POST") {
           response = await fetch(httpUrl, {
             method: httpMethod,
@@ -126,8 +129,10 @@ class MercariApi {
             headers: headers,
           });
         }
-        
-        if (!response) throw new Error("No response received from fetchMercari");
+
+        if (!response) {
+          throw new Error("No response received from fetchMercari");
+        }
 
         const data = await response.json();
         if (!response.ok) {
@@ -137,8 +142,10 @@ class MercariApi {
             } ${JSON.stringify(data)}`
           );
         }
-        
-        logger.log(`Successfully completed ${httpMethod} request to ${httpUrl}`);
+
+        logger.log(
+          `Successfully completed ${httpMethod} request to ${httpUrl}`
+        );
         return data;
       } catch (error) {
         logger.error(`Failed ${httpMethod} request to ${httpUrl}:`, error);
@@ -266,7 +273,7 @@ class MercariApi {
       config: {
         requestsPerMinute: 100,
         minTime: 60000 / 100,
-      }
+      },
     };
   }
 }
