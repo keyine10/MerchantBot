@@ -105,8 +105,8 @@ export class CronJobService {
       }
 
       // Send all notifications
-      notifications.map((notificationData) =>
-        this.sendQueryResults(
+      notifications.map(async (notificationData) =>
+        await this.sendQueryResults(
           notificationData.user,
           notificationData.query,
           notificationData.searchResult
