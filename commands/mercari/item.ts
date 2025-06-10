@@ -89,9 +89,9 @@ export async function getItemDetailViewModel(itemId: string): Promise<{ embeds: 
 			photoUrls: allPhotoUrls,
 		};
 	} catch (error) {
-		logger.error('Error getting item details:', error);
+		logger.error(`Error getting item details: ${error instanceof Error ? error.message : String(error)}`);
 		return {
-			content: 'Error getting item information: ' + error,
+			content: 'Error getting item information: ' + (error instanceof Error ? error.message : String(error)),
 			embeds: [],
 		};
 	}
@@ -150,7 +150,7 @@ const itemCommand = {
 							});
 						}
 					} catch (error) {
-						logger.error(`Failed to download/compress photo ${i + 1}:`, error);
+						logger.error(`Failed to download/compress photo ${i + 1}: ${error instanceof Error ? error.message : String(error)}`);
 					}
 					return null;
 				});
@@ -168,7 +168,7 @@ const itemCommand = {
 					});
 				}
 			} catch (error) {
-				logger.error('Error sending photos:', error);
+				logger.error(`Error sending photos: ${error instanceof Error ? error.message : String(error)}`);
 				// Fallback to URL method if attachment method fails
 				const photoMessage = result.photoUrls.length > 1 
 					? `📸 **Item Photos** (${result.photoUrls.length} photos):\n${result.photoUrls.join('\n')}`

@@ -99,7 +99,7 @@ class MercariApi {
   ): Promise<any> {
     // Use rate limiter to control API request frequency
     return this.rateLimiter.schedule(async () => {
-      logger.log(`Making ${httpMethod} request to ${httpUrl} (rate limited)`);
+      logger.log(`Making ${httpMethod} request to ${httpUrl} (inside rate limiter)`);
       
       const headers = await getHeadersWithDpop(
         httpMethod,
