@@ -1,6 +1,6 @@
 # Merchant Bot
 
-A Discord bot for searching and tracking Mercari listings with advanced filtering and automated notifications.
+A Discord bot for searching and tracking M*rcari listings with advanced filtering and automated notifications.
 
 <div style="display: flex; align-items: start;">
     <img src="./assets/search.png" alt="Search Results" width="200">
