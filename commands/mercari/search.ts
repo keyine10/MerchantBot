@@ -22,17 +22,17 @@ import {
   MercariSearchSort,
   MercariSearchResult,
   MercariSearchCondition,
+  MercariSearchCategoryID,
 } from "../../mercari/types";
 import itemCommand from "./item";
-import logger from '../../utils/logger';
+import logger from "../../utils/logger";
 
 // Add missing enums for sort and order
 
 const pageSize = 5;
 
-
 function createEmbedForItems(items: MercariSearchResult["items"]) {
-    return items.map((item) => {
+  return items.map((item) => {
     const embed: any = {
       title:
         item.name.length > 97 ? item.name.substring(0, 97) + "..." : item.name,
@@ -342,7 +342,7 @@ const searchCommand = {
       option
         .setName("price_min")
         .setDescription("Minimum item price")
-        .setMinValue(300)
+        .setMinValue(0)
     )
     .addNumberOption((option) =>
       option
@@ -400,8 +400,22 @@ const searchCommand = {
       option
         .setName("item_condition_used")
         .setDescription("search for used items only")
+    )
+    .addNumberOption((option) =>
+      option
+        .setName("category")
+        .setDescription("Select a category to search in")
+        .addChoices(
+          (
+            Object.keys(MercariSearchCategoryID).filter((key) => isNaN(Number(key))) as Array<
+              keyof typeof MercariSearchCategoryID
+            >
+          ).map((key) => ({
+            name: key,
+            value: MercariSearchCategoryID[key],
+          }))
+        )
     ),
-
   async execute(interaction: ChatInputCommandInteraction) {
     const keyword = interaction.options.getString("keyword", true);
     const excludeKeyword =
@@ -414,6 +428,9 @@ const searchCommand = {
     const order =
       (interaction.options.getString("order") as MercariSearchOrder) ||
       MercariSearchOrder.DESC;
+    const categoryId = [
+      interaction.options.getNumber("category") as MercariSearchCategoryID,
+    ];
     const createdAfterDate = String(
       Math.floor(
         Date.now() / 1000 -
@@ -440,6 +457,7 @@ const searchCommand = {
       excludeKeyword,
       priceMin,
       priceMax,
+      categoryId,
       sort,
       order,
       itemConditionUsed,

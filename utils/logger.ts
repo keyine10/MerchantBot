@@ -79,12 +79,25 @@ class Logger {
   /**
    * Log an error message to both console and file
    */
-  error(message: string, filename: string = 'error.log') {
+  error(message: string, errorOrFilename?: string | Error, filename: string = 'error.log') {
     try {
       const caller = this.getCaller();
-      console.error(`[${caller}] ${message}`);
-      const formattedMessage = this.formatMessage('ERROR', message, caller) + '\n';
-      const logFile = path.join(this.logDir, filename);
+      let finalMessage = message;
+      let finalFilename = filename;
+      
+      // Handle different parameter combinations
+      if (errorOrFilename) {
+        if (errorOrFilename instanceof Error) {
+          finalMessage += ` ${errorOrFilename.message}`;
+          // Keep default filename
+        } else if (typeof errorOrFilename === 'string') {
+          finalFilename = errorOrFilename;
+        }
+      }
+      
+      console.error(`[${caller}] ${finalMessage}`);
+      const formattedMessage = this.formatMessage('ERROR', finalMessage, caller) + '\n';
+      const logFile = path.join(this.logDir, finalFilename);
       
       fs.appendFileSync(logFile, formattedMessage, 'utf8');
     } catch (error) {

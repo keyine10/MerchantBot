@@ -67,7 +67,7 @@ export async function getItemDetailViewModel(itemId: string): Promise<{ embeds: 
 				{ name: 'id', value: `\`${item.id}\``, inline: true },
 				{ 
 					name: 'price', 
-					value: `${formatNumber(item.price)}¥ | ${formatNumber(item.converted_price.price)}${item.converted_price.currency_code}`, 
+					value: `${formatNumber(item?.price)}¥ | ${formatNumber(item?.converted_price.price)}${item.converted_price.currency_code}`, 
 					inline: true 
 				},
 				{ 
@@ -91,7 +91,7 @@ export async function getItemDetailViewModel(itemId: string): Promise<{ embeds: 
 	} catch (error) {
 		logger.error(`Error getting item details: ${error instanceof Error ? error.message : String(error)}`);
 		return {
-			content: 'Error getting item information: ' + (error instanceof Error ? error.message : String(error)),
+			content: 'Error getting item details: ' + (error instanceof Error ? error.message : String(error)),
 			embeds: [],
 		};
 	}

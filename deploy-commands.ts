@@ -19,7 +19,14 @@ for (const folder of commandFolders) {
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath).default || require(filePath);
 		if ('data' in command && 'execute' in command) {
-			commands.push(command.data.toJSON());
+			const commandData = command.data.toJSON();
+			
+			// Add dev prefix to command names if not in production
+			if (process.env.NODE_ENV !== 'production') {
+				commandData.name = `dev_${commandData.name}`;
+			}
+			
+			commands.push(commandData);
 		} else {
 			logger.log(
 				`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`

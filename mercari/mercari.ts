@@ -25,7 +25,11 @@ class MercariApi {
   key!: GenerateKeyPairResult;
   static _instance: MercariApi;
   private rateLimiter!: Bottleneck;
-  fetchMercari!: (httpMethod: string, httpUrl: string, requestData: any) => Promise<any>;
+  fetchMercari!: (
+    httpMethod: string,
+    httpUrl: string,
+    requestData: any
+  ) => Promise<any>;
 
   constructor() {
     if (MercariApi._instance) {
@@ -42,7 +46,9 @@ class MercariApi {
     });
 
     // Initialize fetchMercari after rateLimiter is created
-    this.fetchMercari = this.rateLimiter.wrap(this.fetchMercariInternal.bind(this));
+    this.fetchMercari = this.rateLimiter.wrap(
+      this.fetchMercariInternal.bind(this)
+    );
 
     MercariApi._instance = this;
     return this;
@@ -106,7 +112,7 @@ class MercariApi {
   async fetchMercariInternal(
     httpMethod: string,
     httpUrl: string,
-    requestData: any
+    requestData: any = {}
   ): Promise<any> {
     logger.log(
       `Making ${httpMethod} request to ${httpUrl} (inside rate limiter)`
@@ -156,13 +162,30 @@ class MercariApi {
         throw new Error("No response received from fetchMercari");
       }
 
-      const data = await response.json();
-
+      // Check if response is ok before trying to parse JSON
       if (!response.ok) {
+        let errorMessage = `Error while fetching: ${response.status} ${response.statusText}`;
+        
+        // Try to get response text for additional error info
+        try {
+          const responseText = await response.text();
+          errorMessage += ` - Response: ${responseText}`;
+        } catch (textError) {
+          errorMessage += ` - Could not read response body`;
+        }
+        
+        throw new Error(errorMessage);
+      }
+
+      // Try to parse JSON with better error handling
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonError) {
+        // If JSON parsing fails, get the raw text to see what was returned
+        const responseText = await response.text();
         throw new Error(
-          `Error while fetching: ${response.status} ${
-            response.statusText
-          } ${JSON.stringify(data)}`
+          `Failed to parse JSON response. Raw response: "${responseText}". JSON Error: ${jsonError instanceof Error ? jsonError.message : String(jsonError)}`
         );
       }
 
@@ -171,9 +194,7 @@ class MercariApi {
         throw new Error("Received null or undefined data from API");
       }
 
-      logger.log(
-        `Successfully completed ${httpMethod} request to ${httpUrl}`
-      );
+      logger.log(`Successfully completed ${httpMethod} request to ${httpUrl}`);
       return data;
     } catch (error) {
       logger.error(`Failed ${httpMethod} request to ${httpUrl}:`, error);
@@ -286,6 +307,27 @@ class MercariApi {
     });
 
     saveLog("logs/search_results.json", data);
+    return data;
+  }
+
+  async getCategories() {
+    // const requestData = {
+    //   country_code: "US",
+    //   include_subcategories: true,
+    //   include_category_attributes: true,
+    // };
+    const httpUrl = MercariURLs.CATEGORIES;
+
+    const data = await this.fetchMercari("GET", httpUrl, {});
+
+    // Validate the response data structure
+    if (!data) {
+      throw new Error("No data received from getCategories API");
+    }
+
+    // Log the response for debugging
+    saveLog("logs/categories.json", data);
+
     return data;
   }
 

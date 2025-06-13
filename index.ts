@@ -58,7 +58,14 @@ function loadCommandsAndHandle() {
 			const filePath = path.join(commandsPath, file);
 			const command = require(filePath).default || require(filePath);
 			if ('data' in command && 'execute' in command) {
-				client.commands.set(command.data.name, command);
+				let commandName = command.data.name;
+				
+				// Add dev prefix to command names if not in production
+				if (process.env.NODE_ENV !== 'production') {
+					commandName = `dev_${commandName}`;
+				}
+				
+				client.commands.set(commandName, command);
 			} else {
 				logger.log(
 					`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`

@@ -1,5 +1,7 @@
 import mercariInstance from "../mercari/mercari";
 import logger from "../utils/logger";
+import { saveLog } from "../utils/saveLog";
+
 const requestData = {
   keyword: "wacom",
   excludeKeyword: "",
@@ -39,6 +41,8 @@ async function test() {
       priceMin: 45,
       pageSize: 1200,
     });
+    const categories = await mercariInstance.getCategories();
+    saveLog("logs/item_info.json", categories);
 
     logger.log("Search successful!");
     console.log(JSON.stringify(searchResult.meta, null, 2));
