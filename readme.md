@@ -20,5 +20,6 @@ A Discord bot for searching and tracking Mercari listings with advanced filterin
 
 ## Todo
 - Custom date range filters
-- Category and condition improvements  
+- Category and condition improvements
+- Display info from auction_info when getting item details
 ---
