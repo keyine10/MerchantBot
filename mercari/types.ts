@@ -18,7 +18,7 @@ type MercariItemInfo = {
   data: {
     id: string;
     seller: {
-      id: string;
+      id: number;
       name: string;
       photo_url: string;
       photo_thumbnail_url: string;
@@ -114,7 +114,17 @@ type MercariItemInfo = {
     num_likes: number;
     num_comments: number;
     registered_prices_count: number;
-    comments: Record<string, unknown>[];
+    comments: {
+      id: number;
+      user: {
+        id: number;
+        name: string;
+        photo_url: string;
+        photo_thumbnail_url: string;
+      };
+      message: string;
+      created: number;
+    }[];
     updated: number;
     created: number;
     pager_id: number;
@@ -150,6 +160,15 @@ type MercariItemInfo = {
     photo_descriptions: string[];
     meta_title: string;
     meta_subtitle: string;
+    auction_info?: {
+      id: string;
+      start_time: number;
+      expected_end_time: number;
+      total_bids: number;
+      initial_price: number;
+      highest_bid: number;
+      state: string;
+    };
   };
   meta: Record<string, unknown>;
 };

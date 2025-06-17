@@ -53,6 +53,35 @@ export async function getItemDetailViewModel(itemId: string): Promise<{ embeds: 
 		};
 		
 		const allPhotoUrls = item.photos.map(getPhotoUrl).filter(Boolean);
+
+		// Build base fields
+		const baseFields = [
+			{ name: 'id', value: `\`${item.id}\``, inline: true },
+			{ 
+				name: 'price', 
+				value: `${formatNumber(item?.price)}¥ | ${formatNumber(item?.converted_price.price)}${item.converted_price.currency_code}`, 
+				inline: true 
+			},
+			{ 
+				name: 'condition', 
+				value: item.item_condition ? `${getConditionName(item.item_condition.id)}` : 'Unknown', 
+				inline: true 
+			},
+			{ name: 'created', value: `<t:${item.created}:R>`, inline: true },
+			{ name: 'updated', value: `<t:${item.updated}:R>`, inline: true },
+		];
+
+		// Add auction fields if auction_info exists
+		if (item.auction_info) {
+			const auctionFields = [
+				{ name: 'auction state', value: item.auction_info.state.replace('STATE_', ''), inline: true },
+				{ name: 'initial price', value: `${formatNumber(item.auction_info.initial_price)}¥`, inline: true },
+				{ name: 'highest bid', value: `${formatNumber(item.auction_info.highest_bid)}¥`, inline: true },
+				{ name: 'auction ends', value: `<t:${item.auction_info.expected_end_time}:R>`, inline: true },
+			];
+			baseFields.push(...auctionFields);
+		}
+		
 		
 		const itemOverviewEmbed: APIEmbed = {
 			title: translationData.name.substring(0, 100),
@@ -63,29 +92,35 @@ export async function getItemDetailViewModel(itemId: string): Promise<{ embeds: 
 				url: `${MercariURLs.USER_PROFILE}${item.seller.id}`,
 			},
 			...(thumbnailUrl && { thumbnail: { url: thumbnailUrl } }),
-			fields: [
-				{ name: 'id', value: `\`${item.id}\``, inline: true },
-				{ 
-					name: 'price', 
-					value: `${formatNumber(item?.price)}¥ | ${formatNumber(item?.converted_price.price)}${item.converted_price.currency_code}`, 
-					inline: true 
-				},
-				{ 
-					name: 'condition', 
-					value: item.item_condition ? `${getConditionName(item.item_condition.id)}` : 'Unknown', 
-					inline: true 
-				},
-				{ name: 'created', value: `<t:${item.created}:R>`, inline: true },
-				{ name: 'updated', value: `<t:${item.updated}:R>`, inline: true },
-			],
+			fields: baseFields,
 		};
 		const itemDescriptionEmbed: APIEmbed = {
 			title: 'Item description',
 			description: translationData.description,
 		};
+
+		// Create comments embed if there are comments
+		const embeds = [itemOverviewEmbed, itemDescriptionEmbed];
+		
+		if (item.comments && item.comments.length > 0) {
+			const commentsEmbed: APIEmbed = {
+				title: `Comments (${item.num_comments})`,
+				fields: item.comments.slice(0, 5).map((comment, index) => ({
+					name: `💬 ${comment.user.id.toString() === item.seller.id.toString() ? `${comment.user.name} (seller)` : comment.user.name}`,
+					value: `${comment.message.length > 200 ? comment.message.substring(0, 200) + '...' : comment.message}\n*<t:${comment.created}:R>*`,
+					inline: false,
+				})),
+				...(item.comments.length > 5 && {
+					footer: {
+						text: `Showing 5 of ${item.comments.length} comments`
+					}
+				})
+			};
+			embeds.push(commentsEmbed);
+		}
 		
 		return {
-			embeds: [itemOverviewEmbed, itemDescriptionEmbed],
+			embeds: embeds,
 			photoUrls: allPhotoUrls,
 		};
 	} catch (error) {
