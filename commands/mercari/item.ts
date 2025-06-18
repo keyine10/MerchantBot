@@ -80,7 +80,7 @@ export async function getItemDetailViewModel(
       {
         name: "price",
         value: `${formatNumber(item?.price)}¥ | ${formatNumber(
-          item?.converted_price?.price || item?.converted_price
+          item?.converted_price?.price
         )}${item?.converted_price?.currency_code}`,
         inline: true,
       },
@@ -93,8 +93,7 @@ export async function getItemDetailViewModel(
       },
       { name: "created", value: `<t:${item.created}:R>`, inline: true },
       { name: "updated", value: `<t:${item.updated}:R>`, inline: true },
-      { name: "status", value: item?.status.replace('_', " "), inline: true },
-
+      { name: "status", value: item?.status.replace("_", " "), inline: true },
     ];
 
     // Add auction fields if auction_info exists
