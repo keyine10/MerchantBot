@@ -107,7 +107,7 @@ export async function getItemDetailViewModel(
         },
         {
           name: "number of bids",
-          value: `${item.auction_info.}¥`,
+          value: `${item.auction_info?.total_bids}`,
           inline: true,
         },
         {
