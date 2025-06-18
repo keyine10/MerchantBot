@@ -93,7 +93,7 @@ export async function getItemDetailViewModel(
       },
       { name: "created", value: `<t:${item.created}:R>`, inline: true },
       { name: "updated", value: `<t:${item.updated}:R>`, inline: true },
-      { name: "status", value: item?.status, inline: true },
+      { name: "status", value: item?.status.replace('_', " "), inline: true },
 
     ];
 
