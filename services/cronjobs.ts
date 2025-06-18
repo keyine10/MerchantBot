@@ -28,7 +28,7 @@ export class CronJobService {
 
     logger.log("Starting cron jobs...");
 
-    const cronSchedule = "*/15 * * * *";
+    const cronSchedule = "*/10 * * * *";
     this.cronTask = cron.schedule(cronSchedule, async () => {
       logger.log("Running tracked queries check...");
       await this.checkTrackedQueries();
