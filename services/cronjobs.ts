@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import { Client, EmbedBuilder, User } from "discord.js";
+import { EmbedBuilder, User } from "discord.js";
 import Query, { IQuery } from "../models/Query";
 import mercariInstance from "../mercari/mercari";
 import {
