@@ -197,7 +197,12 @@ type MercariItem = {
   title: string;
   isLiked: boolean;
   photos: MercariItemPhoto[];
-  auction: Record<string, unknown> | null;
+  auction: {
+    id: string;
+    bidDeadline: number;
+    totalBid: number;
+    highestBid: number;
+  } | null;
 };
 
 type MercariSearchMeta = {

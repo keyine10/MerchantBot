@@ -6,8 +6,6 @@ import {
   ButtonStyle,
   StringSelectMenuBuilder,
   StringSelectMenuOptionBuilder,
-  ComponentType,
-  MessageFlags,
   ChatInputCommandInteraction,
   ButtonInteraction,
   Interaction,
@@ -26,6 +24,7 @@ import {
 } from "../../mercari/types";
 import itemCommand from "./item";
 import logger from "../../utils/logger";
+import dayjs from "dayjs";
 
 // Add missing enums for sort and order
 
@@ -33,27 +32,46 @@ const pageSize = 5;
 
 function createEmbedForItems(items: MercariSearchResult["items"]) {
   return items.map((item) => {
-    const embed: any = {
-      title:
-        item.name.length > 97 ? item.name.substring(0, 97) + "..." : item.name,
-      url: MercariURLs.ROOT_PRODUCT + item.id,
-      color: 0x0099ff,
-      fields: [
+    const embed = new EmbedBuilder()
+      .setTitle(
+        item.name.length > 97 ? item.name.substring(0, 97) + "..." : item.name
+      )
+      .setURL(MercariURLs.ROOT_PRODUCT + item.id)
+      .setColor(0x0099ff)
+      .addFields(
         { name: "id", value: `\`${item.id}\``, inline: true },
         { name: "price", value: item.price + "¥", inline: true },
-        { name: "\n", value: "\n" },
+        { name: "\u200B", value: "\u200B" },
         { name: "created", value: `<t:${item.created}:R>`, inline: true },
         { name: "updated", value: `<t:${item.updated}:R>`, inline: true },
-      ],
-      thumbnail: { url: item.thumbnails[0] },
-    };
+        ...(item.auction
+          ? [
+              {
+                name: "highest bid",
+                value: item.auction.highestBid + "¥",
+                inline: true,
+              },
+              {
+                name: "total bids",
+                value: item.auction.totalBid.toString(),
+                inline: true,
+              },
+              {
+                name: "auction ends",
+                value: `<t:${dayjs(item.auction.bidDeadline).unix()}:R>`,
+                inline: true,
+              },
+            ]
+          : [])
+      )
+      .setThumbnail(item.thumbnails[0] ?? "");
     return embed;
   });
 }
 
 function SearchResultViewModel(
   results: MercariSearchResult,
-  interaction: ChatInputCommandInteraction
+  interaction: ChatInputCommandInteraction | ButtonInteraction
 ) {
   if (!results.items?.length) {
     return {
@@ -105,7 +123,7 @@ function SearchResultViewModel(
 }
 
 async function getSearchResultViewModel(
-  interaction: ChatInputCommandInteraction,
+  interaction: ChatInputCommandInteraction | ButtonInteraction,
   requestData: Partial<MercariSearchCondition>,
   pageSize = 5,
   pageToken = ""
@@ -151,9 +169,9 @@ async function runSearch(
     createdBeforeDate = "0",
   } = params;
 
-  const isButton = (i: any): i is ButtonInteraction =>
+  const isButton = (i: Interaction): i is ButtonInteraction =>
     i && typeof i.isButton === "function" && i.isButton();
-  const isChatInput = (i: any): i is ChatInputCommandInteraction =>
+  const isChatInput = (i: Interaction): i is ChatInputCommandInteraction =>
     i && typeof i.isChatInputCommand === "function" && i.isChatInputCommand();
 
   if (isChatInput(interaction)) {
@@ -172,11 +190,10 @@ async function runSearch(
     createdBeforeDate,
   };
   logger.log(JSON.stringify(requestData));
-  let selectedItem = "";
   let pageToken = "";
 
   let { replyObject, meta } = await getSearchResultViewModel(
-    interaction as any,
+    interaction,
     requestData,
     pageSize,
     pageToken
@@ -186,27 +203,31 @@ async function runSearch(
     await interaction.editReply({
       ...replyObject,
       content: `Search results for "${keyword}"`,
-      components: replyObject.components.map((row: any) => row.toJSON()),
+      components: replyObject.components.map(
+        (row: ActionRowBuilder<ButtonBuilder | StringSelectMenuBuilder>) =>
+          row.toJSON()
+      ),
     });
   } else if (isButton(interaction)) {
     // For button, send a new message (do not edit original)
     await interaction.followUp({
       ...replyObject,
       content: `Search results for "${keyword}"`,
-      components: replyObject.components.map((row: any) => row.toJSON()),
+      components: replyObject.components.map(
+        (row: ActionRowBuilder<ButtonBuilder | StringSelectMenuBuilder>) =>
+          row.toJSON()
+      ),
       ephemeral: false,
     });
   }
 
-  const collectorFilter = (i: any) =>
+  const collectorFilter = (i: Interaction) =>
+    (i.isButton() || i.isStringSelectMenu()) &&
     (i.customId.startsWith(`prev-page:${interaction.id}`) ||
       i.customId.startsWith(`next-page:${interaction.id}`) ||
       i.customId.startsWith(`select-item:${interaction.id}`)) &&
     i.user.id === interaction.user.id;
-  if (
-    interaction.channel &&
-    typeof interaction.channel.createMessageComponentCollector === "function"
-  ) {
+  if (interaction.channel) {
     const collector = interaction.channel.createMessageComponentCollector({
       filter: collectorFilter,
       time: 600000, //10 minutes
@@ -226,7 +247,7 @@ async function runSearch(
         switch (buttonCustomId) {
           case "prev-page": {
             const prevResults = await getSearchResultViewModel(
-              interaction as any,
+              interaction,
               requestData,
               pageSize,
               meta.previousPageToken
@@ -237,15 +258,13 @@ async function runSearch(
             await buttonInteraction.editReply({
               ...replyObject,
               content: `Search results for "${keyword}"`,
-              components: replyObject.components.map((row: any) =>
-                row.toJSON()
-              ),
+              components: replyObject.components.map((row) => row.toJSON()),
             });
             break;
           }
           case "next-page": {
             const nextResults = await getSearchResultViewModel(
-              interaction as any,
+              interaction,
               requestData,
               pageSize,
               meta.nextPageToken
@@ -256,9 +275,7 @@ async function runSearch(
             await buttonInteraction.editReply({
               ...replyObject,
               content: `Search results for "${keyword}"`,
-              components: replyObject.components.map((row: any) =>
-                row.toJSON()
-              ),
+              components: replyObject.components.map((row) => row.toJSON()),
             });
             pageToken = meta.nextPageToken;
             break;
@@ -283,7 +300,7 @@ async function runSearch(
       }
     );
 
-    collector.on("end", async (collected: any) => {
+    collector.on("end", async () => {
       if (isChatInput(interaction)) {
         await interaction.editReply({
           ...replyObject,
@@ -407,9 +424,9 @@ const searchCommand = {
         .setDescription("Select a category to search in")
         .addChoices(
           (
-            Object.keys(MercariSearchCategoryID).filter((key) => isNaN(Number(key))) as Array<
-              keyof typeof MercariSearchCategoryID
-            >
+            Object.keys(MercariSearchCategoryID).filter((key) =>
+              isNaN(Number(key))
+            ) as Array<keyof typeof MercariSearchCategoryID>
           ).map((key) => ({
             name: key,
             value: MercariSearchCategoryID[key],

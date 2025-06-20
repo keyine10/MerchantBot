@@ -9,8 +9,6 @@ import {
 import sharp from "sharp";
 import mercari from "../../mercari/mercari";
 import {
-  MercariItem,
-  MercariItemInfo,
   MercariItemTranslation,
   MercariURLs,
   MercariItemConditionId,
@@ -68,7 +66,7 @@ export async function getItemDetailViewModel(
       typeof item.photos[0] === "string" ? item.photos[0] : item.photos[0]?.uri;
 
     // Get all photo URLs
-    const getPhotoUrl = (photo: any): string => {
+    const getPhotoUrl = (photo: string | object): string => {
       return typeof photo === "string" ? photo : photo?.uri;
     };
 
@@ -154,7 +152,7 @@ export async function getItemDetailViewModel(
     if (item.comments && item.comments.length > 0) {
       const commentsEmbed: APIEmbed = {
         title: `Comments (${item.num_comments})`,
-        fields: item.comments.slice(0, 5).map((comment, index) => ({
+        fields: item.comments.slice(0, 5).map((comment) => ({
           name: `💬 ${
             comment.user.id.toString() === item.seller.id.toString()
               ? `${comment.user.name} (seller)`
