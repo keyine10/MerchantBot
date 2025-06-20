@@ -66,7 +66,7 @@ export async function getItemDetailViewModel(
       typeof item.photos[0] === "string" ? item.photos[0] : item.photos[0]?.uri;
 
     // Get all photo URLs
-    const getPhotoUrl = (photo: string | object): string => {
+    const getPhotoUrl = (photo: string | { uri: string }): string => {
       return typeof photo === "string" ? photo : photo?.uri;
     };
 
