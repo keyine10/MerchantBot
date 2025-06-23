@@ -111,7 +111,7 @@ class MercariApi {
     httpUrl: string,
     requestData: any = {}
   ): Promise<any> {
-    logger.log(
+    logger.info(
       `Making ${httpMethod} request to ${httpUrl} (inside rate limiter)`
     );
 
@@ -120,7 +120,7 @@ class MercariApi {
       if (!this.uuid || !this.key) {
         logger.error("UUID or key is not set. Refreshing tokens...");
         await this.refreshTokens();
-        logger.log("Tokens refreshed successfully");
+        logger.info("Tokens refreshed successfully");
       }
 
       // Generate headers inside the rate limiter to ensure they're fresh
@@ -167,7 +167,7 @@ class MercariApi {
         try {
           const responseText = await response.text();
           errorMessage += ` - Response: ${responseText}`;
-        } catch () {
+        } catch {
           errorMessage += ` - Could not read response body`;
         }
         
@@ -191,7 +191,7 @@ class MercariApi {
         throw new Error("Received null or undefined data from API");
       }
 
-      logger.log(`Successfully completed ${httpMethod} request to ${httpUrl}`);
+      logger.info(`Successfully completed ${httpMethod} request to ${httpUrl}`);
       return data;
     } catch (error) {
       logger.error(`Failed ${httpMethod} request to ${httpUrl}:`, error);

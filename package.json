@@ -5,10 +5,8 @@
 	"main": "dist/index.js",
 	"scripts": {
 		"build": "rm -rf dist && npx tsc",
-		"start": "npm run build  && node dist/deploy-commands.js && node dist/index.js",
-		"start:prod": "npm run build && NODE_ENV=production node dist/deploy-commands.js && NODE_ENV=production node dist/index.js",
-		"deploy": "npm run build && node dist/deploy-commands.js && pm2 reload dist/index.js --name merchant-bot --update-env || pm2 start dist/index.js --name merchant-bot && pm2 save",
-		"deploy:prod": "npm run build && NODE_ENV=production node dist/deploy-commands.js && NODE_ENV=production pm2 reload dist/index.js --name merchant-bot --update-env || NODE_ENV=production pm2 start dist/index.js --name merchant-bot && pm2 save",
+		"start": "npm run redeploy-commands && node dist/index.js | npx pino-pretty -i pid,hostname -t 'yyyy-mm-dd HH:MM:ss'",
+		"deploy": "npm run redeploy-commands && pm2 reload dist/index.js --name merchant-bot --update-env || pm2 start dist/index.js --name merchant-bot && pm2 save",
 		"redeploy-commands": "npm run build && node dist/deploy-commands.js",
 		"test": "npx jest mercari/mercari.test.ts"
 	},
@@ -43,6 +41,8 @@
 		"jose": "^6.0.10",
 		"mongoose": "^8.15.1",
 		"node-cron": "^4.1.0",
+		"pino": "^7.0.0-rc.9",
+		"pino-pretty": "^13.0.0",
 		"sharp": "^0.34.2",
 		"tsconfig": "^7.0.0",
 		"uuid": "^11.1.0"

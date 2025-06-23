@@ -381,7 +381,7 @@ export default {
               | StringSelectMenuInteraction
           ) => {
             await componentInteraction.deferUpdate();
-            logger.log(`Component ${componentInteraction.customId} clicked`);
+            logger.info(`Component ${componentInteraction.customId} clicked`);
             const customId = componentInteraction.customId.replace(
               `:${interaction.id}`,
               ""

@@ -30,12 +30,12 @@ const requestData = {
 async function test() {
   try {
     // Ensure tokens are refreshed before making the search
-    logger.log("Refreshing tokens...");
+    logger.info("Refreshing tokens...");
     await mercariInstance.refreshTokens();
-    logger.log(`UUID: ${mercariInstance.uuid}`);
+    logger.info(`UUID: ${mercariInstance.uuid}`);
 
     // Try with minimal parameters first
-    logger.log("Making search request...");
+    logger.info("Making search request...");
     const searchResult = await mercariInstance.search({
       ...requestData,
       priceMin: 45,
@@ -44,7 +44,7 @@ async function test() {
     const categories = await mercariInstance.getCategories();
     saveLog("logs/item_info.json", categories);
 
-    logger.log("Search successful!");
+    logger.info("Search successful!");
     console.log(JSON.stringify(searchResult.meta, null, 2));
   } catch (error) {
     logger.error("Test failed:", error);

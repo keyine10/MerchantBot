@@ -11,7 +11,7 @@ import {
   MercariSearchSort,
   MercariSearchStatus,
 } from "../../mercari/types";
-import { logger } from "../../utils/logger";
+import logger from "../../utils/logger";
 
 export default {
   data: new SlashCommandBuilder()

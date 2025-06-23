@@ -189,7 +189,7 @@ async function runSearch(
     createdAfterDate,
     createdBeforeDate,
   };
-  logger.log(JSON.stringify(requestData));
+  logger.info(JSON.stringify(requestData));
   let pageToken = "";
 
   let { replyObject, meta } = await getSearchResultViewModel(
@@ -239,7 +239,7 @@ async function runSearch(
         buttonInteraction: ButtonInteraction | StringSelectMenuInteraction
       ) => {
         await buttonInteraction.deferUpdate();
-        logger.log(`Button ${buttonInteraction.customId} clicked`);
+        logger.info(`Button ${buttonInteraction.customId} clicked`);
         const buttonCustomId = buttonInteraction.customId.replace(
           `:${interaction.id}`,
           ""
@@ -283,7 +283,7 @@ async function runSearch(
           case "select-item": {
             if (buttonInteraction.isStringSelectMenu()) {
               const selectedItemId = buttonInteraction.values[0] || "";
-              logger.log(`Item ${selectedItemId} selected`);
+              logger.info(`Item ${selectedItemId} selected`);
               const result = await itemCommand.getItemDetailViewModel(
                 selectedItemId
               );

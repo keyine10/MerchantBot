@@ -13,7 +13,7 @@ export async function connectToDatabase() {
         await mongoose.connect(connectionString, {
             dbName: mongoDatabase
         });
-        logger.log(`Connected to MongoDB database: ${mongoDatabase}`);
+        logger.info(`Connected to MongoDB database: ${mongoDatabase}`);
     } catch (error) {
         logger.error('MongoDB connection error:', error);
         process.exit(1);
