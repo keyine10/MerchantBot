@@ -1,8 +1,13 @@
 import pino from "pino";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import path from "path";
-
-// Ensure logs directory exists
 import fs from "fs";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 const logDir = path.join(__dirname, "../logs");
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir, { recursive: true });
@@ -29,7 +34,15 @@ const transport = pino.transport({
   ],
 });
 
-const logger = pino(transport);
+// Custom timestamp to GMT+7
+const logger = pino(
+  {
+    timestamp: () =>
+      `,"time":"${dayjs().tz("Asia/Bangkok").format("YYYY-MM-DD HH:mm:ss.SSS")}"`,
+  },
+  transport
+);
 
 export default logger;
+export { logger };
 
