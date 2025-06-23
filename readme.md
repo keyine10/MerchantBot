@@ -13,7 +13,7 @@ A Discord bot for searching and tracking M*rcari listings with advanced filterin
 
 - **Advanced Search** - Filter by keyword, price range, condition, and sorting options
 - **Paginated Results** - Navigate through search results with interactive buttons
-- **Item Details** - View comprehensive information for any listing, including images, price, and seller details
+- **Item Details** - View comprehensive information for any listing, including images, price, auction, and seller details
 - **Query Management** - Save, track, and reuse custom search queries
 - **Automated Tracking** - Get notifications when new items match your saved queries
 - **Deployed** - Available on Discord, ready to use.
@@ -21,5 +21,4 @@ A Discord bot for searching and tracking M*rcari listings with advanced filterin
 ## Todo
 - Custom date range filters
 - Category and condition improvements
-- Display info from auction_info when getting item details
 ---

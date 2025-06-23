@@ -5,9 +5,6 @@ import {
   MercariSearchStatus,
   MercariSearchSort,
   MercariSearchOrder,
-  MercariItemStatus,
-  MercariItemConditionId,
-  MercariSearchCategoryID,
 } from "./types";
 import { GenerateKeyPairResult } from "jose";
 import {
@@ -170,7 +167,7 @@ class MercariApi {
         try {
           const responseText = await response.text();
           errorMessage += ` - Response: ${responseText}`;
-        } catch (textError) {
+        } catch () {
           errorMessage += ` - Could not read response body`;
         }
         
@@ -295,7 +292,7 @@ class MercariApi {
       uuid: this.uuid,
     });
 
-    let data: MercariSearchResult = await this.fetchMercari(
+    const data: MercariSearchResult = await this.fetchMercari(
       "POST",
       MercariURLs.SEARCH,
       requestData

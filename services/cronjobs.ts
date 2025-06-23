@@ -14,7 +14,7 @@ import { logger } from "../utils/logger";
 export class CronJobService {
   private client: MerchantBotClient;
   private isRunning = false;
-  private cronTask: any = null;
+  private cronTask: ReturnType<typeof cron.schedule> | null = null;
 
   constructor(client: MerchantBotClient) {
     this.client = client;

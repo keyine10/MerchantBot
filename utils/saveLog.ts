@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from "fs";
 
 /**
  * Safely writes data to a JSON file, ensuring the directory exists.
@@ -6,9 +6,13 @@ import fs from 'fs';
  * @param data Data to write (object or string)
  */
 export function saveLog(filePath: string, data: any) {
-  const dir = filePath.substring(0, filePath.lastIndexOf('/'));
+  const dir = filePath.substring(0, filePath.lastIndexOf("/"));
   if (dir && !fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
-  fs.writeFileSync(filePath, typeof data === 'string' ? data : JSON.stringify(data, null, 2), 'utf-8');
+  fs.writeFileSync(
+    filePath,
+    typeof data === "string" ? data : JSON.stringify(data, null, 2),
+    "utf-8"
+  );
 }
