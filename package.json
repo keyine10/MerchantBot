@@ -9,7 +9,9 @@
     "deploy": "npm run redeploy-commands && pm2 reload dist/index.js --name merchant-bot --update-env || pm2 start dist/index.js --name merchant-bot && pm2 save",
     "redeploy-commands": "npm run build && node dist/deploy-commands.js",
     "test": "npx jest mercari/mercari.test.ts",
-    "logs": "TZ=Asia/Bangkok npx pino-pretty -i pid,hostname -T 'yyyy-mm-dd HH:MM:ss.l o' <"
+    "logs": "TZ=Asia/Bangkok npx pino-pretty -i pid,hostname -t 'SYS:yyyy-mm-dd HH:MM:ss o' < logs/app.log",
+    "logs:error": "TZ=Asia/Bangkok npx pino-pretty -i pid,hostname -t 'SYS:yyyy-mm-dd HH:MM:ss o' < logs/error.log",
+    "logs:tail": "tail -f logs/app.log | TZ=Asia/Bangkok npx pino-pretty -i pid,hostname -t 'SYS:yyyy-mm-dd HH:MM:ss o'"
   },
   "keywords": [
     "discord",

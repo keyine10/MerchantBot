@@ -6,6 +6,7 @@ import {
   MercariSearchResult,
   MercariItem,
   MercariItemConditionIdObject,
+  MercariSearchSort,
 } from "../mercari/types";
 import { MerchantBotClient } from "../types/client";
 import searchCommand from "../commands/mercari/search";
@@ -142,8 +143,7 @@ export class CronJobService {
         excludeKeyword: query.searchParams.excludeKeyword,
         priceMin: query.searchParams.priceMin,
         priceMax: query.searchParams.priceMax,
-        sort: query.searchParams.sort,
-        order: query.searchParams.order,
+        sort: MercariSearchSort.DEFAULT,
         itemConditionId: query.searchParams.itemConditionId,
         // createdAfterDate: lastRunTimestamp.toString(),
         createdAfterDate: query.searchParams.createdAfterDate || "0",

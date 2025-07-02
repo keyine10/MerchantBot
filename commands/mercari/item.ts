@@ -39,8 +39,13 @@ export async function getItemDetailViewModel(
     const translationData: MercariItemTranslation =
       await mercari.getItemTranslation(itemId);
     const item = itemDetails.data;
-    // Helper to format numbers with commas
-    const formatNumber = (num: number) => num.toLocaleString("en-US");
+    // Helper to format numbers with commas - handles undefined/null values
+    const formatNumber = (num: number | undefined | null) => {
+      if (num === undefined || num === null || isNaN(num)) {
+        return num;
+      }
+      return num.toLocaleString("en-US");
+    };
 
     // Helper to get condition name
     const getConditionName = (conditionId: MercariItemConditionId) => {
@@ -77,9 +82,13 @@ export async function getItemDetailViewModel(
       { name: "id", value: `\`${item.id}\``, inline: true },
       {
         name: "price",
-        value: `${formatNumber(item?.price)}¥ | ${formatNumber(
+        value: `${formatNumber(item?.price)}¥${
           item?.converted_price?.price
-        )}${item?.converted_price?.currency_code}`,
+            ? ` | ${formatNumber(item?.converted_price?.price)}${
+                item.converted_price.currency_code || ""
+              }`
+            : ""
+        }`,
         inline: true,
       },
       {
