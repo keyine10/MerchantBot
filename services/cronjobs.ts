@@ -106,12 +106,13 @@ export class CronJobService {
       }
 
       // Send all notifications
-      notifications.map(async (notificationData) =>
-        await this.sendQueryResults(
-          notificationData.user,
-          notificationData.query,
-          notificationData.searchResult
-        )
+      notifications.map(
+        async (notificationData) =>
+          await this.sendQueryResults(
+            notificationData.user,
+            notificationData.query,
+            notificationData.searchResult
+          )
       );
     } catch (error) {
       logger.error("Error checking tracked queries:", error);
@@ -252,7 +253,7 @@ export class CronJobService {
         `Sent query results to user ${user.username} for query: ${query.name}`
       );
     } catch (error) {
-      logger.error(`Error sending query results to user ${user.id}:`, error);
+      logger.error(`Error sending query results to user ${user.id}:`, JSON.stringify(error));
     }
   }
 
