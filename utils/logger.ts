@@ -9,7 +9,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const logDir = path.join(__dirname, "../../logs");
-console.log(`Log directory: ${logDir}`);
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir, { recursive: true });
 }

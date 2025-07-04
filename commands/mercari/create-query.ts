@@ -187,7 +187,7 @@ export default {
         }. Note that some search parameters will be overwritten for the best tracking result.\nThe first time the query is run, items that were updated in the last 24 hours will be returned.`,
       });
     } catch (error) {
-      logger.error("Error creating query:", error);
+      logger.error(`Error creating query: ${error}`);
 
       if (error.code === 11000) {
         // Duplicate key error

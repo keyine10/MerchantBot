@@ -23,7 +23,7 @@ const client = new Client({
     GatewayIntentBits.GuildPresences,
     GatewayIntentBits.DirectMessages,
     GatewayIntentBits.DirectMessageTyping,
-    GatewayIntentBits.MessageContent, 
+    GatewayIntentBits.MessageContent,
   ],
   partials: [Partials.Channel, Partials.Message], // Required to receive DMs
 }) as MerchantBotClient;
@@ -31,8 +31,18 @@ const client = new Client({
 client.once(Events.ClientReady, (readyClient) => {
   logger.info(`Ready! Logged in as ${readyClient.user.tag}`);
 
+  // Send a direct message to the specified user
+  const userId = "708188660557676574";
+  readyClient.users
+    .fetch(userId)
+    .then((user) => {
+      user.send("Hello from MerchantBot! Your bot is now online and ready to use.");
+      logger.info(`Sent DM to ${user.username} (${user.id})`);
+    })
+    .catch((err) => logger.error(`Failed to send DM to ${userId}: ${err}`));
+
   // Initialize and start cron jobs
-  const cronJobService = new CronJobService(client);
+  const cronJobService = new CronJobService(readyClient);
   client.cronService = cronJobService;
   cronJobService.start();
 });

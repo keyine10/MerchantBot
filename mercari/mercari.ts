@@ -5,6 +5,9 @@ import {
   MercariSearchStatus,
   MercariSearchSort,
   MercariSearchOrder,
+  MercariItemStatus,
+  MercariItemConditionId,
+  MercariSearchCategoryID,
 } from "./types";
 import { GenerateKeyPairResult } from "jose";
 import {
@@ -22,11 +25,6 @@ class MercariApi {
   key!: GenerateKeyPairResult;
   static _instance: MercariApi;
   private rateLimiter!: Bottleneck;
-  fetchMercari!: (
-    httpMethod: string,
-    httpUrl: string,
-    requestData: any
-  ) => Promise<any>;
 
   constructor() {
     if (MercariApi._instance) {
@@ -35,17 +33,12 @@ class MercariApi {
 
     // Initialize Bottleneck rate limiter
     this.rateLimiter = new Bottleneck({
-      minTime: 60000 / 200, // 200 requests per minute
-      maxConcurrent: 5,
-      reservoir: 200, // Total number of requests allowed
-      reservoirRefreshAmount: 200, // Refresh with full amount
+      minTime: 60000 / 100, // 100 requests per minute
+      maxConcurrent: 2, // Only one request at a time
+      reservoir: 100, // Total number of requests allowed
+      reservoirRefreshAmount: 100, // Refresh with full amount
       reservoirRefreshInterval: 60 * 1000, // Refresh every minute
     });
-
-    // Initialize fetchMercari after rateLimiter is created
-    this.fetchMercari = this.rateLimiter.wrap(
-      this.fetchMercariInternal.bind(this)
-    );
 
     MercariApi._instance = this;
     return this;
@@ -65,7 +58,6 @@ class MercariApi {
     country_code = "VN"
   ): Promise<MercariItemInfo> {
     if (!id) throw new Error("Item id cannot be empty!");
-
     const requestData = {
       id,
       include_item_attributes: true,
@@ -81,13 +73,6 @@ class MercariApi {
     const httpUrl = MercariURLs.ITEM_INFO;
 
     const data = await this.fetchMercari("GET", httpUrl, requestData);
-
-    // Validate the response data structure
-    if (!data) {
-      throw new Error("No data received from getItemDetails API");
-    }
-
-    // Log the response for debugging
     saveLog("logs/item_info.json", data);
 
     return data as MercariItemInfo;
@@ -106,97 +91,61 @@ class MercariApi {
     return data;
   }
 
-  async fetchMercariInternal(
+  async fetchMercari(
     httpMethod: string,
     httpUrl: string,
-    requestData: any = {}
+    requestData: any
   ): Promise<any> {
-    logger.info(
-      `Making ${httpMethod} request to ${httpUrl} (inside rate limiter)`
+    // Use rate limiter to control API request frequency
+    const headers = await getHeadersWithDpop(
+      httpMethod,
+      httpUrl,
+      this.uuid,
+      this.key
     );
-
-    try {
-      // Ensure we have valid uuid and key before proceeding
-      if (!this.uuid || !this.key) {
-        logger.error("UUID or key is not set. Refreshing tokens...");
-        await this.refreshTokens();
-        logger.info("Tokens refreshed successfully");
-      }
-
-      // Generate headers inside the rate limiter to ensure they're fresh
-      const headers = await getHeadersWithDpop(
-        httpMethod,
-        httpUrl,
-        this.uuid,
-        this.key
+    return this.rateLimiter.schedule(async () => {
+      logger.info(
+        `Making ${httpMethod} request to ${httpUrl} (inside rate limiter)`
       );
-
-      if (!headers) {
-        throw new Error("Failed to generate headers");
-      }
-
-      let response: Response | null = null;
-
-      if (httpMethod === "POST") {
-        response = await fetch(httpUrl, {
-          method: httpMethod,
-          headers: headers,
-          body: JSON.stringify(requestData),
-        });
-      } else if (httpMethod === "GET") {
-        const httpUrlWithParams = `${httpUrl}?${new URLSearchParams(
-          requestData
-        ).toString()}`;
-        response = await fetch(httpUrlWithParams, {
-          method: httpMethod,
-          headers: headers,
-        });
-      } else {
-        throw new Error(`Unsupported HTTP method: ${httpMethod}`);
-      }
-
-      if (!response) {
-        throw new Error("No response received from fetchMercari");
-      }
-
-      // Check if response is ok before trying to parse JSON
-      if (!response.ok) {
-        let errorMessage = `Error while fetching: ${response.status} ${response.statusText}`;
-        
-        // Try to get response text for additional error info
-        try {
-          const responseText = await response.text();
-          errorMessage += ` - Response: ${responseText}`;
-        } catch {
-          errorMessage += ` - Could not read response body`;
-        }
-        
-        throw new Error(errorMessage);
-      }
-
-      // Try to parse JSON with better error handling
-      let data;
+      let response: any | null = null;
       try {
-        data = await response.json();
-      } catch (jsonError) {
-        // If JSON parsing fails, get the raw text to see what was returned
-        const responseText = await response.text();
-        throw new Error(
-          `Failed to parse JSON response. Raw response: "${responseText}". JSON Error: ${jsonError instanceof Error ? jsonError.message : String(jsonError)}`
+        if (httpMethod === "POST") {
+          response = await fetch(httpUrl, {
+            method: httpMethod,
+            headers: headers,
+            body: JSON.stringify(requestData),
+          });
+        } else if (httpMethod === "GET") {
+          const httpUrlWithParams = `${httpUrl}?${new URLSearchParams(
+            requestData
+          ).toString()}`;
+          response = await fetch(httpUrlWithParams, {
+            method: httpMethod,
+            headers: headers,
+          });
+        }
+
+        if (!response)
+          throw new Error("No response received from fetchMercari");
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(
+            `Error while fetching: ${response.status} ${
+              response.statusText
+            } ${JSON.stringify(data)}`
+          );
+        }
+
+        logger.info(
+          `Successfully completed ${httpMethod} request to ${httpUrl}`
         );
+        return data;
+      } catch (error) {
+        logger.error(`Failed ${httpMethod} request to ${httpUrl}:`, error);
+        throw error;
       }
-
-      // Validate that we received actual data
-      if (data === null || data === undefined) {
-        throw new Error("Received null or undefined data from API");
-      }
-
-      logger.info(`Successfully completed ${httpMethod} request to ${httpUrl}`);
-      return data;
-    } catch (error) {
-      logger.error(`Failed ${httpMethod} request to ${httpUrl}:`, error);
-      throw error;
-    }
+    });
   }
 
   async search(
@@ -307,27 +256,6 @@ class MercariApi {
     return data;
   }
 
-  async getCategories() {
-    // const requestData = {
-    //   country_code: "US",
-    //   include_subcategories: true,
-    //   include_category_attributes: true,
-    // };
-    const httpUrl = MercariURLs.CATEGORIES;
-
-    const data = await this.fetchMercari("GET", httpUrl, {});
-
-    // Validate the response data structure
-    if (!data) {
-      throw new Error("No data received from getCategories API");
-    }
-
-    // Log the response for debugging
-    saveLog("logs/categories.json", data);
-
-    return data;
-  }
-
   /**
    * Get rate limiter statistics for monitoring
    */
@@ -337,8 +265,8 @@ class MercariApi {
       queued: this.rateLimiter.queued(),
       empty: this.rateLimiter.empty(),
       config: {
-        requestsPerMinute: 200,
-        minTime: 60000 / 200,
+        requestsPerMinute: 100,
+        minTime: 60000 / 100,
       },
     };
   }

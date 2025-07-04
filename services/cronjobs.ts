@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import { EmbedBuilder, User } from "discord.js";
+import { Client, EmbedBuilder, User } from "discord.js";
 import Query, { IQuery } from "../models/Query";
 import mercariInstance from "../mercari/mercari";
 import {
@@ -8,16 +8,15 @@ import {
   MercariItemConditionIdObject,
   MercariSearchSort,
 } from "../mercari/types";
-import { MerchantBotClient } from "../types/client";
 import searchCommand from "../commands/mercari/search";
 import logger from "../utils/logger";
 
 export class CronJobService {
-  private client: MerchantBotClient;
+  private client: Client;
   private isRunning = false;
   private cronTask: ReturnType<typeof cron.schedule> | null = null;
 
-  constructor(client: MerchantBotClient) {
+  constructor(client: Client) {
     this.client = client;
   }
 
@@ -190,7 +189,7 @@ export class CronJobService {
         notification: { user, query, searchResult },
       };
     } catch (error) {
-      logger.error(`Error processing query ${query.name}:`, error);
+      logger.error(`Error processing query ${query.name}: ${error}`);
       return null;
     }
   }
@@ -253,7 +252,7 @@ export class CronJobService {
         `Sent query results to user ${user.username} for query: ${query.name}`
       );
     } catch (error) {
-      logger.error(`Error sending query results to user ${user.id}:`, JSON.stringify(error));
+      logger.error(`Error sending query results to user ${user.id}, ${error}`);
     }
   }
 

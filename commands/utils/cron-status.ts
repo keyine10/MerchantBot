@@ -68,7 +68,7 @@ export default {
 
       await interaction.editReply({ embeds: [embed] });
     } catch (error) {
-      logger.error("Error in cron-status command:", error);
+      logger.error(`Error in cron-status command: ${error}`);
       await interaction.editReply({
         content: "There was an error while checking the cron job status!",
       });

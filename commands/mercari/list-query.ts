@@ -186,7 +186,7 @@ async function handleRunQuery(
               itemConditionUsed,
       });
     } catch (err) {
-      logger.error("Failed to run search:", err);
+      logger.error(`Failed to run search: ${err}`);
       await componentInteraction.followUp({
         content: "Failed to run search." + err,
         flags: "Ephemeral",
@@ -450,7 +450,7 @@ export default {
         });
       }
     } catch (error) {
-      logger.error("Error in list-queries command:", error);
+      logger.error(`Error in list-queries command: ${error}`);
       await interaction.editReply({
         content: "There was an error while executing this command!",
       });
