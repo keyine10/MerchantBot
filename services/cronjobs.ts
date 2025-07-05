@@ -245,7 +245,28 @@ export class CronJobService {
       for (let i = 0; i < newItems.length; i += itemsPerMessage) {
         const itemsToShow = newItems.slice(i, i + itemsPerMessage);
         const embeds = searchCommand.createEmbedForItems(itemsToShow);
-        await user.send({ embeds });
+        try {
+          await user.send({ embeds });
+        } catch (error) {
+          logger.error(
+            `Failed to send items to user ${user.id} for query ${query.name}: ${error}, trying fallback to dmChannel`
+          );
+          // Fallback to sending via dmChannel if user.send fails
+          try {
+            if (user.dmChannel) {
+              await user.dmChannel.send({ embeds });
+            } else {
+              // Try to create a DM channel if it doesn't exist
+              const dm = await user.createDM();
+              await dm.send({ embeds });
+            }
+          } catch (fallbackError) {
+            logger.error(
+              `Fallback failed to send items to user ${user.id} for query ${query.name}: ${fallbackError}`
+            );
+            continue; // Skip this batch if fallback also fails
+          }
+        }
       }
 
       logger.info(
