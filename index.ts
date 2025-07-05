@@ -25,7 +25,7 @@ const client = new Client({
     GatewayIntentBits.DirectMessageTyping,
     GatewayIntentBits.MessageContent,
   ],
-  partials: [Partials.Channel, Partials.Message], // Required to receive DMs
+  partials: [Partials.Channel, Partials.Message, Partials.User], // Required to receive DMs
 }) as MerchantBotClient;
 
 client.once(Events.ClientReady, (readyClient) => {
@@ -36,7 +36,9 @@ client.once(Events.ClientReady, (readyClient) => {
   readyClient.users
     .fetch(userId)
     .then((user) => {
-      user.send("Hello from MerchantBot! Your bot is now online and ready to use.");
+      user.send(
+        "Hello from MerchantBot! Your bot is now online and ready to use."
+      );
       logger.info(`Sent DM to ${user.username} (${user.id})`);
     })
     .catch((err) => logger.error(`Failed to send DM to ${userId}: ${err}`));
