@@ -1,5 +1,11 @@
 import cron from "node-cron";
-import { Client, EmbedBuilder, User } from "discord.js";
+import {
+  Client,
+  EmbedBuilder,
+  MessageCreateOptions,
+  MessagePayload,
+  User,
+} from "discord.js";
 import Query, { IQuery } from "../models/Query";
 import mercariInstance from "../mercari/mercari";
 import {
@@ -238,35 +244,14 @@ export class CronJobService {
           inline: false,
         });
       }
-      await user.send({ embeds: [embed] });
+      await sendUserDm(user, { embeds: [embed] });
 
       // Add items and send in batches of 5 embeds per message
       const itemsPerMessage = 5;
       for (let i = 0; i < newItems.length; i += itemsPerMessage) {
         const itemsToShow = newItems.slice(i, i + itemsPerMessage);
         const embeds = searchCommand.createEmbedForItems(itemsToShow);
-        try {
-          await user.send({ embeds });
-        } catch (error) {
-          logger.error(
-            `Failed to send items to user ${user.id} for query ${query.name}: ${error}, trying fallback to dmChannel`
-          );
-          // Fallback to sending via dmChannel if user.send fails
-          try {
-            if (user.dmChannel) {
-              await user.dmChannel.send({ embeds });
-            } else {
-              // Try to create a DM channel if it doesn't exist
-              const dm = await user.createDM();
-              await dm.send({ embeds });
-            }
-          } catch (fallbackError) {
-            logger.error(
-              `Fallback failed to send items to user ${user.id} for query ${query.name}: ${fallbackError}`
-            );
-            continue; // Skip this batch if fallback also fails
-          }
-        }
+        sendUserDm(user, { embeds });
       }
 
       logger.info(
@@ -277,11 +262,31 @@ export class CronJobService {
     }
   }
 
-  private delay(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
   public getStatus(): { isRunning: boolean } {
     return { isRunning: this.isRunning };
   }
 }
+
+const sendUserDm = async (
+  user: User,
+  options: string | MessagePayload | MessageCreateOptions
+) => {
+  try {
+    return await user.send(options);
+  } catch (error) {
+    logger.error(`Failed to send DM to ${user.id}: ${error}`);
+  }
+  try {
+    if (user.dmChannel) {
+      return await user.dmChannel.send(options);
+    } else {
+      // Try to create a DM channel if it doesn't exist
+      const dm = await user.createDM(true);
+      return await dm.send(options);
+    }
+  } catch (fallbackError) {
+    logger.error(
+      `Fallback failed to send items to user ${user.id}: ${fallbackError}`
+    );
+  }
+};
