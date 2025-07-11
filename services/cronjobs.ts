@@ -7,13 +7,13 @@ import {
   User,
 } from "discord.js";
 import Query, { IQuery } from "../models/Query";
-import mercariInstance from "../mercari/mercari";
+import mercariInstance from "./mercari/mercari";
 import {
   MercariSearchResult,
   MercariItem,
   MercariItemConditionIdObject,
   MercariSearchSort,
-} from "../mercari/types";
+} from "./mercari/types";
 import searchCommand from "../commands/mercari/search";
 import logger from "../utils/logger";
 
@@ -37,6 +37,7 @@ export class CronJobService {
     const cronSchedule = "*/10 * * * *";
     this.cronTask = cron.schedule(cronSchedule, async () => {
       logger.info("Running tracked queries check...");
+      await mercariInstance.refreshTokens();
       await this.checkTrackedQueries();
     });
 
@@ -86,39 +87,36 @@ export class CronJobService {
         searchResult: MercariSearchResult;
       }> = [];
 
-      // Process each tracked query
-      await Promise.all(
-        trackedQueries.map((query) =>
-          this.processTrackedQueryForBatch(query).then((result) => {
-            if (result) {
-              if (result.bulkUpdate) {
-                bulkUpdates.push(result.bulkUpdate);
-              }
-              if (result.notification) {
-                notifications.push(result.notification);
-              }
-            }
-            return result;
-          })
-        )
+      // Process each tracked query, send notifications, and collect successful updates
+      const results = await Promise.all(
+        trackedQueries.map((query) => this.processTrackedQueryForBatch(query))
       );
-
-      // Execute all database updates in a single batch operation
-      if (bulkUpdates.length > 0) {
-        logger.info(`Executing batch update for ${bulkUpdates.length} queries`);
-        await Query.bulkWrite(bulkUpdates);
-        logger.info("Batch update completed successfully");
+      const updatesToApply: any[] = [];
+      for (const result of results) {
+        if (!result) continue;
+        if (result.notification) {
+          try {
+            await this.sendQueryResults(
+              result.notification.user,
+              result.notification.query,
+              result.notification.searchResult
+            );
+            updatesToApply.push(result.bulkUpdate!);
+          } catch (error) {
+            logger.error(
+              `Notification failed for query ${result.notification.query.name}: ${error}`
+            );
+          }
+        } else if (result.bulkUpdate) {
+          // No notification needed, apply update
+          updatesToApply.push(result.bulkUpdate);
+        }
       }
-
-      // Send all notifications
-      notifications.map(
-        async (notificationData) =>
-          await this.sendQueryResults(
-            notificationData.user,
-            notificationData.query,
-            notificationData.searchResult
-          )
-      );
+      // Execute database updates for successful cases
+      if (updatesToApply.length > 0) {
+        logger.info(`Executing batch update for ${updatesToApply.length} queries`);
+        await Query.bulkWrite(updatesToApply);
+      }
     } catch (error) {
       logger.error("Error checking tracked queries:", error);
     }
@@ -243,7 +241,7 @@ export class CronJobService {
           value: queryInfo,
           inline: false,
         });
-      }
+      };
       await sendUserDm(user, { embeds: [embed] });
 
       // Add items and send in batches of 5 embeds per message

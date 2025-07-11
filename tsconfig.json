@@ -24,6 +24,6 @@
     "isolatedModules": true,
     "outDir": "dist"
   },
-  "include": ["commands/**/*.ts", "mercari/**/*.ts", "*.ts", "commands/mercari/check-tracked.ts"],
+  "include": ["commands/**/*.ts", "services/mercari/**/*.ts", "*.ts", "commands/mercari/check-tracked.ts"],
   "exclude": ["node_modules", "dist"]
 }

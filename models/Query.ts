@@ -1,6 +1,6 @@
 import mongoose, { ObjectId } from "mongoose";
 
-import { MercariItem, MercariSearchCondition } from "../mercari/types";
+import { MercariItem, MercariSearchCondition } from "../services/mercari/types";
 
 export interface IQuery extends mongoose.Document {
   _id: ObjectId;

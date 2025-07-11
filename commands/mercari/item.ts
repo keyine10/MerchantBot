@@ -7,12 +7,12 @@ import {
   AttachmentBuilder,
 } from "discord.js";
 import sharp from "sharp";
-import mercari from "../../mercari/mercari";
+import mercari from "../../services/mercari/mercari";
 import {
   MercariItemTranslation,
   MercariURLs,
   MercariItemConditionId,
-} from "../../mercari/types";
+} from "../../services/mercari/types";
 import logger from "../../utils/logger";
 
 // Export a function to get item details and translation and return the embed objects

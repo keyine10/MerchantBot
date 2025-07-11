@@ -13,7 +13,7 @@ import {
   ApplicationIntegrationType,
   StringSelectMenuInteraction,
 } from "discord.js";
-import mercari from "../../mercari/mercari";
+import mercari from "../../services/mercari/mercari";
 import {
   MercariURLs,
   MercariSearchOrder,
@@ -21,7 +21,7 @@ import {
   MercariSearchResult,
   MercariSearchCondition,
   MercariSearchCategoryID,
-} from "../../mercari/types";
+} from "../../services/mercari/types";
 import itemCommand from "./item";
 import logger from "../../utils/logger";
 import dayjs from "dayjs";

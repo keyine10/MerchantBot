@@ -4,13 +4,13 @@ import {
   ApplicationIntegrationType,
   InteractionContextType,
 } from "discord.js";
-import mercari from "../../mercari/mercari";
+import mercari from "../../services/mercari/mercari";
 import Query from "../../models/Query";
 import {
   MercariSearchOrder,
   MercariSearchSort,
   MercariSearchStatus,
-} from "../../mercari/types";
+} from "../../services/mercari/types";
 import logger from "../../utils/logger";
 
 export default {

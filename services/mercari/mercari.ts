@@ -17,8 +17,8 @@ import {
   MercariSearchCondition,
 } from "./types";
 import { getHeadersWithDpop } from "./utils";
-import { saveLog } from "../utils/saveLog";
-import logger from "../utils/logger";
+import { saveLog } from "../../utils/saveLog";
+import logger from "../../utils/logger";
 
 class MercariApi {
   uuid: string = "";

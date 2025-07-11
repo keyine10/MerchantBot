@@ -18,7 +18,7 @@ import {
   MercariItemConditionId,
   MercariSearchOrder,
   MercariSearchSort,
-} from "../../mercari/types";
+} from "../../services/mercari/types";
 import logger from "../../utils/logger";
 
 function buildQueryEmbedAndSelectRow(
