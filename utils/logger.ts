@@ -8,22 +8,37 @@ import fs from "fs";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const logDir = path.join(__dirname, "../logs");
-if (!fs.existsSync(logDir)) {
-  fs.mkdirSync(logDir, { recursive: true });
+const baseLogDir = path.join("logs");
+const appLogDir = path.join(baseLogDir, "app");
+const errorLogDir = path.join(baseLogDir, "error");
+for (const d of [baseLogDir, appLogDir, errorLogDir]) {
+  if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
 }
 
+console.log({baseLogDir, appLogDir, errorLogDir});
 // Configure Pino transport for file, error file, and pretty console
 const transport = pino.transport({
   targets: [
     {
-      target: "pino/file",
-      options: { destination: path.join(logDir, "app.log"), mkdir: true },
+      target: "pino-roll",
+      options: {
+        file: path.join(appLogDir, 'app'),
+        frequency: "daily",
+        dateFormat: "yyyy-MM-dd",
+        extension: ".log",
+        mkdir: true,
+      },
       level: "info",
     },
     {
-      target: "pino/file",
-      options: { destination: path.join(logDir, "error.log"), mkdir: true },
+      target: "pino-roll",
+      options: {
+        file: path.join(errorLogDir, 'error'),
+        frequency: "daily",
+        dateFormat: "yyyy-MM-dd",
+        extension: ".log",
+        mkdir: true,
+      },
       level: "error",
     },
     {
@@ -38,11 +53,12 @@ const transport = pino.transport({
 const logger = pino(
   {
     timestamp: () =>
-      `,"time":"${dayjs().tz("Asia/Bangkok").format("YYYY-MM-DD HH:mm:ss.SSS")}"`,
+      `,"time":"${dayjs()
+        .tz("Asia/Bangkok")
+        .format("YYYY-MM-DD HH:mm:ss.SSS")}"`,
   },
   transport
 );
 
 export default logger;
 export { logger };
-

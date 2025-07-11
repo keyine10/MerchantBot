@@ -9,9 +9,9 @@
     "deploy": "npm run redeploy-commands && pm2 reload dist/index.js --name merchant-bot --update-env || pm2 start dist/index.js --name merchant-bot && pm2 save",
     "redeploy-commands": "npm run build && node dist/deploy-commands.js",
     "test": "npx jest mercari/mercari.test.ts",
-    "logs": "TZ=Asia/Bangkok npx pino-pretty -i pid,hostname -t 'SYS:yyyy-mm-dd HH:MM:ss o' < logs/app.log",
-    "logs:error": "TZ=Asia/Bangkok npx pino-pretty -i pid,hostname -t 'SYS:yyyy-mm-dd HH:MM:ss o' < logs/error.log",
-    "logs:tail": "tail -f logs/app.log | TZ=Asia/Bangkok npx pino-pretty -i pid,hostname -t 'SYS:yyyy-mm-dd HH:MM:ss o'"
+    "logs": "bash -c \"TZ=Asia/Bangkok npx pino-pretty -i pid,hostname -t 'SYS:yyyy-mm-dd HH:MM:ss o' < $(ls -1t logs/app/*.log | head -n1)\"",
+    "logs:error": "bash -c \"TZ=Asia/Bangkok npx pino-pretty -i pid,hostname -t 'SYS:yyyy-mm-dd HH:MM:ss o' < $(ls -1t logs/error/*.log | head -n1)\"",
+    "logs:tail": "bash -c \"tail -f $(ls -1t logs/app/*.log | head -n1) | TZ=Asia/Bangkok npx pino-pretty -i pid,hostname -t 'SYS:yyyy-mm-dd HH:MM:ss o'\""
   },
   "keywords": [
     "discord",
@@ -46,6 +46,7 @@
     "node-cron": "^4.1.0",
     "pino": "^7.0.0-rc.9",
     "pino-pretty": "^13.0.0",
+    "pino-roll": "^3.1.0",
     "sharp": "^0.34.2",
     "tsconfig": "^7.0.0",
     "uuid": "^11.1.0"
