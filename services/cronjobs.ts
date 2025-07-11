@@ -114,7 +114,9 @@ export class CronJobService {
       }
       // Execute database updates for successful cases
       if (updatesToApply.length > 0) {
-        logger.info(`Executing batch update for ${updatesToApply.length} queries`);
+        logger.info(
+          `Executing batch update for ${updatesToApply.length} queries`
+        );
         await Query.bulkWrite(updatesToApply);
       }
     } catch (error) {
@@ -241,7 +243,7 @@ export class CronJobService {
           value: queryInfo,
           inline: false,
         });
-      };
+      }
       await sendUserDm(user, { embeds: [embed] });
 
       // Add items and send in batches of 5 embeds per message
@@ -256,7 +258,7 @@ export class CronJobService {
         `Sent query results to user ${user.username} for query: ${query.name}`
       );
     } catch (error) {
-      logger.error(`Error sending query results to user ${user.id}, ${error}`);
+      logger.error(`Error sending query results to user ${user.username}, ${error}`);
     }
   }
 
@@ -272,19 +274,14 @@ const sendUserDm = async (
   try {
     return await user.send(options);
   } catch (error) {
-    logger.error(`Failed to send DM to ${user.id}: ${error}`);
+    logger.error(`Failed to send DM to ${user.username}: ${error}. Falling back to createDM.`);
   }
   try {
-    if (user.dmChannel) {
-      return await user.dmChannel.send(options);
-    } else {
-      // Try to create a DM channel if it doesn't exist
-      const dm = await user.createDM(true);
-      return await dm.send(options);
-    }
+    const dm = await user.createDM(true);
+    return await dm.send(options);
   } catch (fallbackError) {
     logger.error(
-      `Fallback failed to send items to user ${user.id}: ${fallbackError}`
+      `Fallback failed to send items to user ${user.username}: ${fallbackError}`
     );
   }
 };
