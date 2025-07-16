@@ -11,6 +11,10 @@ import {
   InteractionContextType,
   ButtonInteraction,
   StringSelectMenuInteraction,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+  ComponentType,
 } from "discord.js";
 import Query, { IQuery } from "../../models/Query";
 import searchCommand from "./search";
@@ -46,8 +50,10 @@ function buildQueryEmbedAndSelectRow(
       if (excludeKeyword) fieldValue += `\nExclude: ${excludeKeyword}`;
       if (priceMin) fieldValue += `\nMin Price: ${priceMin}¥`;
       if (priceMax) fieldValue += `\nMax Price: ${priceMax}¥`;
-      if(query.lastRun) {
-        fieldValue += `\nLast Run: <t:${Math.floor(query.lastRun.getTime()/1000)}:R>`;
+      if (query.lastRun) {
+        fieldValue += `\nLast Run: <t:${Math.floor(
+          query.lastRun.getTime() / 1000
+        )}:R>`;
       }
       fieldValue += `\nTracked: ${query.isTracked ? "✅" : "❌"}`;
       embed.addFields({ name: query.name, value: fieldValue });
@@ -78,12 +84,17 @@ function buildQueryEmbedAndSelectRow(
   return { embed, selectRow };
 }
 
-async function handleSelectQuery(
-  interaction: ChatInputCommandInteraction,
-  queries: IQuery[],
-  buttonRow: ActionRowBuilder<ButtonBuilder>,
-  selectedQueryId: string
-) {
+async function handleSelectQuery({
+  interaction,
+  queries,
+  buttonRow,
+  selectedQueryId,
+}: {
+  interaction: ChatInputCommandInteraction;
+  queries: IQuery[];
+  buttonRow: ActionRowBuilder<ButtonBuilder>;
+  selectedQueryId: string;
+}) {
   const query = queries.find((q) => q._id.toString() === selectedQueryId);
   if (query) {
     // Create a detailed view of the selected query's search parameters
@@ -147,11 +158,15 @@ async function handleSelectQuery(
   return selectedQueryId;
 }
 
-async function handleRunQuery(
-  componentInteraction: ButtonInteraction,
-  selectedQueryId: string,
-  queries: IQuery[]
-) {
+async function handleRunQuery({
+  componentInteraction,
+  selectedQueryId,
+  queries,
+}: {
+  componentInteraction: ButtonInteraction;
+  selectedQueryId: string;
+  queries: IQuery[];
+}) {
   if (selectedQueryId) {
     const query = queries.find((q) => q._id.toString() === selectedQueryId);
     if (!query) {
@@ -183,7 +198,7 @@ async function handleRunQuery(
         priceMax,
         sort,
         order,
-              itemConditionUsed,
+        itemConditionUsed,
       });
     } catch (err) {
       logger.error(`Failed to run search: ${err}`);
@@ -200,59 +215,74 @@ async function handleRunQuery(
   }
 }
 
-async function handleToggleTrackQuery(
-  queries: IQuery[],
-  componentInteraction: ButtonInteraction,
-  selectedQueryId: string,
-  interaction: ChatInputCommandInteraction,
-  buttonRow: ActionRowBuilder<ButtonBuilder>
-) {
-  const query = await Query.findOne({ _id: selectedQueryId });
-  if (selectedQueryId && query) {
-    query.isTracked = !query.isTracked;
-    query.lastRun = new Date(Date.now());
-    await query.save();
-    await componentInteraction.followUp({
-      content: `Tracking for "${query.name}" is now ${
-        query.isTracked ? "enabled ✅" : "disabled ❌"
-      }.`,
-    });
-
-    const updatedQueries = queries.map((q) => {
-      if (q._id.toString() === selectedQueryId) {
-        q.isTracked = query.isTracked;
-      }
-      return q;
-    });
-
-    return await handleSelectQuery(
-      interaction,
-      updatedQueries,
-      buttonRow,
-      selectedQueryId
-    );
-  } else if (!selectedQueryId) {
-    await componentInteraction.followUp({
+async function handleToggleTrackQuery({
+  queries,
+  componentInteraction,
+  selectedQueryId,
+  interaction,
+  buttonRow,
+}: {
+  queries: IQuery[];
+  componentInteraction: ButtonInteraction;
+  selectedQueryId: string;
+  interaction: ChatInputCommandInteraction;
+  buttonRow: ActionRowBuilder<ButtonBuilder>;
+}) {
+  if (!selectedQueryId) {
+    componentInteraction.followUp({
       content: "No query selected.",
       flags: "Ephemeral",
     });
     return "";
-  } else {
-    await componentInteraction.followUp({
+  }
+
+  const query = await Query.findOne({ _id: selectedQueryId });
+
+  if (!query) {
+    componentInteraction.followUp({
       content: "Query not found.",
       flags: "Ephemeral",
     });
     return "";
   }
+
+  query.isTracked = !query.isTracked;
+  query.lastRun = new Date(Date.now());
+  await query.save();
+  await componentInteraction.followUp({
+    content: `Tracking for "${query.name}" is now ${
+      query.isTracked ? "enabled ✅" : "disabled ❌"
+    }.`,
+  });
+
+  const updatedQueries = queries.map((q) => {
+    if (q._id.toString() === selectedQueryId) {
+      q.isTracked = query.isTracked;
+    }
+    return q;
+  });
+
+  return await handleSelectQuery({
+    interaction,
+    queries: updatedQueries,
+    buttonRow,
+    selectedQueryId,
+  });
 }
 
-async function handleDeleteQuery(
-  componentInteraction: ButtonInteraction,
-  interaction: ChatInputCommandInteraction,
-  queries: IQuery[],
-  buttonRow: ActionRowBuilder<ButtonBuilder>,
-  selectedQueryId: string
-) {
+async function handleDeleteQuery({
+  componentInteraction,
+  interaction,
+  queries,
+  buttonRow,
+  selectedQueryId,
+}: {
+  componentInteraction: ButtonInteraction;
+  interaction: ChatInputCommandInteraction;
+  queries: IQuery[];
+  buttonRow: ActionRowBuilder<ButtonBuilder>;
+  selectedQueryId: string;
+}) {
   if (selectedQueryId) {
     const result = await Query.deleteOne({ _id: selectedQueryId });
     if (result.deletedCount > 0) {
@@ -293,6 +323,118 @@ async function handleDeleteQuery(
     });
   }
   return selectedQueryId; // Return unchanged if deletion failed or no query selected
+}
+
+async function handleEditQuery({
+  componentInteraction,
+  interaction,
+  queries,
+  selectedQueryId,
+}: {
+  componentInteraction: ButtonInteraction;
+  interaction: ChatInputCommandInteraction;
+  queries: IQuery[];
+  selectedQueryId: string;
+}) {
+  const query = queries.find((q) => q._id.toString() === selectedQueryId);
+  if (!query) {
+    componentInteraction.reply({
+      content: "No query selected to edit.",
+      flags: "Ephemeral",
+    });
+    return "";
+  }
+  const modal = new ModalBuilder()
+    .setCustomId(`edit_query_modal:${interaction.id}`)
+    .setTitle(`Edit Query: ${query.name}`);
+  // inputs
+  const nameInput = new TextInputBuilder()
+    .setCustomId("query_name")
+    .setLabel("Name")
+    .setStyle(TextInputStyle.Short)
+    .setRequired(true)
+    .setValue(query.name);
+  const keywordInput = new TextInputBuilder()
+    .setCustomId("query_keyword")
+    .setLabel("Keyword")
+    .setStyle(TextInputStyle.Short)
+    .setRequired(true)
+    .setValue(query.searchParams.keyword || "");
+  const excludeInput = new TextInputBuilder()
+    .setCustomId("query_exclude")
+    .setLabel("Exclude Keyword")
+    .setStyle(TextInputStyle.Short)
+    .setRequired(false)
+    .setValue(query.searchParams.excludeKeyword || "");
+  const minPriceInput = new TextInputBuilder()
+    .setCustomId("query_priceMin")
+    .setLabel("Min Price (¥)")
+    .setStyle(TextInputStyle.Short)
+    .setRequired(false)
+    .setValue(query.searchParams.priceMin?.toString() || "");
+  const maxPriceInput = new TextInputBuilder()
+    .setCustomId("query_priceMax")
+    .setLabel("Max Price (¥)")
+    .setStyle(TextInputStyle.Short)
+    .setRequired(false)
+    .setValue(query.searchParams.priceMax?.toString() || "");
+  // attach inputs and show
+  modal.addComponents(
+    new ActionRowBuilder<TextInputBuilder>().addComponents(nameInput),
+    new ActionRowBuilder<TextInputBuilder>().addComponents(keywordInput),
+    new ActionRowBuilder<TextInputBuilder>().addComponents(excludeInput),
+    new ActionRowBuilder<TextInputBuilder>().addComponents(minPriceInput),
+    new ActionRowBuilder<TextInputBuilder>().addComponents(maxPriceInput)
+  );
+
+  await componentInteraction.showModal(modal);
+
+  const modalFilter = (i: any) =>
+    i.customId.startsWith(`edit_query_modal:${interaction.id}`) &&
+    i.user.id === interaction.user.id;
+  await componentInteraction
+    .awaitModalSubmit({ time: 600_000, filter: modalFilter })
+    .then(async (modalInteraction) => {
+      // Get the values from the modal
+      await modalInteraction.deferReply();
+      const name = modalInteraction.fields.getTextInputValue("query_name");
+      const keyword =
+        modalInteraction.fields.getTextInputValue("query_keyword");
+      const excludeKeyword =
+        modalInteraction.fields.getTextInputValue("query_exclude");
+      const priceMin =
+        modalInteraction.fields.getTextInputValue("query_priceMin");
+      const priceMax =
+        modalInteraction.fields.getTextInputValue("query_priceMax");
+      // Build an embed with the submitted values
+
+      const embed = new EmbedBuilder()
+        .setTitle("Edited Query")
+        .setColor(0x0099ff)
+        .addFields(
+          { name: "Name", value: name || "N/A", inline: true },
+          { name: "Keyword", value: keyword || "N/A", inline: true },
+          {
+            name: "Exclude Keyword",
+            value: excludeKeyword || "N/A",
+            inline: true,
+          },
+          {
+            name: "Min Price (¥)",
+            value: priceMin || "N/A",
+            inline: true,
+          },
+          {
+            name: "Max Price (¥)",
+            value: priceMax || "N/A",
+            inline: true,
+          }
+        );
+
+      await modalInteraction.followUp({ embeds: [embed] });
+    })
+    .catch((err) => logger.info("No modal submit interaction was collected"));
+  return selectedQueryId;
 }
 
 export default {
@@ -345,9 +487,15 @@ export default {
         .setLabel("Delete Query")
         .setStyle(ButtonStyle.Danger);
 
+      const editButton = new ButtonBuilder()
+        .setCustomId(`edit_query:${interaction.id}`)
+        .setLabel("Edit Query")
+        .setStyle(ButtonStyle.Secondary);
+
       const buttonRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
         runButton,
         trackButton,
+        // editButton,
         deleteButton
       );
 
@@ -360,14 +508,11 @@ export default {
         (i.customId.startsWith(`select_query:${interaction.id}`) ||
           i.customId.startsWith(`run_query:${interaction.id}`) ||
           i.customId.startsWith(`toggle_track_query:${interaction.id}`) ||
-          i.customId.startsWith(`delete_query:${interaction.id}`)) &&
+          i.customId.startsWith(`delete_query:${interaction.id}`) ||
+          i.customId.startsWith(`edit_query:${interaction.id}`)) &&
         i.user.id === interaction.user.id;
 
-      if (
-        interaction.channel &&
-        typeof interaction.channel.createMessageComponentCollector ===
-          "function"
-      ) {
+      if (interaction.channel) {
         const collector = interaction.channel.createMessageComponentCollector({
           filter: collectorFilter,
           time: 600000,
@@ -380,7 +525,6 @@ export default {
               | ButtonInteraction
               | StringSelectMenuInteraction
           ) => {
-            await componentInteraction.deferUpdate();
             logger.info(`Component ${componentInteraction.customId} clicked`);
             const customId = componentInteraction.customId.replace(
               `:${interaction.id}`,
@@ -388,52 +532,67 @@ export default {
             );
             switch (customId) {
               case "select_query": {
+                await componentInteraction.deferUpdate();
                 if (componentInteraction.isStringSelectMenu()) {
                   const value = componentInteraction.values[0];
 
                   if (value) {
                     selectedQueryId = value;
-                    selectedQueryId = await handleSelectQuery(
+                    selectedQueryId = await handleSelectQuery({
                       interaction,
                       queries,
                       buttonRow,
-                      selectedQueryId
-                    );
+                      selectedQueryId,
+                    });
                   }
                 }
                 break;
               }
               case "run_query": {
+                await componentInteraction.deferUpdate();
                 if (componentInteraction.isButton()) {
-                  await handleRunQuery(
+                  await handleRunQuery({
                     componentInteraction,
                     selectedQueryId,
-                    queries
-                  );
+                    queries,
+                  });
                 }
                 break;
               }
               case "toggle_track_query": {
+                await componentInteraction.deferUpdate();
                 if (componentInteraction.isButton()) {
-                  selectedQueryId = await handleToggleTrackQuery(
+                  selectedQueryId = await handleToggleTrackQuery({
                     queries,
                     componentInteraction,
                     selectedQueryId,
                     interaction,
-                    buttonRow
-                  );
+                    buttonRow,
+                  });
                 }
                 break;
               }
               case "delete_query": {
+                await componentInteraction.deferUpdate();
                 if (componentInteraction.isButton()) {
-                  selectedQueryId = await handleDeleteQuery(
+                  selectedQueryId = await handleDeleteQuery({
                     componentInteraction,
                     interaction,
                     queries,
                     buttonRow,
-                    selectedQueryId
-                  );
+                    selectedQueryId,
+                  });
+                }
+                break;
+              }
+              case "edit_query": {
+                if (componentInteraction.isButton()) {
+                  selectedQueryId = await handleEditQuery({
+                    componentInteraction,
+                    interaction,
+                    queries,
+                    selectedQueryId,
+                  });
                 }
                 break;
               }
@@ -452,7 +611,8 @@ export default {
     } catch (error) {
       logger.error(`Error in list-queries command: ${error}`);
       await interaction.editReply({
-        content: "There was an error while executing this command!",
+        content:
+          "There was an error while executing this command:" + `${error}`,
       });
     }
   },

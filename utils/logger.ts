@@ -15,7 +15,6 @@ for (const d of [baseLogDir, appLogDir, errorLogDir]) {
   if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
 }
 
-console.log({baseLogDir, appLogDir, errorLogDir});
 // Configure Pino transport for file, error file, and pretty console
 const transport = pino.transport({
   targets: [
